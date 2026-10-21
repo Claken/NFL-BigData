@@ -400,8 +400,8 @@ function draw() {
   ctx.save(); ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
   const labels = [];
   const labeledPlayers = [[thrower, projected ? 'Last thrower' : 'Thrower', '#ba9bec', 22], [receiver, projected ? 'Last receiver' : 'Receiver', '#c0ee79', -40]];
-  if (scenario) labeledPlayers.push([scenario.projectedBall, 'Ball scenario', '#e6bc70', 22],
-    [scenario.projectedReceiver, 'Receiver scenario', '#c0ee79', -40]);
+  if (scenario) labeledPlayers.push([scenario.projectedBall, 'Ball projection', '#e6bc70', 22],
+    [scenario.projectedReceiver, 'Receiver projection', '#c0ee79', -40]);
   for (const [player, role, color, offset] of labeledPlayers) {
     if (!player) continue;
     const [px, py] = xy(player), label = role + (player.label ? ' #' + player.label : '');
@@ -461,7 +461,7 @@ function draw() {
   el('flightLimit').hidden = !scenario;
   el('projectionTimeLabel').hidden = !projected;
   el('flightTime').textContent = flightHorizon.toFixed(1) + ' s';
-  el('flightComparison').textContent = scenario ? 'Scenario ball–receiver gap: ' + scenario.gap.toFixed(1) + ' yards.' + (scenario.outsideField ? ' The ball scenario is outside the field.' : '') :
+  el('flightComparison').textContent = scenario ? 'Projected ball–receiver gap: ' + scenario.gap.toFixed(1) + ' yards.' + (scenario.outsideField ? ' The projected ball is outside the field.' : '') :
     current.post_release?.projection_unavailable || 'No projection available.';
   if (!timer) {
     el('play').textContent = atEnd ? 'Replay' : 'Play';
@@ -477,7 +477,7 @@ function draw() {
   const positionText = yardsShort == null ? 'Line unavailable' : Math.abs(yardsShort) < .05 ? 'At the first-down line' :
     (Math.round(Math.abs(yardsShort) * 10 + 1e-8) / 10).toFixed(1) + ' yd ' + (yardsShort > 0 ? 'short of' : 'beyond') + ' the first-down line';
   const ball = f.players.find(p => p.side === 'ball');
-  el('nearestReadout').textContent = scenario ? 'Scenario ball–receiver gap: ' + scenario.gap.toFixed(1) + ' yd' : afterThrow && ball ? 'Recorded ball–receiver gap: ' + Math.hypot(ball.x - f.x, ball.y - f.y).toFixed(1) + ' yd' : positionText + ' · ' + f.separation.toFixed(1) + ' yd nearest gap';
+  el('nearestReadout').textContent = scenario ? 'Projected ball–receiver gap: ' + scenario.gap.toFixed(1) + ' yd' : afterThrow && ball ? 'Recorded ball–receiver gap: ' + Math.hypot(ball.x - f.x, ball.y - f.y).toFixed(1) + ' yd' : positionText + ' · ' + f.separation.toFixed(1) + ' yd nearest gap';
   el('frameEligibility').textContent = projected ? 'Projection only' : !valid ? 'Outside the time / position rules' :
     f.separation <= 2 ? 'Gap is too small to count' : 'Can contribute to an earlier gap';
   el('frameEligibilityNote').dataset.eligible = String(valid && f.separation > 2);
@@ -486,10 +486,10 @@ function draw() {
     f.downfield < requiredDepth ? 'The receiver has not reached the required downfield position (' + requiredDepth + ' yards), so it does not count.' :
     f.separation <= 2 ? 'The closest opponent is within 2 yards. This moment does not count toward an earlier gap.' :
     'The gap is more than 2 yards here. It must last at least half a second without a break to become a qualifying window.';
-  canvas.setAttribute('aria-label', projected ? current.route.displayName + ' projected at ' + flightHorizon.toFixed(1) + ' seconds after throw. Dotted ball cone and straight receiver continuation; other players frozen at their last recorded positions. Scenario ball to receiver gap ' + scenario.gap.toFixed(1) + ' yards. Not a landing prediction.' : current.route.displayName + ' at ' + f.t.toFixed(1) + ' seconds since snap; nearest defender ' +
+  canvas.setAttribute('aria-label', projected ? current.route.displayName + ' projected at ' + flightHorizon.toFixed(1) + ' seconds after throw. Dotted ball cone and straight receiver continuation; other players frozen at their last recorded positions. Projected ball to receiver gap ' + scenario.gap.toFixed(1) + ' yards. Not a landing prediction.' : current.route.displayName + ' at ' + f.t.toFixed(1) + ' seconds since snap; nearest defender ' +
     (nearest ? nearest.name : 'unknown') + ', ' + f.separation.toFixed(2) + ' yards away. Thrower: ' +
     (current.thrower ? current.thrower.name : 'unknown') + '. Selected receiver: ' + current.route.displayName +
-    '. ' + el('downDistance').textContent + '. ' + positionText + '. ' + el('playSummary').textContent + ' All 22 players shown.' + (scenario ? ' Dotted paths are straight-motion scenarios at ' + flightHorizon.toFixed(1) + ' seconds after throw, not recorded landing positions. Scenario ball to receiver gap ' + scenario.gap.toFixed(1) + ' yards.' : ''));
+    '. ' + el('downDistance').textContent + '. ' + positionText + '. ' + el('playSummary').textContent + ' All 22 players shown.' + (scenario ? ' Dotted paths are straight-motion projections at ' + flightHorizon.toFixed(1) + ' seconds after throw, not recorded landing positions. Projected ball to receiver gap ' + scenario.gap.toFixed(1) + ' yards.' : ''));
   canvas.dataset.lineToGain = gainLine ?? '';
   for (const [id, value] of Object.entries({ frameNumber: projected ? 'Projection' : f.interpolated ? 'Between ' + f.frame + ' and ' + (f.frame + 1) : f.frame, frameTime: displayTime.toFixed(1) + ' s',
     frameNearest: projected ? 'Not modeled' : nearest ? nearest.name : 'Unknown', frameGap: projected ? 'Not measured' : f.separation.toFixed(2) + ' yd',

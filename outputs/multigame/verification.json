@@ -163,7 +163,7 @@
   "image_freshness": {
     "checked_date": "2026-10-21",
     "capture_url": "http://127.0.0.1:8776/report.html (reviewed production candidate)",
-    "report_sha256": "d844bf45d5d58f8acd79667969b61b704bc23bcbafe63ab3740d968bd126bcef",
+    "report_sha256": "37e0b5d3ada08d6d7dd43bab929c0dbdc78f9c10a47b31bac7d174f06212478e",
     "refreshed_previews": [
       "report_ui_overview.png",
       "report_ui_review.png",
@@ -186,8 +186,8 @@
       "report_ui_live.png": "83156e1fa354ec0c0b69110d4e93f9d42da881fddd8efb50acf7e7111fb547b7",
       "report_ui_mobile.png": "105c21896f68247f90632a976d20943c1e74339d2e0798563702f75b3241eebe",
       "review_queue_preview.png": "961f7ab33552b6399f55db9741f315f2c3d9a96131f3cee89c3fab2a18659d82",
-      "report_ui_flight.png": "09ffd4d4fb3a558ba70607bdf7593e6c31b6cbca3767d7d17f10e7b2259de499",
-      "report_ui_flight_mobile.png": "1500528ee472619ff8f9b7ffb91a86ee5e26805b8a798945cf2f7ffde175c2ae"
+      "report_ui_flight.png": "b5d16795622b469c7d5281bc6bb4723d709b27a42d803e70a8c4ff76f2017963",
+      "report_ui_flight_mobile.png": "5fddae571b107641b7d6cfa5f7ffd2e807e46e62c004f6ec4a4840b17f4f7f62"
     },
     "emphasis_previews_refreshed": [
       "report_ui_overview.png",
@@ -196,7 +196,7 @@
       "report_ui_mobile.png"
     ],
     "queue_preview_refreshed": "Compact cards with team name, plain-language situation/result, game context and receiver buttons.",
-    "latest_refresh": "Continuous projected-track join: desktop and mobile flight previews refreshed; other previews retained from native-slider release."
+    "latest_refresh": "Projection terminology: desktop and mobile flight previews refreshed; other previews retained from native-slider release."
   },
   "receiver_movement_and_situation": {
     "replays_checked": 52,
@@ -388,6 +388,15 @@
       "No console errors",
       "Desktop and mobile computed projected border: 2px dotted rgb(230, 188, 112), track height 8px; native appearance auto. Mobile has no horizontal overflow. Albert Wilson recorded-only replay hides the projected rail and has no input mask.",
       "Desktop and mobile: projected left border and left corner radius are 0px; right corner remains 5px; top border remains 2px dotted gold; no mobile overflow."
+    ]
+  },
+  "projection_wording": {
+    "labels": "Ball projection, Receiver projection, Projected ball\u2013receiver gap; accessible text and current docs use projection.",
+    "playback": "Clicking After the throw starts at release with recorded positions (+0.2 s observed), automatically continues into projection and finishes at +2.0 s (5.3/5.3 s on Schwartz). No playback logic changed.",
+    "checks": [
+      "Nine projection tests passed",
+      "JavaScript syntax and diff whitespace checks passed",
+      "Mobile projection wording visible without horizontal overflow"
     ]
   }
 }
