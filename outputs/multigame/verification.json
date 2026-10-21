@@ -82,6 +82,33 @@
       "report_ui_review.png"
     ],
     "html_checks": "Unique IDs, valid anchors and companion links, no external assets or unreplaced template values.",
-    "console_errors": 0
+    "console_errors": 0,
+    "presentation": "Detailed primer and explanations are now available on demand; see review_flow for the current default layout."
+  },
+  "review_flow": {
+    "intended_review": "One-minute first skim, followed by a three-minute project review.",
+    "first_skim": "Question, intended audience, 33.1% finding with denominator and uncertainty, brief limitation, and direct A/B comparison.",
+    "deeper_review": "Interactive field and timeline, 50-route queue, cohort chart, sensitivity cards; expand terms, five rules, metadata, group table, sensitivity table and methods as needed.",
+    "visible_template_words_before_workbench": {
+      "before": 604,
+      "after": 143,
+      "reduction_percent": 76.3,
+      "scope": "Static text including navigation; closed details contents excluded."
+    },
+    "mobile": "Replay comes before queue in DOM and mobile layout; queue remains beside replay on desktop.",
+    "preserved": "All 10 analysis/replay/evidence exports byte-identical; 52 replays, 50 queue routes, 8 group rows, 9 sensitivity rows and all metadata retained.",
+    "browser_checks": [
+      "A/B switches metrics correctly",
+      "Play reaches release",
+      "Play context expands with full explanation",
+      "8 group rows and 9 sensitivity rows expand correctly",
+      "All five rules and football glossary expand",
+      "Mobile receiver filtering loads Allen Robinson and scrubs to 7.1 s",
+      "No document overflow after chart resize at 1440x900 and 390x844"
+    ],
+    "tests_passed": 19,
+    "ruff": "passed",
+    "javascript_syntax": "passed",
+    "html_checks": "Unique IDs, valid anchors and companion links, no remote assets."
   }
 }

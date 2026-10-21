@@ -45,9 +45,9 @@ Open [`outputs/multigame/report.html`](outputs/multigame/report.html) in your br
 
 ### 3. Review a route
 
-1. Read **Start here** for the question, audience and main finding; **Football basics** explains the terms and units.
-2. Open **Review routes** and compare the two Scott Miller examples.
-3. Filter the queue by receiver, alignment or coverage, then select a route.
+1. Read **Finding** for the question, audience and result; expand **Football terms & units** if needed.
+2. Choose **Compare two plays** to try the Scott Miller examples A and B.
+3. Open **More plays** to filter the queue by receiver, alignment or coverage, then select a route.
 4. Play or scrub through the field replay and separation timeline together.
 5. Check **Evidence** and **Method** for group results, sensitivity checks and exclusions.
 
