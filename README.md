@@ -22,11 +22,11 @@
 
 ## TL;DR
 
-NFL Buddy helps coaches and analysts prepare a focused review of failed third-down passes: see the yards needed and actual result, inspect a specific receiver-spacing moment, and save a question to check on game video.
+NFL Buddy helps coaches and analysts prepare a focused review of failed third-down passes: see the yards needed and actual result, inspect a specific receiver-spacing moment, and identify a question to check on game video.
 
 The report groups **50 distinct plays** with **92 receiver cues**. It shows quarter, clock, score, recorded play type and play-level hurry/hit context, then suggests whether to inspect pressure, thrower movement or receiver timing first.
 
-The output is a review note with the exact play, timestamp, observation and follow-up, saved on your device and exportable as CSV. It does not establish a missed pass or prescribe a coaching correction; the AI coaching-style review is not validation by a practicing coach.
+Copy the exact play, timestamp and measured observation to take into film review. It does not establish a missed pass or prescribe a coaching correction; the AI coaching-style review is not validation by a practicing coach.
 
 ![Football field with earlier-space and throw snapshots, plus an exact film-review cue](outputs/multigame/report_ui_overview.png)
 
@@ -49,15 +49,15 @@ Open [`outputs/multigame/report.html`](outputs/multigame/report.html) in your br
 
 ### 3. Review a route
 
-1. Read the yards needed, actual outcome, quarter, clock and score above the pitch.
+1. Read the sentences above the pitch: what the team needed to achieve and what actually happened. Quarter, clock and score give the game context.
 2. Inspect the **first sustained spacing** moment, then compare positions at the throw.
 3. Read **What to check first**: a recorded hurry/hit, thrower movement or receiver timing. Pressure flags apply to the whole play; their timing is unknown.
-4. Save **Needs game video**, **Timing worth checking** or **Insufficient evidence**, with your question. Export the saved notes as CSV; they stay on your device until exported.
+4. Use **Copy play and timestamp** to take the selected moment into film review.
 5. Choose another play in the chronological queue, then switch between its qualifying receivers. Filter by receiver, recorded play type or coverage.
 
 The old Part 03, all-downs statistics and Scott Miller comparison have been removed from the interface. Their original research artifacts remain available through labeled downloads.
 
-![Example review note marked insufficient evidence, with local save and CSV export](outputs/multigame/report_ui_notes.png)
+![Plain-language play situation and recorded result above the pitch](outputs/multigame/report_ui_review.png)
 
 ## Questions it answers
 
@@ -66,7 +66,7 @@ The old Part 03, all-downs statistics and Scott Miller comparison have been remo
 | What was the team trying to achieve, and what happened? | Down, yards needed, actual result, quarter, clock and score |
 | Where should I begin inspecting receiver spacing? | The first sustained interval at/beyond the required line, with all 22 players shown |
 | What should I check first? | A conditional review prompt using recorded dropback type and play-level hurry/hit flags |
-| How do I take this into review? | A saved disposition and note with the exact play, receiver, timestamp, measured spacing and recorded result |
+| How do I take this into review? | Copyable play details with the receiver, timestamp, measured spacing and recorded result |
 
 It cannot determine a safe passing lane, intended progression, hypothetical catch or why a play failed. A missing hurry flag does not prove a clean pocket. Catches short of the line followed by running gains are outside this screen.
 
@@ -84,7 +84,7 @@ Only incomplete passes, interceptions and completed passes short of the distance
 
 At **1.4 seconds**, Schwartz was **2.21 yards downfield** with **5.10 yards** to the nearest defender. The first qualifying interval spans 1.4–2.7 seconds; the throw is at 3.3 seconds. The play is recorded as a traditional dropback, with no hurry/hit flag recorded. That does not establish a clean pocket or an available throw.
 
-**Review question:** Was Schwartz's spacing usable from the thrower's position at 1.4 seconds? Check the throwing lane and intended read on game video, then record the follow-up or insufficient evidence.
+**Review question:** Was Schwartz's spacing usable from the thrower's position at 1.4 seconds? Check the throwing lane and intended read on game video, and decide whether the tracking cue is useful.
 
 ### Archived original research
 
@@ -98,9 +98,9 @@ The all-downs spacing-history study has a different question and cohort: 3,598 /
 | **Game situation** | See down-and-distance, a blue first-down or goal line, and the receiver's distance to it |
 | **Recorded outcome** | See incomplete, completed short or intercepted, independently of the pre-throw animation |
 | **Playback controls** | Play, pause and scrub from play start to the throw; a clear end label explains that ball flight is not shown |
-| **Field views** | Switch between Fit play and Full field with equal yard scales |
+| **Field views** | Switch between Zoom to players and Show whole field with equal yard scales |
 | **Play-based queue** | Browse 50 sampled plays, switch between qualifying receivers, and filter recorded play type |
-| **Review notes** | Save, remove and export a follow-up per receiver/play on your device |
+| **Copy play details** | Copy the selected play, receiver, timestamp, measured spacing and recorded result |
 | **Offline use and exports** | Explore embedded charts and replays, or use the companion CSV and PNG files |
 
 ## Data and scope

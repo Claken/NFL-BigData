@@ -45,12 +45,9 @@ unknown rather than becoming zero. Flags apply somewhere during the play; pressu
 timing is unavailable. Traditional dropbacks and missing flags do not prove a clean pocket.
 Review focus (pressure / movement / timing) is a conditional inspection prompt.
 
-Review notes use browser localStorage under a versioned dataset-specific key, keyed by
-selected receiver/play. Saving retains a follow-up and free text, not a validated mistake.
-Notes can be removed or exported as CSV with situation, outcome, timestamp and measured
-observation. A storage failure retains notes in memory with an explicit session-only
-notice. Notes are not sent to a server. CSV text is quoted and formula-prefixed input is
-neutralized. Copying a cue includes the current disposition and note.
+The pitch explains the team's objective and recorded outcome in complete sentences.
+The copy action includes the play, receiver, timestamp, situation, measured observation
+and review question. There is no review-note form, browser note storage or note export.
 
 Part 03 has been removed from the primary UI, including its all-downs statistic, scatter,
 sensitivity tables and unrelated matched examples. Original research remains in labeled

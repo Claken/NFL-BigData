@@ -12,93 +12,38 @@ let index = 0, timer = null, current = null, loadVersion = 0, loading = false, f
 const fieldBounds = new Map();
 
 const contextLabels = { traditional: 'Traditional dropback', scramble: 'Scramble-related', rollout: 'Designed rollout', other: 'Other / unknown type' };
-const followUpLabels = { needs_film: 'Needs game video', timing_to_check: 'Timing worth checking', insufficient_evidence: 'Insufficient evidence' };
-const notesKey = 'nflbuddy-review-v3:' + model.sourceCommit;
-let reviewNotes = {};
-try {
-  const saved = JSON.parse(localStorage.getItem(notesKey) || '{}');
-  if (saved && typeof saved === 'object' && !Array.isArray(saved)) reviewNotes = saved;
-} catch { /* Notes remain usable in memory if browser storage is unavailable. */ }
-
-function validSavedNotes() {
-  return Object.entries(reviewNotes).filter(([id, n]) => replays.has(id) && n &&
-    typeof n.note === 'string' && Object.hasOwn(followUpLabels, n.disposition));
-}
-function updateNoteCount() {
-  const count = validSavedNotes().length;
-  el('savedNoteCount').textContent = count + ' saved';
-  el('exportReviewNotes').disabled = count === 0;
-  el('deleteReviewNote').disabled = !current || !validSavedNotes().some(([id]) => id === current.id);
-}
-function appendNoteToCue() {
-  if (!current) return;
-  el('reviewCueText').value = el('reviewCueText').dataset.baseCue +
-    '\nFollow-up: ' + followUpLabels[el('reviewDisposition').value] +
-    (el('reviewNote').value.trim() ? '\nReviewer note: ' + el('reviewNote').value.trim() : '');
-}
-function loadReviewNote() {
-  const saved = reviewNotes[current.id];
-  el('reviewDisposition').value = Object.hasOwn(followUpLabels, saved?.disposition) ? saved.disposition : 'needs_film';
-  el('reviewNote').value = typeof saved?.note === 'string' ? saved.note.slice(0, 1200) : '';
-  el('reviewNoteStatus').textContent = saved ? 'Saved note loaded for this receiver and play.' : 'Choose a follow-up and save it with the play and timestamp.';
-  appendNoteToCue(); updateNoteCount();
-}
-el('reviewNoteForm').onsubmit = event => {
-  event.preventDefault();
-  if (!current) return;
-  reviewNotes[current.id] = { disposition: el('reviewDisposition').value, note: el('reviewNote').value.trim(), savedAt: new Date().toISOString() };
-  let persistent = true;
-  try { localStorage.setItem(notesKey, JSON.stringify(reviewNotes)); } catch { persistent = false; }
-  updateNoteCount(); appendNoteToCue();
-  el('reviewNoteStatus').textContent = persistent ? 'Saved on this device. Export CSV to take it into review.' :
-    'Kept for this session only; browser storage is unavailable. Export CSV before closing.';
+const teamNames = {
+  ARI: 'Arizona Cardinals', ATL: 'Atlanta Falcons', BAL: 'Baltimore Ravens', BUF: 'Buffalo Bills',
+  CAR: 'Carolina Panthers', CHI: 'Chicago Bears', CIN: 'Cincinnati Bengals', CLE: 'Cleveland Browns',
+  DAL: 'Dallas Cowboys', DEN: 'Denver Broncos', DET: 'Detroit Lions', GB: 'Green Bay Packers',
+  HOU: 'Houston Texans', IND: 'Indianapolis Colts', JAX: 'Jacksonville Jaguars', KC: 'Kansas City Chiefs',
+  LA: 'Los Angeles Rams', LAR: 'Los Angeles Rams', LAC: 'Los Angeles Chargers', LV: 'Las Vegas Raiders',
+  MIA: 'Miami Dolphins', MIN: 'Minnesota Vikings', NE: 'New England Patriots', NO: 'New Orleans Saints',
+  NYG: 'New York Giants', NYJ: 'New York Jets', PHI: 'Philadelphia Eagles', PIT: 'Pittsburgh Steelers',
+  SEA: 'Seattle Seahawks', SF: 'San Francisco 49ers', TB: 'Tampa Bay Buccaneers', TEN: 'Tennessee Titans',
+  WAS: 'Washington Football Team'
 };
-el('deleteReviewNote').onclick = () => {
-  if (!current) return;
-  delete reviewNotes[current.id];
-  let persistent = true;
-  try { localStorage.setItem(notesKey, JSON.stringify(reviewNotes)); } catch { persistent = false; }
-  loadReviewNote();
-  el('reviewNoteStatus').textContent = persistent ? 'Saved note removed from this device.' :
-    'Note removed for this session; browser storage is unavailable.';
-};
-for (const id of ['reviewDisposition', 'reviewNote']) el(id).oninput = () => {
-  appendNoteToCue(); el('reviewNoteStatus').textContent = 'Unsaved changes.';
-};
-function csvCell(value) {
-  let text = String(value ?? '');
-  if (/^[=+@-]/.test(text)) text = "'" + text;
-  return '"' + text.replaceAll('"', '""') + '"';
+function plainPlaySummary(replay) {
+  const focus = replay.third_down_review, distance = focus.yards_to_go, gain = focus.outcome.yards_gained;
+  const yards = number => number + (number === 1 ? ' yard' : ' yards');
+  const team = teamNames[replay.route.possessionTeam];
+  const subject = team ? 'The ' + team : 'The attacking team';
+  const objective = subject + ' needed to move the ball ' + yards(distance) + ' on their third attempt to earn another four attempts.';
+  let outcome;
+  if (replay.route.passResult === 'IN') outcome = 'An opponent caught the pass instead, so the other team took possession of the ball.';
+  else if (replay.route.passResult === 'I') outcome = 'The pass was not caught, so they gained no yards and did not earn those extra attempts.';
+  else if (gain < 0) outcome = 'The pass was caught, but the team lost ' + yards(Math.abs(gain)) + ', leaving them ' + yards(distance - gain) + ' short of the target.';
+  else if (gain === 0) outcome = 'The pass was caught, but the team gained no yards and remained ' + yards(distance) + ' short of the target.';
+  else outcome = 'The pass was caught, but the team gained only ' + yards(gain) + ', leaving them ' + yards(distance - gain) + ' short of the target.';
+  return objective + ' ' + outcome;
 }
-el('exportReviewNotes').onclick = () => {
-  const rows = [['dataset_commit', 'game_id', 'play_id', 'receiver_id', 'receiver', 'quarter', 'game_clock',
-    'away_team', 'away_score', 'home_team', 'home_score', 'down', 'yards_needed',
-    'recorded_result', 'review_seconds', 'nearest_gap_yards', 'receiver_downfield_yards', 'dropback_type',
-    'recorded_pressure_context', 'follow_up', 'reviewer_note']];
-  for (const [id, note] of validSavedNotes()) {
-    const replay = replays.get(id), r = replay.route, focus = replay.third_down_review;
-    const f = replay.frames[replay.review_cue.review_frame_index], c = focus.context;
-    rows.push([model.sourceCommit, r.gameId, r.playId, r.nflId, r.displayName, c.quarter, c.game_clock,
-      c.away_team, c.away_score, c.home_team, c.home_score, 3, focus.yards_to_go,
-      focus.outcome.label + ' / ' + focus.outcome.detail, f.t, f.separation, f.downfield, c.dropback_type,
-      c.pressure_note + ' (play-level; timing unavailable)', followUpLabels[note.disposition], note.note]);
-  }
-  const url = URL.createObjectURL(new Blob(['\ufeff' + rows.map(row => row.map(csvCell).join(',')).join('\r\n')], { type: 'text/csv;charset=utf-8' }));
-  const link = document.createElement('a'); link.href = url; link.download = 'NFL-Buddy-review-notes.csv'; link.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-  el('reviewNoteStatus').textContent = 'Exported ' + (rows.length - 1) + ' saved review notes.';
-};
 
 function setStory(replay) {
   const cue = replay.review_cue, r = replay.route, focus = replay.third_down_review, c = focus.context;
   const earlier = replay.frames[cue.earlier_frame_index], thrown = replay.frames[cue.throw_frame_index];
   const review = replay.frames[cue.review_frame_index];
-  el('pitchDown').textContent = el('downDistance').textContent + ' · third attempt of four';
-  el('pitchObjective').textContent = 'Need ' + replay.situation.yards_to_go + ' yards';
-  el('pitchObjectiveHelp').textContent = 'to earn a new set of four attempts';
+  el('playSummary').textContent = plainPlaySummary(replay);
   el('timelineWindowLabel').textContent = 'First beyond-line interval';
-  el('pitchOutcome').textContent = focus.outcome.label;
-  el('pitchOutcomeDetail').textContent = focus.outcome.detail;
   const surname = r.displayName.split(' ').slice(-1)[0];
   const question = 'At ' + review.t.toFixed(1) + ' s, was a throw toward ' + surname + ' realistic?';
   el('pitchQuestion').textContent = question;
@@ -121,15 +66,14 @@ function setStory(replay) {
   el('reviewQuestion').textContent = instruction;
   el('reviewReason').textContent = reason;
   el('reviewMoment').textContent = '↶ Inspect the marked moment';
-  el('reviewCueText').dataset.baseCue = r.displayName + ' · ' + r.possessionTeam + ' · Week ' + r.week +
+  el('reviewCueText').value = r.displayName + ' · ' + r.possessionTeam + ' · Week ' + r.week +
     '\nGame ' + r.gameId + ' · Play ' + r.playId + '\n' + el('downDistance').textContent +
     ' · Q' + c.quarter + ' ' + c.game_clock + ' · ' + c.away_team + ' ' + c.away_score + '–' + c.home_score + ' ' + c.home_team +
-    '\nRecorded result: ' + focus.outcome.label + '. ' + focus.outcome.detail + '.' +
+    '\n' + plainPlaySummary(replay) +
     '\nRecorded context: ' + c.dropback_type + '; ' + c.pressure_note + ' (play-level, timing unavailable).' +
     '\nInspect ' + review.t.toFixed(1) + ' s after snap: ' + review.downfield.toFixed(2) + ' yd downfield, nearest gap ' + review.separation.toFixed(2) + ' yd. Throw at ' + thrown.t.toFixed(1) + ' s.' +
     '\n' + question + ' ' + instruction +
     '\nSelected receiver is not necessarily the target. Tracking alone cannot prove an available or missed pass.';
-  loadReviewNote();
   el('cueStatus').textContent = '';
 }
 
@@ -143,11 +87,11 @@ el('reviewMoment').onclick = () => jumpToFrame(current.review_cue.review_frame_i
 el('copyCue').onclick = async () => {
   try {
     await navigator.clipboard.writeText(el('reviewCueText').value);
-    el('cueStatus').textContent = 'Film-review cue copied.';
+    el('cueStatus').textContent = 'Play and timestamp copied.';
   } catch {
     el('reviewCueText').closest('details').open = true;
     el('reviewCueText').focus(); el('reviewCueText').select();
-    el('cueStatus').textContent = 'Select and copy the cue below.';
+    el('cueStatus').textContent = 'Select and copy the play details below.';
   }
 };
 
@@ -354,7 +298,7 @@ function draw() {
   }
   ctx.restore();
   ctx.save(); ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center';
-  for (const [worldX, label, color] of [[current.line_of_scrimmage, 'START', '#e9e6cb'], [gainLine, 'NEED ' + current.situation.yards_to_go + ' YD →', '#78cfff']]) {
+  for (const [worldX, label, color] of [[current.line_of_scrimmage, 'START', '#e9e6cb'], [gainLine, 'TARGET: ' + current.situation.yards_to_go + ' YD', '#78cfff']]) {
     if (worldX == null) continue;
     const [px] = xy({ x: worldX, y: 0 }), labelWidth = ctx.measureText(label).width + 12;
     const x = Math.max(labelWidth / 2 + 2, Math.min(W - labelWidth / 2 - 2, px));
@@ -401,7 +345,7 @@ function draw() {
   canvas.setAttribute('aria-label', current.route.displayName + ' at ' + f.t.toFixed(1) + ' seconds since snap; nearest defender ' +
     (nearest ? nearest.name : 'unknown') + ', ' + f.separation.toFixed(2) + ' yards away. Thrower: ' +
     (current.thrower ? current.thrower.name : 'unknown') + '. Selected receiver: ' + current.route.displayName +
-    '. ' + el('downDistance').textContent + '. ' + positionText + '. Recorded result: ' + el('pitchOutcome').textContent + '. ' + el('pitchOutcomeDetail').textContent + '. All 22 players shown.');
+    '. ' + el('downDistance').textContent + '. ' + positionText + '. ' + el('playSummary').textContent + ' All 22 players shown.');
   canvas.dataset.lineToGain = gainLine ?? '';
   for (const [id, value] of Object.entries({ frameNumber: f.frame, frameTime: f.t.toFixed(1) + ' s',
     frameNearest: nearest ? nearest.name : 'Unknown', frameGap: f.separation.toFixed(2) + ' yd',
@@ -418,11 +362,11 @@ async function loadReplay(id, scroll = false) {
   for (const control of ['play', 'reset', 'scrub']) el(control).disabled = true;
   current = replays.get(id); index = current.review_cue.earlier_frame_index;
   const r = current.route;
-  const situation = current.situation, downName = { 1: '1st', 2: '2nd', 3: '3rd', 4: '4th' }[situation.down];
+  const situation = current.situation, downName = { 1: 'First', 2: 'Second', 3: 'Third', 4: 'Fourth' }[situation.down];
   const distance = situation.yards_to_go;
-  el('downDistance').textContent = (downName || 'Down unknown') + (distance == null ? '' : ' & ' +
-    (situation.goal_to_go ? 'Goal' : String(distance)));
-  el('lineToGainLabel').textContent = situation.goal_to_go ? 'Goal line' : 'First-down line';
+  el('downDistance').textContent = (downName ? downName + ' attempt' : 'Attempt unknown') + (distance == null ? '' :
+    situation.goal_to_go ? '; reach the goal line' : ', ' + distance + (distance === 1 ? ' yard needed' : ' yards needed'));
+  el('lineToGainLabel').textContent = situation.goal_to_go ? 'Blue line marks the goal' : 'Blue line marks the yards needed';
   el('lineToGainKey').hidden = situation.line_to_gain == null;
   const c = current.third_down_review.context;
   el('storyPlayMeta').textContent = 'Week ' + r.week + ' · Q' + c.quarter + ' ' + c.game_clock + ' · ' + c.away_team + ' ' + c.away_score + '–' + c.home_score + ' ' + c.home_team;

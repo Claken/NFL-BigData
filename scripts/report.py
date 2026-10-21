@@ -339,10 +339,10 @@ These are play-level flags, not pressure timing. A traditional dropback or absen
 flags does not establish a clean pocket. Review focus (pressure, movement or timing)
 is a conditional investigation prompt, not a diagnosis of failure.
 
-Use third_down_review_queue.csv for the current sample and context. The browser lets
-reviewers save a follow-up disposition and note per selected receiver/play on their
-device, and export saved notes as CSV. Notes retain the exact timestamp, situation,
-recorded outcome and measured observation. Saving a note does not validate a missed pass.
+Use third_down_review_queue.csv for the current sample and context. The pitch explains
+what the team needed and what happened in complete sentences. Reviewers can copy the
+exact play, timestamp, situation, recorded outcome and measured observation into their
+film-review workflow. This does not validate a missed pass.
 
 An AI coaching-style reviewer challenged this workflow and recommended removing the
 old Part 03 from the primary UI. That review is not independent validation by a practicing

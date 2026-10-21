@@ -15,7 +15,7 @@
 <main>
 <header id="overview" class="hero">
   <div><p class="eyebrow">For coaches &amp; analysts · a film-review starting point</p><h1>A failed play. <em>A focused review.</em></h1></div>
-  <p class="hero-intro">Failed third downs, ready for film review. <br>Find a moment to inspect. Save a precise review question.</p>
+  <p class="hero-intro">Failed third downs, ready for film review. <br>See what happened, then inspect the positions before the throw.</p>
 </header>
 <section id="replaySection" class="replay-panel" tabindex="-1" aria-labelledby="selectedName">
   <div class="replay-header">
@@ -27,11 +27,9 @@
     <div class="pitch-column">
       <div class="mobile-moments" aria-label="Compare moments"><button id="mobileEarlier" aria-pressed="true">01 · Earlier space</button><button id="mobileThrow" aria-pressed="false">02 · At the throw</button></div>
       <div class="field-surface">
-        <div class="field-toolbar"><span><i class="live-dot"></i>Recorded tracking <span class="field-direction">· offense →</span></span><div class="view-switch" aria-label="Field view"><button id="fitView" aria-pressed="true">Fit play</button><button id="fullView" aria-pressed="false">Full field</button></div></div>
-        <div class="pitch-scoreboard" aria-label="Situation and recorded outcome">
-          <div class="pitch-situation"><span id="pitchDown"></span><b id="pitchObjective"></b><small id="pitchObjectiveHelp">to earn a new set of four attempts</small></div>
-          <span class="result-arrow" aria-hidden="true">→</span>
-          <div class="pitch-result"><span>Recorded play result · after the throw</span><b id="pitchOutcome"></b><small id="pitchOutcomeDetail"></small></div>
+        <div class="field-toolbar"><span><i class="live-dot"></i>The dots replay recorded player positions, with the attacking team moving to the right.</span><div class="view-switch" aria-label="Field view"><button id="fitView" aria-pressed="true">Zoom to players</button><button id="fullView" aria-pressed="false">Show whole field</button></div></div>
+        <div class="pitch-scoreboard" aria-label="What the team needed and what happened">
+          <p id="playSummary" class="play-summary"></p>
         </div>
         <div id="playConditions" class="play-conditions" aria-label="Recorded play context"></div>
         <div class="pitch-question"><span class="eyebrow">Film-review question</span><p id="pitchQuestion"></p></div>
@@ -49,22 +47,13 @@
         <div class="beat-connector" aria-hidden="true"></div>
         <button id="storyThrow" class="story-beat" aria-pressed="false"><span class="beat-number">02</span><span><span class="beat-label">At the throw</span><b id="releaseMetric"></b><span id="throwTime" class="beat-time"></span></span><span class="beat-arrow" aria-hidden="true">→</span></button>
       </div>
-      <div class="review-action"><p class="eyebrow">Next action</p><h4 id="reviewActionTitle"></h4><p id="reviewQuestion"></p><p id="reviewReason" class="review-reason"></p><button id="reviewMoment" class="primary"></button><button id="copyCue" class="text-button">Copy film-review cue ↗</button><p id="cueStatus" role="status" aria-live="polite"></p></div>
+      <div class="review-action"><p class="eyebrow">Next action</p><h4 id="reviewActionTitle"></h4><p id="reviewQuestion"></p><p id="reviewReason" class="review-reason"></p><button id="reviewMoment" class="primary"></button><button id="copyCue" class="text-button">Copy play and timestamp</button><p id="cueStatus" role="status" aria-live="polite"></p></div>
       <p class="story-limit">The selected receiver may not be the pass target. Check the passing lane on film.</p>
-      <details class="cue-details"><summary>Game, play &amp; review note</summary><textarea id="reviewCueText" readonly aria-label="Film-review cue" rows="6"></textarea></details>
+      <details class="cue-details"><summary>Play details and timestamp</summary><textarea id="reviewCueText" readonly aria-label="Play details and timestamp" rows="6"></textarea></details>
     </aside>
   </div>
   <div class="timeline-heading"><h3>Gap to the nearest defender</h3><span><i class="window-key"></i> <span id="timelineWindowLabel">Beyond-line window</span> <span id="historyMetric"></span> <i class="excluded-key"></i> Excluded time</span></div>
   <div id="timeline" class="chart timeline-chart" aria-label="Nearest-defender separation timeline"></div>
-  <section class="review-note-panel" aria-labelledby="reviewNoteHeading">
-    <div><p class="eyebrow">Leave with a question, not a verdict</p><h3 id="reviewNoteHeading">Save your review note</h3><p class="sub">A follow-up question for this receiver on this play. Saving it does not label a quarterback mistake.</p></div>
-    <form id="reviewNoteForm">
-      <label for="reviewDisposition">Follow-up</label><select id="reviewDisposition"><option value="needs_film">Needs game video</option><option value="timing_to_check">Timing worth checking</option><option value="insufficient_evidence">Insufficient evidence</option></select>
-      <label for="reviewNote">What should be checked?</label><textarea id="reviewNote" rows="2" maxlength="1200" placeholder="For example: check whether the thrower could deliver a pass at the marked moment."></textarea>
-      <div class="note-actions"><button id="saveReviewNote" class="primary" type="submit">Save note on this device</button><button id="deleteReviewNote" type="button" disabled>Remove saved note</button><button id="exportReviewNotes" type="button">Export saved notes · CSV</button><span id="savedNoteCount"></span></div>
-      <p id="reviewNoteStatus" role="status" aria-live="polite"></p>
-    </form>
-  </section>
   <p class="third-down-basics"><b>Why third down?</b> A team gets four attempts to gain the required yards. After failing on the third, it often kicks the ball away or risks its last attempt. This review asks whether an earlier pass could have kept the drive going.</p>
   <details class="replay-context"><summary>Source play &amp; tracking details</summary>
     <div class="detail-body">
@@ -140,7 +129,7 @@
   <p><b>Screening rule:</b> nearest defender &gt;2 yards away for ≥0.5 seconds while at/beyond the first-down line and ≥2 yards downfield, from 1 second after the snap through 0.3 seconds before the throw. The first qualifying interval supplies the review timestamp; these are screening choices, not a definition of a safe pass.</p>
   <p><b>Limits:</b> completed, incomplete and intercepted passes only; sacks and rushing plays are outside this review. The selected receiver may not be the target. Positions do not establish a clear throwing lane, intended read, catch or conversion. Recorded hurry/hit flags apply to the whole play; their timing is unavailable. No flag does not prove a clean pocket. Catches short of the line followed by running gains are outside this screen. Penalties, fumbles and goal-to-go plays are excluded. No practicing-coach validation has been performed.</p>
   <div class="download-links"><a href="third_down_review_queue.csv">Current review sample · CSV</a><a href="findings.md">Current method &amp; archived research</a><a href="analysis.json">Original all-downs study · JSON</a><a href="film_review_queue.csv">Original study queue · CSV</a><a href="matched_pair.png">Original study illustration · PNG</a><a href="routes.csv">All eligible route metrics · CSV</a></div>
-  <p class="provenance">2021 NFL data · Weeks 1–8 · offline replay · review notes stay on this device<br>Dataset source: <span id="commit"></span></p>
+  <p class="provenance">2021 NFL data · Weeks 1–8 · offline replay<br>Dataset source: <span id="commit"></span></p>
 </footer>
 <p class="page-signoff">NFL BUDDY / Find the moment. Review the football.</p>
 </main>
