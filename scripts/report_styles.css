@@ -125,6 +125,8 @@ main { max-width: 1440px; margin: auto; padding: 26px 28px 48px; }
 .replay-context h3 { margin-top: 18px; }
 .route-explanation { font-size: 16px; line-height: 1.7; color: #365262; margin: 16px 0; }
 .replay-help { font-size: 14px; color: #365262; margin-top: 10px; }
+.replay-boundary { padding: 10px 12px; margin-top: 12px; border-left: 3px solid #8a9da9; border-radius: 4px; background: #f0f4f6; color: #365262; font-size: 14px; line-height: 1.5; }
+.replay-boundary[data-phase="throw"] { background: #faf3e5; border-color: #a27627; color: #654b20; font-weight: 650; }
 .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 14px 0; gap: 8px; }
 .metric { padding: 10px 12px; border: 1px solid #dfe7eb; border-radius: 8px; background: #f6f8fa; }
 .metric:first-child, .metric:nth-child(2) { background: #eef5f8; border-color: #d1e3ec; }

@@ -33,6 +33,9 @@ tracking, and highlighted in purple; the selected receiver is green. Both have n
 jersey numbers above the replay and labels on the field. Missing or ambiguous passer
 identity is shown as unidentified, never inferred from position or ball proximity.
 The selected receiver is not necessarily the pass's intended target.
+Replays stop at the recorded release. The brown dot is the ball; post-throw flight is not
+shown. The playback notice changes to “Throw — replay ends” at the final frame, and the
+Replay button starts again from the beginning.
 Complete play descriptions, frame details, eligibility, timing and exclusions remain
 available in labeled expandable sections; numeric evidence tables retain every result.
 It has no external asset tags. Linked findings, CSV and PNG

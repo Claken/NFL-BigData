@@ -125,5 +125,20 @@
       "Recorded player IDs update with selected replay"
     ],
     "independent_distance_checks": 156
+  },
+  "replay_endpoint": {
+    "scope": "Play start through recorded throw; no post-throw ball flight.",
+    "before_throw": "Play start \u2192 throw only. Brown dot = ball; flight is not shown.",
+    "at_throw": "Throw \u2014 replay ends. Brown dot = ball; flight is not shown.",
+    "controls": "Final frame changes Play to Replay; Replay resets the notice and clock immediately. Slider announces time and endpoint.",
+    "browser_checks": [
+      "End sets final-frame message and Replay label",
+      "Home restores pre-throw message and Play label",
+      "Replay restarts immediately at 0.0 s",
+      "Playback naturally stops at 2.7 s with endpoint message",
+      "Mobile 390x844 notice readable without horizontal overflow"
+    ],
+    "data_integrity": "Tracking, replay payload, route metrics, analysis and independent distance checks byte-identical.",
+    "tests_passed": 24
   }
 }

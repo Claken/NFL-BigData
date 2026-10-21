@@ -98,7 +98,7 @@ Their release spacing is similar, but their earlier histories differ. The pair w
 | Capability | What you can do |
 | --- | --- |
 | **Synchronized replay** | Follow all 22 players, with the named thrower in purple and selected receiver in green |
-| **Playback controls** | Play, pause and scrub through each packaged example |
+| **Playback controls** | Play, pause and scrub from play start to the throw; a clear end label explains that ball flight is not shown |
 | **Field views** | Switch between Fit play and Full field with equal yard scales |
 | **Review queue** | Filter 50 selected routes by receiver, alignment and coverage |
 | **Context and evidence** | Inspect play descriptions, window times, release spacing and group results |

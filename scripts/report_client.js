@@ -192,6 +192,17 @@ function draw() {
   canvas.dataset.receiverId = current.route.nflId;
   el('scrub').value = index;
   el('clock').value = f.t.toFixed(1) + ' / ' + current.route.observed_seconds.toFixed(1) + ' s';
+  const atThrow = index === current.frames.length - 1;
+  const playbackStatus = (atThrow ? 'Throw — replay ends.' : 'Play start → throw only.') +
+    ' Brown dot = ball; flight is not shown.';
+  if (el('playbackStatus').textContent !== playbackStatus) el('playbackStatus').textContent = playbackStatus;
+  el('playbackStatus').dataset.phase = atThrow ? 'throw' : 'before';
+  el('scrub').setAttribute('aria-valuetext', f.t.toFixed(1) + ' seconds since play start; ' +
+    (atThrow ? 'throw, replay ends' : 'before the throw'));
+  if (!timer) {
+    el('play').textContent = atThrow ? 'Replay' : 'Play';
+    el('play').setAttribute('aria-label', atThrow ? 'Replay from play start' : 'Play replay');
+  }
   const valid = f.t >= 1 && f.t <= current.route.observed_seconds - .3 + 1e-8 && f.downfield >= 2;
   el('nearestReadout').textContent = f.separation.toFixed(2) + ' yd to closest opponent: ' + (nearest ? nearest.name : 'unknown');
   el('gateStatus').textContent = !valid ? 'This moment is not counted' :
@@ -259,7 +270,7 @@ async function loadReplay(id, scroll = false) {
       marker: { size: 4 }, line: { color: '#1769a6' }, name: 'Nearest-defender spacing',
       hovertemplate: '%{x:.1f} s · %{y:.2f} yd<extra></extra>' },
     { x: [r.observed_seconds], y: [r.release_separation], mode: 'markers',
-      marker: { color: '#c44a36', size: 10 }, name: 'Release' }
+      marker: { color: '#c44a36', size: 10 }, name: 'Throw · replay ends' }
     ], { margin: { l: 63, r: 16, t: 22, b: 55 }, font: chartFont,
     xaxis: { title: { text: 'Seconds since the play starts', font: { size: 14 } }, range: [0, r.observed_seconds + .1],
       tickfont: { size: 13 }, gridcolor: '#e5ecef', zeroline: false, automargin: true },
@@ -303,6 +314,7 @@ el('play').onclick = () => {
     if (index >= current.frames.length - 1) { index = current.frames.length - 1; stop(); }
     draw();
   }, 100);
+  draw();
 };
 
 const ref = examples[0].route;

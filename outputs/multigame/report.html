@@ -131,6 +131,8 @@ main { max-width: 1440px; margin: auto; padding: 26px 28px 48px; }
 .replay-context h3 { margin-top: 18px; }
 .route-explanation { font-size: 16px; line-height: 1.7; color: #365262; margin: 16px 0; }
 .replay-help { font-size: 14px; color: #365262; margin-top: 10px; }
+.replay-boundary { padding: 10px 12px; margin-top: 12px; border-left: 3px solid #8a9da9; border-radius: 4px; background: #f0f4f6; color: #365262; font-size: 14px; line-height: 1.5; }
+.replay-boundary[data-phase="throw"] { background: #faf3e5; border-color: #a27627; color: #654b20; font-weight: 650; }
 .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 14px 0; gap: 8px; }
 .metric { padding: 10px 12px; border: 1px solid #dfe7eb; border-radius: 8px; background: #f6f8fa; }
 .metric:first-child, .metric:nth-child(2) { background: #eef5f8; border-color: #d1e3ec; }
@@ -315,7 +317,8 @@ details p { font-size: 15px; color: #49616f; line-height: 1.7; max-width: 960px;
   </div>
   <p id="loadingStatus" class="loading" role="status">Preparing replays…</p>
   <p class="replay-help">Purple = thrower. Green = selected receiver. Gold line = gap to the nearest opponent.</p>
-  <div class="controls"><button id="play" class="primary" aria-label="Play replay" disabled>Play</button><button id="reset" disabled>Restart</button><input id="scrub" type="range" min="0" value="0" step="1" aria-label="Replay frame" disabled><output id="clock" aria-label="Replay time"></output></div>
+  <p id="playbackStatus" class="replay-boundary" role="status" aria-live="polite">Play start → throw only. Brown dot = ball; flight is not shown.</p>
+  <div class="controls"><button id="play" class="primary" aria-label="Play replay" disabled>Play</button><button id="reset" disabled>Restart</button><input id="scrub" type="range" min="0" value="0" step="1" aria-label="Replay frame" aria-describedby="playbackStatus" disabled><output id="clock" aria-label="Replay time"></output></div>
   <div class="field-surface">
     <div class="field-toolbar"><span>Team with the ball moves right →</span><div class="view-switch" aria-label="Field view"><button id="fitView" aria-pressed="true">Fit play</button><button id="fullView" aria-pressed="false">Full field</button></div></div>
     <canvas id="field" width="1120" height="533" role="img" aria-label="NFL field replay with receiver and nearest defender highlighted"></canvas>
@@ -324,7 +327,7 @@ details p { font-size: 15px; color: #49616f; line-height: 1.7; max-width: 960px;
   <div class="legend"><span><i class="dot" style="background:#7351a3"></i>Thrower</span><span><i class="dot" style="background:#177449"></i>Selected receiver</span><span><i class="dot" style="background:#1769a6"></i>Teammates</span><span><i class="dot" style="background:#c65332"></i>Opponents</span><span><i class="dot" style="background:#704d22"></i>Ball</span></div>
   <div class="timeline-heading"><h3>Gap to the closest opponent</h3><p class="sub">Higher blue line = more space. Black cursor = the moment shown above.</p></div>
   <div id="timeline" class="chart" aria-label="Nearest-defender separation timeline"></div>
-  <p class="chart-note"><b>Green:</b> qualifying earlier gap. <b>Grey:</b> excluded time. <b>Red point:</b> throw.</p>
+  <p class="chart-note"><b>Green:</b> qualifying earlier gap. <b>Grey:</b> excluded time. <b>Red point:</b> throw, where the replay ends.</p>
   <details class="replay-context"><summary>Play context, timing &amp; matching</summary>
     <p id="selectedContext"></p><p id="throwerSource" class="sub"></p><p>The selected receiver is the route being studied, not necessarily the intended target of the pass.</p><p id="routeOrigin" class="sub"></p><p id="routeExplanation" class="route-explanation"></p>
     <div class="metrics secondary-metrics">
@@ -4205,6 +4208,17 @@ function draw() {
   canvas.dataset.receiverId = current.route.nflId;
   el('scrub').value = index;
   el('clock').value = f.t.toFixed(1) + ' / ' + current.route.observed_seconds.toFixed(1) + ' s';
+  const atThrow = index === current.frames.length - 1;
+  const playbackStatus = (atThrow ? 'Throw — replay ends.' : 'Play start → throw only.') +
+    ' Brown dot = ball; flight is not shown.';
+  if (el('playbackStatus').textContent !== playbackStatus) el('playbackStatus').textContent = playbackStatus;
+  el('playbackStatus').dataset.phase = atThrow ? 'throw' : 'before';
+  el('scrub').setAttribute('aria-valuetext', f.t.toFixed(1) + ' seconds since play start; ' +
+    (atThrow ? 'throw, replay ends' : 'before the throw'));
+  if (!timer) {
+    el('play').textContent = atThrow ? 'Replay' : 'Play';
+    el('play').setAttribute('aria-label', atThrow ? 'Replay from play start' : 'Play replay');
+  }
   const valid = f.t >= 1 && f.t <= current.route.observed_seconds - .3 + 1e-8 && f.downfield >= 2;
   el('nearestReadout').textContent = f.separation.toFixed(2) + ' yd to closest opponent: ' + (nearest ? nearest.name : 'unknown');
   el('gateStatus').textContent = !valid ? 'This moment is not counted' :
@@ -4272,7 +4286,7 @@ async function loadReplay(id, scroll = false) {
       marker: { size: 4 }, line: { color: '#1769a6' }, name: 'Nearest-defender spacing',
       hovertemplate: '%{x:.1f} s · %{y:.2f} yd<extra></extra>' },
     { x: [r.observed_seconds], y: [r.release_separation], mode: 'markers',
-      marker: { color: '#c44a36', size: 10 }, name: 'Release' }
+      marker: { color: '#c44a36', size: 10 }, name: 'Throw · replay ends' }
     ], { margin: { l: 63, r: 16, t: 22, b: 55 }, font: chartFont,
     xaxis: { title: { text: 'Seconds since the play starts', font: { size: 14 } }, range: [0, r.observed_seconds + .1],
       tickfont: { size: 13 }, gridcolor: '#e5ecef', zeroline: false, automargin: true },
@@ -4316,6 +4330,7 @@ el('play').onclick = () => {
     if (index >= current.frames.length - 1) { index = current.frames.length - 1; stop(); }
     draw();
   }, 100);
+  draw();
 };
 
 const ref = examples[0].route;
