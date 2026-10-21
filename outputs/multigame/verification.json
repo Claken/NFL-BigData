@@ -163,7 +163,7 @@
   "image_freshness": {
     "checked_date": "2026-10-21",
     "capture_url": "http://127.0.0.1:8776/report.html (reviewed production candidate)",
-    "report_sha256": "e912155dd855f2dd907c56961fc1db82a5e341c6813084537a48d2b2d8a0d063",
+    "report_sha256": "c86f1cb66766da6b8e47c25ce56b177e18e48009348ad593a4a668f04c6155f4",
     "refreshed_previews": [
       "report_ui_overview.png",
       "report_ui_review.png",
@@ -186,8 +186,8 @@
       "report_ui_live.png": "83156e1fa354ec0c0b69110d4e93f9d42da881fddd8efb50acf7e7111fb547b7",
       "report_ui_mobile.png": "105c21896f68247f90632a976d20943c1e74339d2e0798563702f75b3241eebe",
       "review_queue_preview.png": "961f7ab33552b6399f55db9741f315f2c3d9a96131f3cee89c3fab2a18659d82",
-      "report_ui_flight.png": "7b369c19b85b57e4b01e7a98497073705ef6c5118d594989ce0136ae24d2f81a",
-      "report_ui_flight_mobile.png": "083c320f0a939b3ee36d8c39a084b0703cd8fb65c6b6abd84a242af4b5a2066e"
+      "report_ui_flight.png": "0cf312132beb247d1876cd606b4912630a9267ef03f6dd07cde1ee2d9321c04f",
+      "report_ui_flight_mobile.png": "3a0e0b99da50dbd7efbad7840479ccab95b4806e89ff9f0f044ec6f85a675050"
     },
     "emphasis_previews_refreshed": [
       "report_ui_overview.png",
@@ -196,7 +196,7 @@
       "report_ui_mobile.png"
     ],
     "queue_preview_refreshed": "Compact cards with team name, plain-language situation/result, game context and receiver buttons.",
-    "latest_refresh": "Projection timeline gold-dot refinement: flight desktop and mobile previews refreshed; other previews retained from native-slider release."
+    "latest_refresh": "Dotted gold track border refinement: flight desktop and mobile previews refreshed; other previews retained from native-slider release."
   },
   "receiver_movement_and_situation": {
     "replays_checked": 52,
@@ -377,7 +377,7 @@
     "console_errors": 0
   },
   "scrubber_representation": {
-    "style": "Original native range appearance, green recorded fill and thumb retained. Projected tail matches the cone gold (#e6bc70), using 1.75px radius dots at 6px intervals.",
+    "style": "Native recorded slider and thumb retained. The projected section keeps an 8px track shape with 2px dotted gold (#e6bc70) borders and a subtle played fill, rather than a center row of dots.",
     "boundary": "Last recorded sample, not the throw: 37/53 = 69.8113 percent on the Schwartz example.",
     "fallback": "Albert Wilson has 100 percent recorded track, no dots, and no input mask.",
     "checks": [
@@ -386,7 +386,7 @@
       "Keyboard End reaches the right endpoint; mobile has no horizontal overflow",
       "One accessible native range input retained; no extra slider or changed playback geometry",
       "No console errors",
-      "Gold dot computed color rgb(230, 188, 112); radius 1.75px, repeat interval 6px; desktop and mobile End reach 5.3/5.3 seconds; no mobile overflow."
+      "Desktop and mobile computed projected border: 2px dotted rgb(230, 188, 112), track height 8px; native appearance auto. Mobile has no horizontal overflow. Albert Wilson recorded-only replay hides the projected rail and has no input mask."
     ]
   }
 }

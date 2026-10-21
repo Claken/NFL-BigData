@@ -97,16 +97,17 @@ canvas { display: block; width: 100%; height: auto; aspect-ratio: 2.35; }
 #play::before { content: '▶'; font-size: 9px; margin-right: 6px; }
 #play[data-playing="true"]::before { content: 'Ⅱ'; }
 #reset { font-size: 18px; padding: 3px 12px; }
-/* Preserve the original native slider; only its projected track is replaced by dots. */
+/* Preserve the native slider; outline the projected section with dotted borders. */
 .scrub-track { flex: 1; min-width: 60px; position: relative; height: 38px; display: flex; align-items: center; --recorded-end: 100%; --recorded-offset: -8px; --played-position: 0%; --thumb-offset: 8px; --played-tail: 0%; }
-.scrub-rail { position: absolute; inset: 50% 8px auto; height: 10px; transform: translateY(-50%); pointer-events: none; }
-.scrub-projected { position: absolute; inset: 0 0 0 var(--recorded-end); background: radial-gradient(circle, var(--gold) 1.75px, transparent 2px) 0 50% / 6px 10px repeat-x; }
-.scrub-projected-fill { display: block; height: 100%; width: var(--played-tail); background: radial-gradient(circle, var(--gold) 1.75px, transparent 2px) 0 50% / 6px 10px repeat-x; }
+.scrub-rail { position: absolute; inset: 50% 8px auto; height: 8px; transform: translateY(-50%); pointer-events: none; }
+.scrub-projected { position: absolute; inset: 0 0 0 var(--recorded-end); border: 2px dotted var(--gold); border-radius: 5px; overflow: hidden; }
+.scrub-projected-fill { display: block; height: 100%; width: var(--played-tail); background: rgb(230 188 112 / 16%); }
 .scrub-track input { position: relative; margin: 0; width: 100%; min-width: 0; accent-color: var(--green); cursor: pointer;
   mask-image: linear-gradient(to right, #000 calc(var(--recorded-end) + var(--recorded-offset)), transparent 0), radial-gradient(circle 10px at calc(var(--played-position) + var(--thumb-offset)) 50%, #000 9px, transparent 10px);
   mask-composite: add;
 }
 .scrub-track[data-has-projection="false"] input { mask-image: none; }
+.scrub-track[data-has-projection="false"] .scrub-rail { display: none; }
 .scrub-track:focus-within { outline: 3px solid var(--blue); outline-offset: 4px; }
 .scrub-track input:focus-visible { outline: none; }
 .scrub-track input:disabled { cursor: wait; }
