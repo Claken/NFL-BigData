@@ -163,7 +163,7 @@
   "image_freshness": {
     "checked_date": "2026-10-21",
     "capture_url": "http://127.0.0.1:8776/report.html (reviewed production candidate)",
-    "report_sha256": "db60c58e7a42f62e4dbc0c2675aca2e0ae0377925c0965b2ede5231d70537e70",
+    "report_sha256": "63d02131e337963288b18558e74f37b7cca9d8e5ab72fa2eb1c0a08441d0c84a",
     "refreshed_previews": [
       "report_ui_overview.png",
       "report_ui_review.png",
@@ -240,7 +240,8 @@
       "Playback, Home/End and moment buttons update the pitch and timeline.",
       "390x844 mobile has no horizontal overflow; both mobile moment buttons select the expected frames.",
       "1440x900 desktop shows the football pitch, both snapshots and the film-review action in the initial viewport.",
-      "No browser console errors observed."
+      "No browser console errors observed.",
+      "1280x720: review button bottom 673 px and copy-cue button bottom 708 px; both actions fit in the first viewport, with no horizontal overflow."
     ],
     "preserved": "All 22 players, equal yard scales, QB/receiver IDs, first-down line, speed and gap context, 50-route queue, statistics, methods and downloads.",
     "snapshot_files": [
