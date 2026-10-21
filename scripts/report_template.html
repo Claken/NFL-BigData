@@ -82,15 +82,63 @@
   <div id="timeline" class="chart" aria-label="Nearest-defender separation timeline"></div>
   <p class="chart-note"><b>Green:</b> qualifying earlier gap. <b>Grey:</b> excluded time. <b>Red point:</b> throw, where the replay ends.</p>
   <details class="replay-context"><summary>Play context, timing &amp; matching</summary>
-    <p id="selectedContext"></p><p id="throwerSource" class="sub"></p><p>The selected receiver is the route being studied, not necessarily the intended target of the pass.</p><p id="routeOrigin" class="sub"></p><p id="routeExplanation" class="route-explanation"></p>
-    <div class="metrics secondary-metrics">
-      <div class="metric"><b id="timeMetric"></b><span>play start to throw</span></div>
-      <div class="metric"><b id="initialMetric"></b><span>gap at the start</span></div>
+    <div class="detail-body">
+      <dl class="facts-grid" aria-label="Play facts">
+        <div><dt>Team</dt><dd id="contextTeam"></dd></div>
+        <div><dt>Week</dt><dd id="contextWeek"></dd></div>
+        <div><dt>Game ID</dt><dd id="contextGame" class="data-id"></dd></div>
+        <div><dt>Play ID</dt><dd id="contextPlay" class="data-id"></dd></div>
+        <div><dt>Starting position</dt><dd id="contextAlignment"></dd></div>
+        <div><dt>Defensive plan</dt><dd id="contextCoverage"></dd></div>
+      </dl>
+      <dl class="source-facts" aria-label="Thrower identification">
+        <div><dt>Thrower source</dt><dd id="throwerSource"></dd></div>
+        <div><dt>Player ID</dt><dd id="throwerPlayerId" class="data-id"></dd></div>
+      </dl>
+      <div class="context-notes">
+        <aside class="detail-note"><h4>Selected receiver</h4><p>The route being studied; not necessarily the pass target.</p></aside>
+        <aside class="detail-note"><h4>Why this play is here</h4><p id="routeOrigin"></p></aside>
+      </div>
+      <section class="detail-section" aria-labelledby="timingHeading"><h4 id="timingHeading">Timing &amp; spacing</h4>
+        <div class="metrics secondary-metrics">
+          <div class="metric"><b id="timeMetric"></b><span>play start to throw</span></div>
+          <div class="metric"><b id="initialMetric"></b><span>gap at the start</span></div>
+        </div>
+        <p id="windowSummary" class="window-summary"></p>
+        <p id="routeExplanation" class="route-explanation"></p>
+      </section>
+      <section class="detail-section" aria-labelledby="playDescriptionHeading"><h4 id="playDescriptionHeading">Official play description</h4><p id="description"></p><dl class="source-facts"><div><dt>Release marker</dt><dd id="releaseSource"></dd></div></dl></section>
+      <section class="detail-section" aria-labelledby="matchingHeading"><h4 id="matchingHeading">About the A/B comparison</h4><p id="pairContext" class="matching-reference"></p>
+        <ul class="matching-list"><li>Same player, game, starting position and defensive plan</li><li>Gap at throw: within <b>0.15 yd</b></li><li>Gap at play start: within <b>0.5 yd</b></li><li>Time to throw: within <b>0.3 s</b></li></ul>
+        <p class="detail-caption">Chosen for the largest history contrast among qualifying pairs; not typical plays.</p>
+      </section>
     </div>
-    <p id="windowSummary" class="window-summary"></p><p id="description"></p>
-    <h3>Why compare A and B?</h3><p id="pairContext"></p><p>The same player, game, starting position and defensive plan, with similar initial spacing and throw time. Selected for the largest history contrast among qualifying pairs, not as typical plays.</p>
   </details>
-  <details class="frame-details"><summary>Replay guide &amp; frame details</summary><p id="frameExplanation"></p><p id="frameStatus"></p><p>Numbered dots are players; the small brown dot is the ball. The ring marks a 2-yard radius; the grey dashed line marks where the ball started. Both views show all 22 players on a rotated field, with the offense moving right. This is recorded position data, not game video.</p><p>Focus the slider: arrow keys step through frames; Home goes to the start; End goes to the throw. The field and chart move together.</p></details>
+  <details class="frame-details"><summary>Replay guide &amp; frame details</summary>
+    <div class="detail-body">
+      <aside id="frameEligibilityNote" class="detail-note eligibility-note"><h4 id="frameEligibility"></h4><p id="frameExplanation"></p></aside>
+      <dl class="facts-grid" aria-label="Current frame facts">
+        <div><dt>Frame</dt><dd id="frameNumber" class="data-id"></dd></div>
+        <div><dt>Time from play start</dt><dd id="frameTime"></dd></div>
+        <div><dt>Closest opponent</dt><dd id="frameNearest"></dd></div>
+        <div><dt>Gap to opponent</dt><dd id="frameGap"></dd></div>
+        <div><dt>Receiver downfield</dt><dd id="frameDepth"></dd></div>
+        <div><dt>Time / position rules</dt><dd id="frameTimeDepth"></dd></div>
+      </dl>
+      <section class="detail-section" aria-labelledby="fieldKeyHeading"><h4 id="fieldKeyHeading">Read the field</h4>
+        <ul class="visual-key">
+          <li><span class="key-symbol numbered-player" aria-hidden="true">#</span><div><b>Numbered dots</b><span>Players and jersey numbers</span></div></li>
+          <li><span class="key-symbol ball-symbol" aria-hidden="true"></span><div><b>Brown dot</b><span>The ball</span></div></li>
+          <li><span class="key-symbol radius-symbol" aria-hidden="true"></span><div><b>Ring</b><span>2-yard radius around the receiver</span></div></li>
+          <li><span class="key-symbol line-symbol" aria-hidden="true"></span><div><b>Grey dashed line</b><span>Where the ball started</span></div></li>
+        </ul>
+        <p class="detail-caption">All 22 players · offense moves right → · recorded positions, not game video.</p>
+      </section>
+      <section class="detail-section" aria-labelledby="keyboardHeading"><h4 id="keyboardHeading">Keyboard controls</h4><p class="detail-caption">Focus the time slider; the field and chart stay synchronized.</p>
+        <dl class="keyboard-guide"><div><dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>Step one frame</dd></div><div><dt><kbd>Home</kbd></dt><dd>Play start</dd></div><div><dt><kbd>End</kbd></dt><dd>Throw</dd></div></dl>
+      </section>
+    </div>
+  </details>
 </section>
 <section class="card queue-panel" id="reviewQueue" aria-labelledby="queueHeading">
   <h2 id="queueHeading">More plays to explore</h2>

@@ -208,6 +208,9 @@ function draw() {
   el('gateStatus').textContent = !valid ? 'This moment is not counted' :
     f.separation > 2 ? 'Gap above 2 yards at this moment' : 'Opponent within 2 yards';
   el('gateStatus').dataset.eligible = String(valid && f.separation > 2);
+  el('frameEligibility').textContent = !valid ? 'Outside the time / position rules' :
+    f.separation <= 2 ? 'Gap is too small to count' : 'Can contribute to an earlier gap';
+  el('frameEligibilityNote').dataset.eligible = String(valid && f.separation > 2);
   el('frameExplanation').textContent = f.t < 1 ? 'We do not count the first second of the play.' :
     f.t > current.route.observed_seconds - .3 + 1e-8 ? 'We do not count the final 0.3 seconds before the throw.' :
     f.downfield < 2 ? 'The receiver is less than 2 yards beyond the starting line at this moment, so it does not count.' :
@@ -216,9 +219,11 @@ function draw() {
   canvas.setAttribute('aria-label', current.route.displayName + ' at ' + f.t.toFixed(1) + ' seconds since snap; nearest defender ' +
     (nearest ? nearest.name : 'unknown') + ', ' + f.separation.toFixed(2) + ' yards away. Thrower: ' +
     (current.thrower ? current.thrower.name : 'unknown') + '. Selected receiver: ' + current.route.displayName + '. All 22 players shown.');
-  el('frameStatus').textContent = 'Frame ' + f.frame + ' · Nearest: ' + (nearest ? nearest.name : 'unknown') +
-    ' · ' + f.separation.toFixed(2) + ' yd · Receiver ' + f.downfield.toFixed(1) + ' yd downfield · ' +
-    (valid ? 'Eligible history frame' : 'Excluded by time/downfield gate');
+  for (const [id, value] of Object.entries({ frameNumber: f.frame, frameTime: f.t.toFixed(1) + ' s',
+    frameNearest: nearest ? nearest.name : 'Unknown', frameGap: f.separation.toFixed(2) + ' yd',
+    frameDepth: f.downfield.toFixed(1) + ' yd', frameTimeDepth: valid ? 'Eligible' : 'Excluded' })) {
+    el(id).textContent = value;
+  }
   Plotly.relayout('timeline', { 'shapes[0].x0': f.t, 'shapes[0].x1': f.t });
 }
 
@@ -234,12 +239,14 @@ async function loadReplay(id, scroll = false) {
   el('selectedName').textContent = r.displayName + (receiver?.label ? ' #' + receiver.label : '');
   el('throwerName').textContent = current.thrower ? current.thrower.name +
     (current.thrower.jersey_number != null ? ' #' + current.thrower.jersey_number : '') : 'Not identified';
-  el('throwerSource').textContent = current.thrower ? 'Thrower identified by the recorded PFF Pass role (player ID ' +
-    current.thrower.id + ').' : 'No unique recorded passer with matching offensive tracking; no thrower is inferred.';
-  el('selectedContext').textContent = r.possessionTeam + ' · Week ' + r.week +
-    ' · game ' + r.gameId + ' · play ' + r.playId + ' · ' + r.alignment + ' · ' + (r.pff_passCoverage || 'Unknown coverage');
-  el('routeOrigin').textContent = queued ? 'Review queue rank ' + queued.queue_rank + ' of ' + model.queue.length +
-    ' · selected for a long earlier spacing window; this is not a player ranking.' : 'Matched illustration · selected for contrast rather than as a typical route.';
+  el('throwerSource').textContent = current.thrower ? 'Recorded PFF “Pass” role' :
+    'No unique recorded passer with matching offensive tracking; not inferred.';
+  el('throwerPlayerId').textContent = current.thrower ? current.thrower.id : 'Not identified';
+  for (const [id, value] of Object.entries({ contextTeam: r.possessionTeam, contextWeek: r.week,
+    contextGame: r.gameId, contextPlay: r.playId, contextAlignment: r.alignment,
+    contextCoverage: r.pff_passCoverage || 'Unknown' })) el(id).textContent = value;
+  el('routeOrigin').textContent = queued ? 'Queue #' + queued.queue_rank + ' of ' + model.queue.length +
+    ': selected for a long earlier gap, not a player ranking.' : 'Matched illustration: selected for contrast, not as a typical route.';
   el('releaseMetric').textContent = r.release_separation.toFixed(2) + ' yd';
   el('historyMetric').textContent = r.longest_2_0.toFixed(1) + ' s';
   el('timeMetric').textContent = r.observed_seconds.toFixed(1) + ' s';
@@ -248,7 +255,8 @@ async function loadReplay(id, scroll = false) {
     ' yards from ' + r.displayName + '. ' + (r.longest_2_0 >= .5 ?
     'Earlier, a gap of more than 2 yards lasted ' + r.longest_2_0.toFixed(1) + ' seconds under our rules. That is a moment to inspect on video, not proof a pass was available.' :
     'No earlier gap lasted at least half a second while meeting all five rules. This does not mean the player was never a possible target.');
-  el('description').textContent = r.playDescription + ' · release event: ' + r.release_source;
+  el('description').textContent = r.playDescription;
+  el('releaseSource').textContent = r.release_source;
   el('scrub').max = current.frames.length - 1;
   const sustained = current.windows.filter(w => w.duration_seconds >= .5);
   el('windowSummary').textContent = sustained.length ? 'Lasting earlier gaps: ' + sustained.map(w =>
@@ -319,7 +327,7 @@ el('play').onclick = () => {
 
 const ref = examples[0].route;
 el('pairContext').textContent = ref.displayName + ' · game ' + ref.gameId + ' · ' + ref.alignment + ' · ' +
-  ref.pff_passCoverage + '. Release separation differs by at most 0.15 yd, initial spacing by at most 0.5 yd and throw time by at most 0.3 s.';
+  ref.pff_passCoverage;
 el('cohortContext').textContent = fmt(model.scatter.length) + ' eligible routes in ' + ref.alignment +
   ' against ' + ref.pff_passCoverage + '. The matched pair remains highlighted independently of queue filters.';
 const traces = [{ x: model.scatter.map(r => r.release_separation), y: model.scatter.map(r => r.longest_2_0),

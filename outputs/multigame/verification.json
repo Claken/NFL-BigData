@@ -141,5 +141,23 @@
     "data_integrity": "Tracking, replay payload, route metrics, analysis and independent distance checks byte-identical.",
     "tests_passed": 24,
     "copy": "Single sentence; redundant color guide and brown-dot explanation removed."
+  },
+  "structured_replay_details": {
+    "play_context": "Six labeled play facts, separate thrower provenance and player ID, receiver/selection note cards, timing and official description sections, and a matching-criteria list.",
+    "frame_guide": "Eligibility callout, six live frame facts, four visual-key symbols and keyboard shortcut cards.",
+    "preserved": "All metadata, frame metrics, interpretation, release source and matching tolerances retained; replay and analysis data byte-identical.",
+    "browser_checks": [
+      "TB / Week 2 / game 2021091910 / play 3195 / Wide / Cover-2 fields and PFF Pass role / player 25511 shown correctly",
+      "Frame 16: Adetokunbo Ogundeji, 3.31 yd gap, 1.1 yd downfield and position-exclusion explanation retained",
+      "Home and End refresh frame facts and reasons",
+      "Keyboard hints list arrows, Home and End",
+      "Queue selection updates context to CHI / 2021092601 / 2726 / thrower 53440",
+      "390x844 mobile: two-column fact cards, stacked notes and visual key, readable keyboard cards, no document overflow"
+    ],
+    "tests_passed": 24,
+    "preview_files": [
+      "report_ui_context.png",
+      "report_ui_frame.png"
+    ]
   }
 }
