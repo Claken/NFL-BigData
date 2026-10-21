@@ -97,7 +97,7 @@ Their release spacing is similar, but their earlier histories differ. The pair w
 
 | Capability | What you can do |
 | --- | --- |
-| **Synchronized replay** | Follow all 22 players while inspecting receiver separation over time |
+| **Synchronized replay** | Follow all 22 players, with the named thrower in purple and selected receiver in green |
 | **Playback controls** | Play, pause and scrub through each packaged example |
 | **Field views** | Switch between Fit play and Full field with equal yard scales |
 | **Review queue** | Filter 50 selected routes by receiver, alignment and coverage |
@@ -152,7 +152,7 @@ uv run --locked pytest -q
 uv run --locked ruff check scripts tests
 ```
 
-The tests cover metric rules, eligibility and replay consistency. The packaged replays also have [156 independent distance checks](outputs/multigame/replay_independent_checks.csv), recomputed from the original defender coordinates. These checks validate the calculations, not whether a spacing window was a usable football opportunity.
+The tests cover metric rules, eligibility, recorded thrower identity and replay consistency. The selected receiver is the route being studied, not necessarily the intended target. The packaged replays also have [156 independent distance checks](outputs/multigame/replay_independent_checks.csv), recomputed from the original defender coordinates. These checks validate the calculations, not whether a spacing window was a usable football opportunity.
 
 ## Documentation
 

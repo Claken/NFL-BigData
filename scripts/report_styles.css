@@ -112,7 +112,12 @@ main { max-width: 1440px; margin: auto; padding: 26px 28px 48px; }
 .replay-title { display: flex; justify-content: space-between; align-items: start; gap: 15px; margin-bottom: 12px; }
 .replay-title h2 { font-size: 21px; }
 .replay-title a { font-size: 14px; white-space: nowrap; }
-#selectedName { font-size: 26px; line-height: 1.25; letter-spacing: -.02em; font-weight: 750; margin: 0 0 6px; }
+.player-identities { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
+.player-identities > div { border-left: 3px solid; padding: 3px 10px; }
+.player-identities > .thrower-identity { border-color: #7351a3; }
+.player-identities > .receiver-identity { border-color: #177449; }
+.player-identities span { display: block; color: var(--muted); font-size: 13px; }
+.player-identities b { display: block; font-size: 20px; line-height: 1.35; overflow-wrap: anywhere; }
 #selectedContext { color: #496270; font-size: 14px; line-height: 1.7; }
 #routeOrigin { margin-top: 8px; }
 .example-switch { display: flex; gap: 9px; flex-wrap: wrap; margin: 14px 0 10px; }
@@ -215,7 +220,7 @@ details p { font-size: 15px; color: #49616f; line-height: 1.7; max-width: 960px;
   .filters .receiver-filter { grid-column: 1 / -1; }
   .queue-list { grid-template-columns: 1fr; max-height: 420px; }
   .replay-title { flex-wrap: wrap; gap: 8px; }
-  #selectedName { font-size: 24px; }
+  .player-identities b { font-size: 17px; }
   .metrics { grid-template-columns: 1fr 1fr; gap: 8px; }
   .metric b { font-size: 25px; }
   .controls input { order: 3; flex-basis: calc(100% - 106px); }

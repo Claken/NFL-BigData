@@ -60,26 +60,29 @@
 <div class="workbench">
 <section class="card replay-panel" id="replaySection" tabindex="-1" aria-labelledby="replayHeading">
   <div class="replay-title"><h2 id="replayHeading">Watch one receiver’s run</h2><a href="#reviewQueue">More plays</a></div>
-  <p id="selectedName"></p>
+  <div class="player-identities" aria-label="Players in this replay">
+    <div class="thrower-identity"><span>Thrower</span><b id="throwerName"></b></div>
+    <div class="receiver-identity"><span>Selected receiver</span><b id="selectedName"></b></div>
+  </div>
   <div class="example-switch" aria-label="Matched examples"><button id="example0" aria-pressed="true">A · A lasting gap earlier</button><button id="example1" aria-pressed="false">B · No lasting gap earlier</button></div>
   <div class="metrics">
     <div class="metric"><b id="releaseMetric"></b><span>gap at the throw</span></div>
     <div class="metric"><b id="historyMetric"></b><span>lasting gap earlier</span></div>
   </div>
   <p id="loadingStatus" class="loading" role="status">Preparing replays…</p>
-  <p class="replay-help">Choose A or B, then press Play. Follow the green receiver; the gold line is the gap to the nearest opponent.</p>
+  <p class="replay-help">Purple = thrower. Green = selected receiver. Gold line = gap to the nearest opponent.</p>
   <div class="controls"><button id="play" class="primary" aria-label="Play replay" disabled>Play</button><button id="reset" disabled>Restart</button><input id="scrub" type="range" min="0" value="0" step="1" aria-label="Replay frame" disabled><output id="clock" aria-label="Replay time"></output></div>
   <div class="field-surface">
     <div class="field-toolbar"><span>Team with the ball moves right →</span><div class="view-switch" aria-label="Field view"><button id="fitView" aria-pressed="true">Fit play</button><button id="fullView" aria-pressed="false">Full field</button></div></div>
     <canvas id="field" width="1120" height="533" role="img" aria-label="NFL field replay with receiver and nearest defender highlighted"></canvas>
   </div>
   <div class="live-readout"><p id="nearestReadout"></p><span class="gate-badge" id="gateStatus"></span></div>
-  <div class="legend"><span><i class="dot" style="background:#1769a6"></i>Teammates</span><span><i class="dot" style="background:#c65332"></i>Opponents</span><span><i class="dot" style="background:#177449"></i>Selected receiver</span><span><i class="dot" style="background:#704d22"></i>Ball</span></div>
+  <div class="legend"><span><i class="dot" style="background:#7351a3"></i>Thrower</span><span><i class="dot" style="background:#177449"></i>Selected receiver</span><span><i class="dot" style="background:#1769a6"></i>Teammates</span><span><i class="dot" style="background:#c65332"></i>Opponents</span><span><i class="dot" style="background:#704d22"></i>Ball</span></div>
   <div class="timeline-heading"><h3>Gap to the closest opponent</h3><p class="sub">Higher blue line = more space. Black cursor = the moment shown above.</p></div>
   <div id="timeline" class="chart" aria-label="Nearest-defender separation timeline"></div>
   <p class="chart-note"><b>Green:</b> qualifying earlier gap. <b>Grey:</b> excluded time. <b>Red point:</b> throw.</p>
   <details class="replay-context"><summary>Play context, timing &amp; matching</summary>
-    <p id="selectedContext"></p><p id="routeOrigin" class="sub"></p><p id="routeExplanation" class="route-explanation"></p>
+    <p id="selectedContext"></p><p id="throwerSource" class="sub"></p><p>The selected receiver is the route being studied, not necessarily the intended target of the pass.</p><p id="routeOrigin" class="sub"></p><p id="routeExplanation" class="route-explanation"></p>
     <div class="metrics secondary-metrics">
       <div class="metric"><b id="timeMetric"></b><span>play start to throw</span></div>
       <div class="metric"><b id="initialMetric"></b><span>gap at the start</span></div>
@@ -87,7 +90,7 @@
     <p id="windowSummary" class="window-summary"></p><p id="description"></p>
     <h3>Why compare A and B?</h3><p id="pairContext"></p><p>The same player, game, starting position and defensive plan, with similar initial spacing and throw time. Selected for the largest history contrast among qualifying pairs, not as typical plays.</p>
   </details>
-  <details class="frame-details"><summary>Replay guide &amp; frame details</summary><p id="frameExplanation"></p><p id="frameStatus"></p><p>Numbered dots are players; the small brown dot is the ball. The ring marks a 2-yard radius; the purple line marks where the ball started. Both views show all 22 players on a rotated field, with the offense moving right. This is recorded position data, not game video.</p><p>Focus the slider: arrow keys step through frames; Home goes to the start; End goes to the throw. The field and chart move together.</p></details>
+  <details class="frame-details"><summary>Replay guide &amp; frame details</summary><p id="frameExplanation"></p><p id="frameStatus"></p><p>Numbered dots are players; the small brown dot is the ball. The ring marks a 2-yard radius; the grey dashed line marks where the ball started. Both views show all 22 players on a rotated field, with the offense moving right. This is recorded position data, not game video.</p><p>Focus the slider: arrow keys step through frames; Home goes to the start; End goes to the throw. The field and chart move together.</p></details>
 </section>
 <section class="card queue-panel" id="reviewQueue" aria-labelledby="queueHeading">
   <h2 id="queueHeading">More plays to explore</h2>

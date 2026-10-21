@@ -1,5 +1,5 @@
 {
-  "tests_passed": 19,
+  "tests_passed": 24,
   "ruff": "passed",
   "javascript_syntax": "passed",
   "analysis_outputs_unchanged": true,
@@ -110,5 +110,20 @@
     "ruff": "passed",
     "javascript_syntax": "passed",
     "html_checks": "Unique IDs, valid anchors and companion links, no remote assets."
+  },
+  "thrower_receiver_labels": {
+    "identified_throwers": 52,
+    "source": "Unique PFF Pass role per game/play, with matching offensive tracking; ambiguous or absent identity is not inferred.",
+    "receiver": "Selected route runner, not necessarily the intended pass target.",
+    "presentation": "Full names and jersey numbers above replay; purple thrower and green selected receiver with jersey callouts on the field and accessible canvas descriptions.",
+    "calculation_integrity": "Only thrower metadata added to replay payload. All prior frames, coordinates, routes, windows and queue entries unchanged; main analysis and evidence exports unchanged.",
+    "tests_passed": 24,
+    "browser_checks": [
+      "Tom Brady #12 / Scott Miller #10 matched examples",
+      "Justin Fields #1 / Allen Robinson #12 queued replay",
+      "Mobile 390x844: role labels visible at release, no document overflow",
+      "Recorded player IDs update with selected replay"
+    ],
+    "independent_distance_checks": 156
   }
 }

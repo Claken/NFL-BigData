@@ -27,7 +27,22 @@ def review_candidates(routes, limit=50):
         ["longest_2_0", *KEY], descending=[True, False, False, False]).head(limit)
 
 
-def example_data(key, routes, raw, processed, names, sources=None):
+def thrower_data(route, scouting, tracking, names):
+    """Use the recorded passing role, never position or proximity to the ball."""
+    ids = scouting.filter(
+        (pl.col("gameId") == route["gameId"]) & (pl.col("playId") == route["playId"])
+        & (pl.col("pff_role").str.to_lowercase() == "pass")
+    )["nflId"].drop_nulls().unique().to_list()
+    if len(ids) != 1:
+        return None
+    player = tracking.filter(pl.col("nflId") == ids[0])
+    if player.is_empty() or player["team"].unique().to_list() != [route["possessionTeam"]]:
+        return None
+    return {"id": ids[0], "name": names.get(ids[0], "Unknown name"),
+            "jersey_number": player["jerseyNumber"][0], "source": "pff_role: Pass"}
+
+
+def example_data(key, routes, raw, processed, names, scouting, sources=None):
     route = routes.filter(pl.all_horizontal([pl.col(k) == key[k] for k in KEY])).row(0, named=True)
     if sources is None:
         tracking_game = read_csv(raw, f"tracking/tracking_{key['gameId']}.csv")
@@ -81,7 +96,9 @@ def example_data(key, routes, raw, processed, names, sources=None):
         longest = max(history["windows"], key=lambda w: w["duration_seconds"])
         if longest["duration_seconds"] >= 0.5:
             start = (longest["start_frame"] + longest["end_frame"]) // 2 - route["snap"]
-    return {"id": replay_id(key), "route": route, "frames": frames, "windows": history["windows"],
+    return {"id": replay_id(key), "route": route,
+            "thrower": thrower_data(route, scouting, tracking, names),
+            "frames": frames, "windows": history["windows"],
             "line_of_scrimmage": line, "initial_frame_index": start}, manual
 
 
@@ -98,6 +115,7 @@ def main():
     stats = json.loads((args.output / "analysis.json").read_text())
     routes = pl.read_parquet(args.output / "routes.parquet")
     names = {r["nflId"]: r["displayName"] for r in read_csv(args.raw, "players.csv").iter_rows(named=True)}
+    scouting = read_csv(args.raw, "pffScoutingData.csv").select(*KEY, "pff_role")
     queue = review_candidates(routes)
     keys = {replay_id(key): {k: key[k] for k in KEY}
             for key in [*stats["pair"]["examples"], *queue.select(KEY).to_dicts()]}
@@ -116,7 +134,7 @@ def main():
                 pl.read_parquet(args.processed / f"separation_{game_id}.parquet")
                 .filter(pl.col("playId").is_in(play_ids)),
             )
-        replay, checks = example_data(key, routes, args.raw, args.processed, names,
+        replay, checks = example_data(key, routes, args.raw, args.processed, names, scouting,
                                       source_cache[game_id])
         replays[route_id] = replay
         manual.extend(checks)

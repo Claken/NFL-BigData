@@ -28,6 +28,11 @@ The queue is selected for long windows, not representativeness or receiver quali
 Section links connect the finding, route review, evidence and method. Wide screens place
 the queue beside the replay; narrow screens stack the two. The field offers Fit play and
 Full field views using equal yard scales, with all 22 players retained in both views.
+The thrower is identified from the unique recorded PFF `Pass` role and matching offensive
+tracking, and highlighted in purple; the selected receiver is green. Both have names and
+jersey numbers above the replay and labels on the field. Missing or ambiguous passer
+identity is shown as unidentified, never inferred from position or ball proximity.
+The selected receiver is not necessarily the pass's intended target.
 Complete play descriptions, frame details, eligibility, timing and exclusions remain
 available in labeled expandable sections; numeric evidence tables retain every result.
 It has no external asset tags. Linked findings, CSV and PNG

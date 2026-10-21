@@ -137,7 +137,7 @@ function draw() {
     ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px, bottom); ctx.stroke();
   }
   ctx.strokeRect(fieldLeft, fieldTop, 120 * scale, (160 / 3) * scale);
-  ctx.strokeStyle = '#9473ac'; ctx.setLineDash([5, 4]); ctx.beginPath();
+  ctx.strokeStyle = '#718494'; ctx.setLineDash([5, 4]); ctx.beginPath();
   const [lineX, lineTop] = xy({ x: current.line_of_scrimmage, y: 160 / 3 });
   ctx.moveTo(lineX, lineTop); ctx.lineTo(lineX, xy({ x: 0, y: 0 })[1]); ctx.stroke(); ctx.setLineDash([]);
   ctx.strokeStyle = '#17744970'; ctx.lineWidth = 2; ctx.beginPath();
@@ -147,6 +147,7 @@ function draw() {
     const [x, y] = xy(p); if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
   }); ctx.stroke();
   const receiver = f.players.find(p => p.id === current.route.nflId);
+  const thrower = current.thrower && f.players.find(p => p.id === current.thrower.id);
   const nearest = f.players.find(p => p.id === f.nearest);
   if (receiver && nearest) {
     const [x1, y1] = xy(receiver), [x2, y2] = xy(nearest);
@@ -155,11 +156,11 @@ function draw() {
     ctx.beginPath(); ctx.arc(x1, y1, 2 * scale, 0, 2 * Math.PI); ctx.lineWidth = 1; ctx.stroke();
   }
   f.players.forEach(p => {
-    const [x, y] = xy(p), active = p.id === current.route.nflId;
-    ctx.beginPath(); ctx.arc(x, y, active ? 12 : p.side === 'ball' ? 4 : 9, 0, Math.PI * 2);
-    ctx.fillStyle = active ? '#177449' : p.side === 'offense' ? '#1769a6' : p.side === 'defense' ? '#c65332' : '#704d22';
+    const [x, y] = xy(p), active = p.id === current.route.nflId, passing = p.id === current.thrower?.id;
+    ctx.beginPath(); ctx.arc(x, y, active ? 12 : passing ? 11 : p.side === 'ball' ? 4 : 9, 0, Math.PI * 2);
+    ctx.fillStyle = active ? '#177449' : passing ? '#7351a3' : p.side === 'offense' ? '#1769a6' : p.side === 'defense' ? '#c65332' : '#704d22';
     ctx.fill(); ctx.strokeStyle = 'white'; ctx.lineWidth = 1; ctx.stroke();
-    if (active) { ctx.strokeStyle = '#174b35'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 15, 0, Math.PI * 2); ctx.stroke(); }
+    if (active || passing) { ctx.strokeStyle = active ? '#174b35' : '#533579'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 15, 0, Math.PI * 2); ctx.stroke(); }
     if (p.side !== 'ball') { ctx.fillStyle = 'white'; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center'; ctx.fillText(p.label, x, y + 4); }
   });
   ctx.restore(); ctx.textAlign = 'center'; ctx.fillStyle = '#4c6956'; ctx.font = '12px system-ui';
@@ -167,6 +168,28 @@ function draw() {
     const [px] = xy({ x, y: 0 });
     if (px > pad && px < W - pad) ctx.fillText(String(Math.min(x - 10, 110 - x)), px, H - oy + 17);
   }
+  ctx.save(); ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  const labels = [];
+  for (const [player, role, color, offset] of [[thrower, 'Thrower', '#7351a3', 20], [receiver, 'Receiver', '#177449', -38]]) {
+    if (!player) continue;
+    const [px, py] = xy(player), label = role + (player.label ? ' #' + player.label : '');
+    const width = Math.ceil(ctx.measureText(label).width) + 14;
+    const x = Math.max(4, Math.min(W - width - 4, px - width / 2));
+    let y = Math.max(4, Math.min(H - 26, py + offset));
+    for (const box of labels) {
+      if (x < box.x + box.width + 4 && x + width + 4 > box.x && y < box.y + 26 && y + 26 > box.y) {
+        y = box.y - 26 >= 4 ? box.y - 26 : Math.min(H - 26, box.y + 26);
+      }
+    }
+    labels.push({ x, y, width });
+    ctx.strokeStyle = color; ctx.lineWidth = 1; ctx.beginPath();
+    ctx.moveTo(px, py); ctx.lineTo(x + width / 2, y + 11); ctx.stroke();
+    ctx.fillStyle = '#ffffffed'; ctx.fillRect(x, y, width, 22); ctx.strokeRect(x, y, width, 22);
+    ctx.fillStyle = color; ctx.fillText(label, x + 7, y + 11);
+  }
+  ctx.restore();
+  canvas.dataset.throwerId = current.thrower?.id ?? '';
+  canvas.dataset.receiverId = current.route.nflId;
   el('scrub').value = index;
   el('clock').value = f.t.toFixed(1) + ' / ' + current.route.observed_seconds.toFixed(1) + ' s';
   const valid = f.t >= 1 && f.t <= current.route.observed_seconds - .3 + 1e-8 && f.downfield >= 2;
@@ -180,7 +203,8 @@ function draw() {
     f.separation <= 2 ? 'The closest opponent is within 2 yards. This moment does not count toward an earlier gap.' :
     'The gap is more than 2 yards here. It must last at least half a second without a break to become a qualifying window.';
   canvas.setAttribute('aria-label', current.route.displayName + ' at ' + f.t.toFixed(1) + ' seconds since snap; nearest defender ' +
-    (nearest ? nearest.name : 'unknown') + ', ' + f.separation.toFixed(2) + ' yards away. All 22 players shown.');
+    (nearest ? nearest.name : 'unknown') + ', ' + f.separation.toFixed(2) + ' yards away. Thrower: ' +
+    (current.thrower ? current.thrower.name : 'unknown') + '. Selected receiver: ' + current.route.displayName + '. All 22 players shown.');
   el('frameStatus').textContent = 'Frame ' + f.frame + ' · Nearest: ' + (nearest ? nearest.name : 'unknown') +
     ' · ' + f.separation.toFixed(2) + ' yd · Receiver ' + f.downfield.toFixed(1) + ' yd downfield · ' +
     (valid ? 'Eligible history frame' : 'Excluded by time/downfield gate');
@@ -195,7 +219,12 @@ async function loadReplay(id, scroll = false) {
   current = replays.get(id); index = current.initial_frame_index;
   const r = current.route, queued = queueById.get(id);
   for (let i = 0; i < 2; i++) el('example' + i).setAttribute('aria-pressed', String(id === model.exampleIds[i]));
-  el('selectedName').textContent = r.displayName;
+  const receiver = current.frames[0].players.find(p => p.id === r.nflId);
+  el('selectedName').textContent = r.displayName + (receiver?.label ? ' #' + receiver.label : '');
+  el('throwerName').textContent = current.thrower ? current.thrower.name +
+    (current.thrower.jersey_number != null ? ' #' + current.thrower.jersey_number : '') : 'Not identified';
+  el('throwerSource').textContent = current.thrower ? 'Thrower identified by the recorded PFF Pass role (player ID ' +
+    current.thrower.id + ').' : 'No unique recorded passer with matching offensive tracking; no thrower is inferred.';
   el('selectedContext').textContent = r.possessionTeam + ' · Week ' + r.week +
     ' · game ' + r.gameId + ' · play ' + r.playId + ' · ' + r.alignment + ' · ' + (r.pff_passCoverage || 'Unknown coverage');
   el('routeOrigin').textContent = queued ? 'Review queue rank ' + queued.queue_rank + ' of ' + model.queue.length +

@@ -7,9 +7,29 @@ import polars as pl
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from report import replay_id, review_candidates
+from report import replay_id, review_candidates, thrower_data
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+@pytest.mark.parametrize("roles, expected", [
+    ([(1, "Pass"), (2, "Pass Route")], 1),
+    ([(1, "PASS"), (1, "Pass")], 1),
+    ([(1, "Pass"), (2, "Pass")], None),
+    ([(1, "Pass Block"), (2, "Pass Route")], None),
+    ([(3, "Pass")], None),
+])
+def test_thrower_uses_unique_recorded_passing_role_and_offensive_track(roles, expected):
+    scouting = pl.DataFrame([{"gameId": 10, "playId": 20, "nflId": n, "pff_role": role}
+                             for n, role in roles])
+    tracking = pl.DataFrame({"nflId": [1, 2, 3], "team": ["TB", "TB", "ATL"],
+                             "jerseyNumber": [12, 10, 24]})
+    result = thrower_data({"gameId": 10, "playId": 20, "possessionTeam": "TB"},
+                          scouting, tracking, {1: "Tom Brady", 2: "Scott Miller"})
+    assert (result["id"] if result else None) == expected
+    if result:
+        assert result["name"] == "Tom Brady"
+        assert result["jersey_number"] == 12
 
 
 def test_review_queue_excludes_wrong_routes_and_keeps_ties_deterministic():
@@ -46,6 +66,10 @@ def test_packaged_queue_replays_match_endpoints_windows_and_field_geometry():
     # Verify all displayed frames, including leftward plays, against normalized geometry.
     for replay in replays.values():
         route, frames = replay["route"], replay["frames"]
+        thrower = replay["thrower"]
+        assert thrower is not None
+        assert thrower["source"] == "pff_role: Pass"
+        assert thrower["id"] != route["nflId"]
         assert [f["frame"] for f in frames] == list(range(route["snap"], route["release"] + 1))
         assert frames[-1]["t"] == route["observed_seconds"]
         assert frames[-1]["separation"] == route["release_separation"]
@@ -53,6 +77,10 @@ def test_packaged_queue_replays_match_endpoints_windows_and_field_geometry():
         for frame in frames:
             players = [p for p in frame["players"] if p["side"] != "ball"]
             assert len({p["id"] for p in players}) == 22
+            passer = next(p for p in players if p["id"] == thrower["id"])
+            assert passer["side"] == "offense"
+            assert passer["name"] == thrower["name"]
+            assert passer["label"] == str(thrower["jersey_number"])
             receiver = next(p for p in players if p["id"] == route["nflId"])
             defenders = [p for p in players if p["side"] == "defense"]
             assert len(defenders) == 11
