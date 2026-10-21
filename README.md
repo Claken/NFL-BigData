@@ -20,7 +20,7 @@
 
 ## TL;DR
 
-We built an offline interactive report that replays receiver spacing through a route and queues plays for film review.
+We built an interactive report that replays receiver spacing through a route and queues plays for film review.
 
 Across 122 games, **33.1%** of routes close to a defender at release (3,598 of 10,870) had at least 0.5 seconds of earlier space, so a release snapshot can hide that window.
 
