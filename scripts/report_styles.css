@@ -100,8 +100,8 @@ canvas { display: block; width: 100%; height: auto; aspect-ratio: 2.35; }
 /* Preserve the original native slider; only its projected track is replaced by dots. */
 .scrub-track { flex: 1; min-width: 60px; position: relative; height: 38px; display: flex; align-items: center; --recorded-end: 100%; --recorded-offset: -8px; --played-position: 0%; --thumb-offset: 8px; --played-tail: 0%; }
 .scrub-rail { position: absolute; inset: 50% 8px auto; height: 10px; transform: translateY(-50%); pointer-events: none; }
-.scrub-projected { position: absolute; inset: 0 0 0 var(--recorded-end); background: radial-gradient(circle, #858b82 3px, transparent 3.5px) 0 50% / 13px 10px repeat-x; }
-.scrub-projected-fill { display: block; height: 100%; width: var(--played-tail); background: radial-gradient(circle, var(--green) 3px, transparent 3.5px) 0 50% / 13px 10px repeat-x; }
+.scrub-projected { position: absolute; inset: 0 0 0 var(--recorded-end); background: radial-gradient(circle, var(--gold) 1.75px, transparent 2px) 0 50% / 6px 10px repeat-x; }
+.scrub-projected-fill { display: block; height: 100%; width: var(--played-tail); background: radial-gradient(circle, var(--gold) 1.75px, transparent 2px) 0 50% / 6px 10px repeat-x; }
 .scrub-track input { position: relative; margin: 0; width: 100%; min-width: 0; accent-color: var(--green); cursor: pointer;
   mask-image: linear-gradient(to right, #000 calc(var(--recorded-end) + var(--recorded-offset)), transparent 0), radial-gradient(circle 10px at calc(var(--played-position) + var(--thumb-offset)) 50%, #000 9px, transparent 10px);
   mask-composite: add;
