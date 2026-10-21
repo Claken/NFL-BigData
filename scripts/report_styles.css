@@ -166,6 +166,10 @@ details p { font-size: 13px; color: var(--muted); line-height: 1.7; max-width: 1
 .route-card[aria-current="true"] { border-color: var(--green); }
 .route-card-header { display: flex; justify-content: space-between; gap: 10px; }
 .route-name { font-weight: 750; }
+.route-card .queue-situation, .route-card .queue-result { font-size: 13px; line-height: 1.55; margin-top: 7px; }
+.route-card .queue-situation { color: var(--ink); }
+.queue-situation strong { color: var(--blue); }
+.route-card .queue-result { color: var(--gold); margin-bottom: 12px; }
 .route-rank, .route-meta, .route-window, .route-tags { color: var(--muted); font-size: 11px; }
 .route-rank { white-space: nowrap; }
 .route-tags { display: flex; gap: 6px; margin: 10px 0; }

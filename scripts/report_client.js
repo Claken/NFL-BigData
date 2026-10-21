@@ -137,6 +137,16 @@ function options(id, values, allLabel) {
   });
 }
 
+function queuePlayResult(route) {
+  const yards = number => number + (number === 1 ? ' yard' : ' yards');
+  if (route.passResult === 'IN') return 'An opponent caught the pass and took possession of the ball.';
+  if (route.passResult === 'I') return 'The pass was not caught.';
+  const gain = route.outcome.yards_gained, short = yards(route.yards_to_go - gain);
+  if (gain < 0) return 'The pass was caught, but the team lost ' + yards(Math.abs(gain)) + '.';
+  if (gain === 0) return 'The pass was caught, but the team gained no yards.';
+  return 'The pass was caught, but the team finished ' + short + ' short.';
+}
+
 function renderQueue() {
   const filters = [el('receiverFilter').value, el('dropbackFilter').value, el('coverageFilter').value];
   const routes = model.queue.filter(r => (!filters[0] || String(r.nflId) === filters[0]) &&
@@ -155,14 +165,20 @@ function renderQueue() {
     card.setAttribute('role', 'listitem'); card.dataset.playId = key;
     card.setAttribute('aria-current', String(receivers.some(r => r.replay_id === current?.id)));
     const name = document.createElement('h3'); name.className = 'route-name';
-    name.textContent = r.possessionTeam + ' · 3rd & ' + r.yards_to_go + ' → ' + r.outcome.label;
+    name.textContent = teamNames[r.possessionTeam] || r.possessionTeam;
+    const situation = document.createElement('p'); situation.className = 'queue-situation';
+    const needed = document.createElement('strong'); needed.className = 'summary-goal';
+    needed.textContent = r.yards_to_go + (r.yards_to_go === 1 ? ' yard' : ' yards');
+    situation.append('They needed ', needed, ' on their third attempt.');
+    const result = document.createElement('p'); result.className = 'queue-result';
+    result.textContent = queuePlayResult(r);
     const meta = document.createElement('p'); meta.className = 'route-meta';
     meta.textContent = 'Week ' + r.week + ' · Q' + c.quarter + ' ' + c.game_clock + ' · ' + c.away_team + ' ' + c.away_score + '–' + c.home_score + ' ' + c.home_team;
     const context = document.createElement('p'); context.className = 'route-window';
     context.textContent = contextLabels[c.dropback_group] + ' · ' + c.pressure_note;
     const window = document.createElement('p'); window.className = 'route-window';
     window.textContent = 'Throw ' + r.observed_seconds.toFixed(1) + ' s · game ' + r.gameId + ' / play ' + r.playId;
-    card.append(name, meta, context, window);
+    card.append(name, situation, result, meta, context, window);
     for (const receiver of receivers) {
       const button = document.createElement('button'); button.className = 'route-choice';
       button.textContent = receiver.displayName + ' · inspect ' + receiver.window_start_seconds.toFixed(1) + ' s';

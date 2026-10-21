@@ -20,7 +20,8 @@
     "1280x720: primary inspect/copy actions visible without scrolling; no horizontal overflow",
     "390x844: complete sentences readable, no horizontal overflow",
     "No browser console errors",
-    "Blue goal, bold attempt and amber result verified on incomplete, intercepted and short-completion summaries"
+    "Blue goal, bold attempt and amber result verified on incomplete, intercepted and short-completion summaries",
+    "Queue headings use full team names with plain situation/result sentences; filtering and replay selection verified"
   ],
   "browser_preview": "review_queue_preview.png",
   "offline_limit": "All replay data and assets embedded; network-disabled browser mode not tested.",
@@ -163,7 +164,7 @@
   "image_freshness": {
     "checked_date": "2026-10-21",
     "capture_url": "http://127.0.0.1:8776/report.html (reviewed production candidate)",
-    "report_sha256": "63f21ca9015f23e1191de31f89e9f494b422bc6a20fc107e141c7c04bbb97390",
+    "report_sha256": "64539154413d4e83148a59bf55a9b4ef89ef49fc31c827a9107c173beb506a54",
     "refreshed_previews": [
       "report_ui_overview.png",
       "report_ui_review.png",
@@ -183,14 +184,15 @@
       "report_ui_frame.png": "6100235f4b20c91ea1d5d2994724c0049c7eeb47f5358208c2ebe86cf5a5b3c5",
       "report_ui_live.png": "d56eb0a71e5c0c8abf6c26407b9b3bafd75ed0bcbaa283f4f9685e97d7637433",
       "report_ui_mobile.png": "dd03899c05ddae3a8a3e4e013d495b617570becf2a4c9c753636d479e4015298",
-      "review_queue_preview.png": "d237c4dfeae68bace9420ca185fe10654e832d4b4e02c8d9e1540d0095a5d07e"
+      "review_queue_preview.png": "73784f698a3823ed55c934323a59b5f79f5ebc8ebc25f71160ac6e632a838617"
     },
     "emphasis_previews_refreshed": [
       "report_ui_overview.png",
       "report_ui_review.png",
       "report_ui_live.png",
       "report_ui_mobile.png"
-    ]
+    ],
+    "queue_preview_refreshed": "Full team names and plain-language situation/result cards."
   },
   "receiver_movement_and_situation": {
     "replays_checked": 52,
@@ -259,7 +261,7 @@
     ],
     "limitations": "Descriptive tracking cue; no proof of an available or missed pass, no ball-flight model and no football mentor validation."
   },
-  "verification_scope": "Top-level checks, plain_play_explanation, coaching_review_workflow, failed_third_down_review and image_freshness describe the current build. Other named UI blocks are historical release records.",
+  "verification_scope": "Top-level checks, plain_queue_cards, plain_play_explanation, coaching_review_workflow, failed_third_down_review and image_freshness describe the current build. Other named UI blocks are historical release records.",
   "failed_third_down_review": {
     "counts": {
       "eligible_failed_routes": 3510,
@@ -318,5 +320,19 @@
       "wording": "All 92 summaries exactly match the prior wording; copy and accessible descriptions retain plain text.",
       "browser_checks": "Incomplete, intercepted and short-completion emphasis verified; no overflow at 1280x720 and 390x844; no console errors."
     }
+  },
+  "plain_queue_cards": {
+    "heading": "Full attacking-team name.",
+    "situation": "They needed X yard(s) on their third attempt. Required yards emphasized in blue.",
+    "result": "Plain sentences for an uncaught pass, opponent possession, catch short of target, zero gain or loss. Amber result text.",
+    "checks": [
+      "92 result summaries checked for missing values",
+      "50 distinct cards retained",
+      "George Kittle filter gives one card, explains 1 yard short and opens the correct replay",
+      "Clear restores 50 cards",
+      "1280x900 and 390x844 show no horizontal overflow",
+      "No console errors"
+    ],
+    "data": "Queue selections, underlying metrics and replay data unchanged."
   }
 }
