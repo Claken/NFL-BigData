@@ -103,7 +103,19 @@ canvas { display: block; width: 100%; height: auto; aspect-ratio: 2.35; }
 #play::before { content: '▶'; font-size: 9px; margin-right: 6px; }
 #play[data-playing="true"]::before { content: 'Ⅱ'; }
 #reset { font-size: 18px; padding: 3px 12px; }
-.controls input { flex: 1; min-width: 60px; accent-color: var(--green); cursor: pointer; }
+/* Preserve the original native slider; only its projected track is replaced by dots. */
+.scrub-track { flex: 1; min-width: 60px; position: relative; height: 38px; display: flex; align-items: center; --recorded-end: 100%; --recorded-offset: -8px; --played-position: 0%; --thumb-offset: 8px; --played-tail: 0%; }
+.scrub-rail { position: absolute; inset: 50% 8px auto; height: 10px; transform: translateY(-50%); pointer-events: none; }
+.scrub-projected { position: absolute; inset: 0 0 0 var(--recorded-end); background: radial-gradient(circle, #858b82 3px, transparent 3.5px) 0 50% / 13px 10px repeat-x; }
+.scrub-projected-fill { display: block; height: 100%; width: var(--played-tail); background: radial-gradient(circle, var(--green) 3px, transparent 3.5px) 0 50% / 13px 10px repeat-x; }
+.scrub-track input { position: relative; margin: 0; width: 100%; min-width: 0; accent-color: var(--green); cursor: pointer;
+  mask-image: linear-gradient(to right, #000 calc(var(--recorded-end) + var(--recorded-offset)), transparent 0), radial-gradient(circle 10px at calc(var(--played-position) + var(--thumb-offset)) 50%, #000 9px, transparent 10px);
+  mask-composite: add;
+}
+.scrub-track[data-has-projection="false"] input { mask-image: none; }
+.scrub-track:focus-within { outline: 3px solid var(--blue); outline-offset: 4px; }
+.scrub-track input:focus-visible { outline: none; }
+.scrub-track input:disabled { cursor: wait; }
 .controls output { min-width: 86px; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; text-align: right; }
 .legend { display: flex; flex-wrap: wrap; gap: 7px 14px; font-size: 10px; color: var(--muted); }
 .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 4px; }
@@ -359,9 +371,9 @@ kbd { padding: 3px 6px; border: 1px solid var(--line); border-radius: 4px; font-
         <p id="flightComparison"></p>
         <p id="flightLimit">The cone covers assumed ball paths up to this time (±20% speed, ±15° direction). Green: receiver continues straight. Other players stay at their last recorded positions. <b>Landing time is unknown; this is not a landing prediction.</b></p>
       </section>
-      <div class="controls"><button id="play" class="primary" aria-label="Play replay" disabled>Play</button><button id="reset" aria-label="Restart replay" disabled>↺</button><input id="scrub" type="range" min="0" value="0" step="0.01" aria-label="Replay frame" aria-describedby="playbackStatus" disabled><output id="clock" aria-label="Replay time"></output></div>
+      <div class="controls"><button id="play" class="primary" aria-label="Play replay" disabled>Play</button><button id="reset" aria-label="Restart replay" disabled>↺</button><div id="scrubTrack" class="scrub-track"><div class="scrub-rail" aria-hidden="true"><span class="scrub-projected"><span class="scrub-projected-fill"></span></span></div><input id="scrub" type="range" min="0" value="0" step="0.01" aria-label="Replay frame" aria-describedby="playbackStatus scrubKey" disabled></div><output id="clock" aria-label="Replay time"></output></div>
       <div class="legend"><span><i class="dot receiver-dot"></i>Receiver</span><span><i class="dot thrower-dot"></i>Thrower</span><span><i class="dot teammate-dot"></i>Teammates</span><span><i class="dot opponent-dot"></i>Opponents</span><span><i class="dot ball-dot"></i>Ball</span><span id="lineToGainKey"><i class="gain-line-key"></i><span id="lineToGainLabel">First-down line</span></span></div>
-      <div class="flight-key"><span><i class="path-solid"></i>Solid paths: recorded</span><span><i class="path-dotted"></i>Dotted paths: assumed continuation</span></div>
+      <div class="flight-key" id="scrubKey"><span><i class="path-solid"></i>Solid paths: recorded</span><span><i class="path-dotted"></i>Dotted paths: assumed continuation</span></div>
       <p id="playbackStatus" class="replay-boundary" role="status" aria-live="polite">Replay includes the brief recorded start of ball flight. The landing is not recorded.</p>
     </div>
     <aside class="story-rail" aria-labelledby="storyHeading">
@@ -4515,6 +4527,12 @@ function draw() {
   canvas.dataset.throwerId = current.thrower?.id ?? '';
   canvas.dataset.receiverId = current.route.nflId;
   el('scrub').value = index;
+  const playedFraction = index / playbackEndIndex(current);
+  el('scrubTrack').style.setProperty('--played-position', (playedFraction * 100) + '%');
+  el('scrubTrack').style.setProperty('--thumb-offset', (8 - 16 * playedFraction) + 'px');
+  const tailLength = playbackEndIndex(current) - (allFrames.length - 1);
+  el('scrubTrack').style.setProperty('--played-tail', (tailLength ? Math.max(0, Math.min(100, (index - (allFrames.length - 1)) / tailLength * 100)) : 0) + '%');
+  el('scrubTrack').dataset.phase = projected ? 'projected' : 'recorded';
   el('clock').value = displayTime.toFixed(1) + ' / ' + playbackTime(current, playbackEndIndex(current)).toFixed(1) + ' s';
   const atThrow = index === current.review_cue.throw_frame_index;
   for (const id of ['storyEarlier', 'mobileEarlier']) el(id).setAttribute('aria-pressed', String(index === current.review_cue.earlier_frame_index));
@@ -4611,6 +4629,10 @@ async function loadReplay(id, scroll = false) {
   el('description').textContent = r.playDescription;
   el('releaseSource').textContent = r.release_source;
   el('scrub').max = playbackEndIndex(current);
+  const recordedEnd = recordedFrames(current).length - 1, replayEnd = playbackEndIndex(current);
+  el('scrubTrack').style.setProperty('--recorded-end', (recordedEnd / replayEnd * 100) + '%');
+  el('scrubTrack').style.setProperty('--recorded-offset', (8 - 16 * recordedEnd / replayEnd) + 'px');
+  el('scrubTrack').dataset.hasProjection = String(recordedEnd < replayEnd);
   lastTimelinePosition = null;
   el('flightReview').disabled = !current.post_release?.frames.length;
   flightHorizon = 0;

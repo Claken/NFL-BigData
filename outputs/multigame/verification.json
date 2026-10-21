@@ -19,7 +19,8 @@
     "End reaches projection endpoint and the slider right edge; earlier/throw buttons restore correct measured frames",
     "Insufficient-sample Albert Wilson play shows recorded motion without a projection",
     "1280x720 and 390x844 have no horizontal overflow; phone uses the same single timeline",
-    "No browser console errors"
+    "No browser console errors",
+    "Original native slider styling preserved; projected tail dotted; pointer/keyboard and solid-only fallback verified"
   ],
   "browser_preview": "review_queue_preview.png",
   "offline_limit": "All replay data and assets embedded; network-disabled browser mode not tested.",
@@ -162,7 +163,7 @@
   "image_freshness": {
     "checked_date": "2026-10-21",
     "capture_url": "http://127.0.0.1:8776/report.html (reviewed production candidate)",
-    "report_sha256": "85ea774708c36b9229fa8dcb0922d425f1d75103ffb08a25e0eb6b7be857bfe1",
+    "report_sha256": "0189fc31b3e9748b5afbc4d006ff1e57e196f3b7c0826494801c859d007cd7ad",
     "refreshed_previews": [
       "report_ui_overview.png",
       "report_ui_review.png",
@@ -178,15 +179,15 @@
     "matched_pair_png": "Fresh report build in the existing project environment produced a byte-identical chart (SHA-256 403a62f1b8223c308676fb9a1d8f6c9aed75db4a2d55189c33ec76a457ce4a95).",
     "legacy_chart": "outputs/separation.png is the separately documented original one-game audit, not a multigame report screenshot.",
     "screenshots": {
-      "report_ui_overview.png": "cc1fec0041272a0d3c81dba4fd59b66d84ac9bef7cc06a4ae11da8ae15226873",
-      "report_ui_review.png": "e18edac99cbb3d842a9acc685b6764f5f9f2c79f0aef70e27f443fb7b2162f68",
-      "report_ui_context.png": "49c71b209c0697b3e93e36e3dd1924c2d629851727ab60cb4dfc96e37aa87b94",
-      "report_ui_frame.png": "93b5ce0af0d3018eda1ce55884d5f09a66c3fb9f7c57347f1daeabfae2a7039a",
-      "report_ui_live.png": "cc1fec0041272a0d3c81dba4fd59b66d84ac9bef7cc06a4ae11da8ae15226873",
+      "report_ui_overview.png": "83156e1fa354ec0c0b69110d4e93f9d42da881fddd8efb50acf7e7111fb547b7",
+      "report_ui_review.png": "feb379096a179ca5e1e38ea6114160e57c7bbeab263ef634d262fccfc1c3b0c6",
+      "report_ui_context.png": "d03772628564613cc83ae0d6410852b7801f0b9bc2eea13998948272dcb96ef0",
+      "report_ui_frame.png": "f93bd09eead3aeeceed8a139aa1d01d440c91fa9c7f6c3e6e07a5957cc1f0607",
+      "report_ui_live.png": "83156e1fa354ec0c0b69110d4e93f9d42da881fddd8efb50acf7e7111fb547b7",
       "report_ui_mobile.png": "105c21896f68247f90632a976d20943c1e74339d2e0798563702f75b3241eebe",
-      "review_queue_preview.png": "596c32f808023effb71f2000e736ceb5589482438f2b44c041b100a0b834ffc4",
-      "report_ui_flight.png": "0e7a6cd5d97209db8430c73e70dfe5f35682787e11bfa997c81b74d68f12eb39",
-      "report_ui_flight_mobile.png": "ca336e27a6344d46eb0659f872a237d0367895da5606d568ab45071e8270d41d"
+      "review_queue_preview.png": "961f7ab33552b6399f55db9741f315f2c3d9a96131f3cee89c3fab2a18659d82",
+      "report_ui_flight.png": "b18e73d5504d372ff80206e2bf094d01dba7db198d1cffff2750a83f995f12c8",
+      "report_ui_flight_mobile.png": "7c21f55abc4d5c55cb59d5aafb37111b65d986d6b4b861295e19ed561095116f"
     },
     "emphasis_previews_refreshed": [
       "report_ui_overview.png",
@@ -263,7 +264,7 @@
     ],
     "limitations": "Descriptive tracking cue; no proof of an available or missed pass, no ball-flight model and no football mentor validation."
   },
-  "verification_scope": "Top-level checks, post_release_projection, plain_queue_cards, plain_play_explanation, coaching_review_workflow, failed_third_down_review and image_freshness describe the current build. Other named UI blocks are historical release records.",
+  "verification_scope": "Top-level checks, scrubber_representation, post_release_projection, plain_queue_cards, plain_play_explanation, coaching_review_workflow, failed_third_down_review and image_freshness describe the current build. Other named UI blocks are historical release records.",
   "failed_third_down_review": {
     "counts": {
       "eligible_failed_routes": 3510,
@@ -373,5 +374,17 @@
       ]
     ],
     "console_errors": 0
+  },
+  "scrubber_representation": {
+    "style": "Original native range appearance, green accent, native fill/track/thumb retained. Only the projected portion is masked and drawn as matching dots.",
+    "boundary": "Last recorded sample, not the throw: 37/53 = 69.8113 percent on the Schwartz example.",
+    "fallback": "Albert Wilson has 100 percent recorded track, no dots, and no input mask.",
+    "checks": [
+      "Computed native appearance is auto, accent remains rgb(192, 238, 121)",
+      "Pointer click on dotted tail selects projection at 4.6/5.3 s",
+      "Keyboard End reaches the right endpoint; mobile has no horizontal overflow",
+      "One accessible native range input retained; no extra slider or changed playback geometry",
+      "No console errors"
+    ]
   }
 }

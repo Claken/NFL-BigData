@@ -436,6 +436,12 @@ function draw() {
   canvas.dataset.throwerId = current.thrower?.id ?? '';
   canvas.dataset.receiverId = current.route.nflId;
   el('scrub').value = index;
+  const playedFraction = index / playbackEndIndex(current);
+  el('scrubTrack').style.setProperty('--played-position', (playedFraction * 100) + '%');
+  el('scrubTrack').style.setProperty('--thumb-offset', (8 - 16 * playedFraction) + 'px');
+  const tailLength = playbackEndIndex(current) - (allFrames.length - 1);
+  el('scrubTrack').style.setProperty('--played-tail', (tailLength ? Math.max(0, Math.min(100, (index - (allFrames.length - 1)) / tailLength * 100)) : 0) + '%');
+  el('scrubTrack').dataset.phase = projected ? 'projected' : 'recorded';
   el('clock').value = displayTime.toFixed(1) + ' / ' + playbackTime(current, playbackEndIndex(current)).toFixed(1) + ' s';
   const atThrow = index === current.review_cue.throw_frame_index;
   for (const id of ['storyEarlier', 'mobileEarlier']) el(id).setAttribute('aria-pressed', String(index === current.review_cue.earlier_frame_index));
@@ -532,6 +538,10 @@ async function loadReplay(id, scroll = false) {
   el('description').textContent = r.playDescription;
   el('releaseSource').textContent = r.release_source;
   el('scrub').max = playbackEndIndex(current);
+  const recordedEnd = recordedFrames(current).length - 1, replayEnd = playbackEndIndex(current);
+  el('scrubTrack').style.setProperty('--recorded-end', (recordedEnd / replayEnd * 100) + '%');
+  el('scrubTrack').style.setProperty('--recorded-offset', (8 - 16 * recordedEnd / replayEnd) + 'px');
+  el('scrubTrack').dataset.hasProjection = String(recordedEnd < replayEnd);
   lastTimelinePosition = null;
   el('flightReview').disabled = !current.post_release?.frames.length;
   flightHorizon = 0;
