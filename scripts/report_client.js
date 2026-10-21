@@ -10,10 +10,66 @@ const plotConfig = {
   responsive: true, displaylogo: false,
   modeBarButtonsToRemove: ['sendDataToCloud', 'select2d', 'lasso2d']
 };
-const chartFont = { family: '-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif', size: 14, color: '#365262' };
+const chartFont = { family: '-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif', size: 12, color: '#a3b1aa' };
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let index = 0, timer = null, current = null, loadVersion = 0, loading = false, fieldView = 'fit';
 const fieldBounds = new Map();
+
+function setStory(replay) {
+  const cue = replay.review_cue, r = replay.route;
+  const earlier = replay.frames[cue.earlier_frame_index], thrown = replay.frames[cue.throw_frame_index];
+  const review = replay.frames[cue.review_frame_index];
+  el('storyHeading').innerText = cue.has_window ? 'Space earlier.\nTight at the throw.' : 'Same receiver.\nDifferent history.';
+  el('earlierLabel').textContent = cue.has_window ? 'Earlier space' : 'Earlier view';
+  el('earlierGap').textContent = earlier.separation.toFixed(2) + ' yd';
+  el('earlierTime').textContent = earlier.t.toFixed(1) + ' s after snap';
+  el('throwTime').textContent = thrown.t.toFixed(1) + ' s after snap';
+  el('reviewActionTitle').textContent = cue.has_window ? 'Start film at ' + review.t.toFixed(1) + ' s' : 'Review the full route';
+  el('reviewQuestion').textContent = cue.has_window ? 'Check the passing lane and quarterback timing.' :
+    'No lasting earlier gap meets the rules. What limited the space?';
+  el('reviewMoment').textContent = cue.has_window ? '↶ Jump to the window' : '↶ Watch from the start';
+  el('reviewCueText').value = r.displayName + ' · ' + r.possessionTeam + ' · Week ' + r.week +
+    '\nGame ' + r.gameId + ' · Play ' + r.playId + '\n' + el('downDistance').textContent +
+    '\nReview from ' + review.t.toFixed(1) + ' s after snap. Throw at ' + thrown.t.toFixed(1) + ' s.' +
+    (cue.has_window ? '\nEarlier gap: ' + r.longest_2_0.toFixed(1) + ' s under the spacing rules. Check passing lane and quarterback timing.' :
+      '\nNo qualifying earlier gap. Review what limited the space.') +
+    '\nTracking cue only; not proof of an available or missed pass.';
+  el('cueStatus').textContent = '';
+}
+
+function jumpToFrame(frameIndex) {
+  if (!current || loading) return;
+  stop(); index = frameIndex; draw();
+}
+el('storyEarlier').onclick = () => jumpToFrame(current.review_cue.earlier_frame_index);
+el('storyThrow').onclick = () => jumpToFrame(current.review_cue.throw_frame_index);
+el('reviewMoment').onclick = () => jumpToFrame(current.review_cue.review_frame_index);
+el('copyCue').onclick = async () => {
+  try {
+    await navigator.clipboard.writeText(el('reviewCueText').value);
+    el('cueStatus').textContent = 'Film-review cue copied.';
+  } catch {
+    el('reviewCueText').closest('details').open = true;
+    el('reviewCueText').focus(); el('reviewCueText').select();
+    el('cueStatus').textContent = 'Select and copy the cue below.';
+  }
+};
+
+function revealSection(hash) {
+  const target = document.getElementById(hash.replace(/^#/, ''));
+  if (!target) return;
+  for (let node = target.parentElement; node; node = node.parentElement) {
+    if (node.tagName === 'DETAILS') node.open = true;
+  }
+  requestAnimationFrame(() => target.scrollIntoView({ block: 'start', behavior: 'instant' }));
+}
+document.querySelectorAll('a[href^="#"]').forEach(link => link.addEventListener('click', () => revealSection(link.hash)));
+window.addEventListener('hashchange', () => revealSection(location.hash));
+for (const id of ['queueDrawer', 'evidenceDrawer']) el(id).addEventListener('toggle', () => {
+  if (el(id).open) requestAnimationFrame(() => {
+    for (const chart of ['timeline', 'scatter']) if (el(chart).data) Plotly.Plots.resize(el(chart));
+  });
+});
 
 function table(headers, rows) {
   const t = document.createElement('table'), head = document.createElement('tr');
@@ -134,27 +190,36 @@ function draw() {
   ctx.clearRect(0, 0, W, H); ctx.save();
   ctx.beginPath(); ctx.rect(ox, oy, (b.x1 - b.x0) * scale, (b.y1 - b.y0) * scale); ctx.clip();
   const [fieldLeft, fieldTop] = xy({ x: 0, y: 160 / 3 });
-  ctx.fillStyle = '#edf5ed'; ctx.fillRect(fieldLeft, fieldTop, 120 * scale, (160 / 3) * scale);
-  ctx.fillStyle = '#dce9e1'; ctx.fillRect(fieldLeft, fieldTop, 10 * scale, (160 / 3) * scale);
+  ctx.fillStyle = '#204f32'; ctx.fillRect(fieldLeft, fieldTop, 120 * scale, (160 / 3) * scale);
+  for (let x = 10; x < 110; x += 5) {
+    ctx.fillStyle = (x / 5) % 2 ? '#244f32' : '#285737';
+    ctx.fillRect(fieldLeft + x * scale, fieldTop, 5 * scale, (160 / 3) * scale);
+  }
+  ctx.fillStyle = '#183e29'; ctx.fillRect(fieldLeft, fieldTop, 10 * scale, (160 / 3) * scale);
   ctx.fillRect(fieldLeft + 110 * scale, fieldTop, 10 * scale, (160 / 3) * scale);
-  ctx.strokeStyle = '#a9c2ab'; ctx.lineWidth = 1;
-  for (let x = 0; x <= 120; x += 10) {
+  ctx.strokeStyle = '#d6e5c34a'; ctx.lineWidth = 1;
+  for (let x = 0; x <= 120; x += 5) {
     const [px, py] = xy({ x, y: 160 / 3 }), [, bottom] = xy({ x, y: 0 });
     ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px, bottom); ctx.stroke();
   }
+  ctx.strokeStyle = '#d6e5c35c';
+  for (let x = 11; x < 110; x++) for (const y of [1, 23.58, 29.75, 52.33]) {
+    const [px, py] = xy({ x, y });
+    ctx.beginPath(); ctx.moveTo(px, py - .22 * scale); ctx.lineTo(px, py + .22 * scale); ctx.stroke();
+  }
   ctx.strokeRect(fieldLeft, fieldTop, 120 * scale, (160 / 3) * scale);
-  ctx.strokeStyle = '#718494'; ctx.setLineDash([5, 4]); ctx.beginPath();
+  ctx.strokeStyle = '#e9e6cb90'; ctx.setLineDash([5, 4]); ctx.beginPath();
   const [lineX, lineTop] = xy({ x: current.line_of_scrimmage, y: 160 / 3 });
   ctx.moveTo(lineX, lineTop); ctx.lineTo(lineX, xy({ x: 0, y: 0 })[1]); ctx.stroke(); ctx.setLineDash([]);
   const gainLine = current.situation.line_to_gain;
   if (gainLine != null) {
     const [gainX, gainTop] = xy({ x: gainLine, y: 160 / 3 });
-    ctx.strokeStyle = '#216db3'; ctx.lineWidth = 2; ctx.setLineDash([8, 5]); ctx.beginPath();
+    ctx.strokeStyle = '#78cfff'; ctx.lineWidth = 2; ctx.setLineDash([8, 5]); ctx.beginPath();
     ctx.moveTo(gainX, gainTop); ctx.lineTo(gainX, xy({ x: 0, y: 0 })[1]); ctx.stroke(); ctx.setLineDash([]);
   }
-  ctx.strokeStyle = '#17744970'; ctx.lineWidth = 2; ctx.beginPath();
-  current.frames.forEach((p, i) => { const [x, y] = xy(p); if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); }); ctx.stroke();
-  ctx.strokeStyle = '#177449'; ctx.lineWidth = 3; ctx.beginPath();
+  ctx.strokeStyle = '#c0ee7955'; ctx.lineWidth = 2; ctx.setLineDash([4, 4]); ctx.beginPath();
+  current.frames.slice(0, index + 1).forEach((p, i) => { const [x, y] = xy(p); if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); }); ctx.stroke(); ctx.setLineDash([]);
+  ctx.strokeStyle = '#c0ee79'; ctx.lineWidth = 3; ctx.beginPath();
   current.frames.slice(Math.max(0, index - 10), index + 1).forEach((p, i) => {
     const [x, y] = xy(p); if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
   }); ctx.stroke();
@@ -163,26 +228,29 @@ function draw() {
   const nearest = f.players.find(p => p.id === f.nearest);
   if (receiver && nearest) {
     const [x1, y1] = xy(receiver), [x2, y2] = xy(nearest);
-    ctx.strokeStyle = '#bb861e'; ctx.lineWidth = 3; ctx.beginPath();
+    ctx.strokeStyle = '#e6bc70'; ctx.lineWidth = 3; ctx.beginPath();
     ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
-    ctx.beginPath(); ctx.arc(x1, y1, 2 * scale, 0, 2 * Math.PI); ctx.lineWidth = 1; ctx.stroke();
+    ctx.fillStyle = '#c0ee791a'; ctx.beginPath(); ctx.arc(x1, y1, 2 * scale, 0, 2 * Math.PI); ctx.fill(); ctx.lineWidth = 1; ctx.stroke();
   }
   f.players.forEach(p => {
     const [x, y] = xy(p), active = p.id === current.route.nflId, passing = p.id === current.thrower?.id;
-    ctx.beginPath(); ctx.arc(x, y, active ? 12 : passing ? 11 : p.side === 'ball' ? 4 : 9, 0, Math.PI * 2);
-    ctx.fillStyle = active ? '#177449' : passing ? '#7351a3' : p.side === 'offense' ? '#1769a6' : p.side === 'defense' ? '#c65332' : '#704d22';
-    ctx.fill(); ctx.strokeStyle = 'white'; ctx.lineWidth = 1; ctx.stroke();
-    if (active || passing) { ctx.strokeStyle = active ? '#174b35' : '#533579'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 15, 0, Math.PI * 2); ctx.stroke(); }
-    if (p.side !== 'ball') { ctx.fillStyle = 'white'; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center'; ctx.fillText(p.label, x, y + 4); }
+    const focused = active || passing || p.id === f.nearest || p.side === 'ball';
+    ctx.globalAlpha = focused ? 1 : .66;
+    ctx.beginPath(); ctx.arc(x, y, active ? 13 : passing ? 11 : p.side === 'ball' ? 4 : 9, 0, Math.PI * 2);
+    ctx.fillStyle = active ? '#c0ee79' : passing ? '#ba9bec' : p.side === 'offense' ? '#8bb9d1' : p.side === 'defense' ? '#eb9d7d' : '#e6bc70';
+    ctx.fill(); ctx.strokeStyle = '#eff2d8'; ctx.lineWidth = 1; ctx.stroke();
+    if (active || passing) { ctx.strokeStyle = active ? '#c0ee79' : '#ba9bec'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 17, 0, Math.PI * 2); ctx.stroke(); }
+    if (p.side !== 'ball') { ctx.fillStyle = '#102117'; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center'; ctx.fillText(p.label, x, y + 4); }
+    ctx.globalAlpha = 1;
   });
-  ctx.restore(); ctx.textAlign = 'center'; ctx.fillStyle = '#4c6956'; ctx.font = '12px system-ui';
+  ctx.restore(); ctx.textAlign = 'center'; ctx.fillStyle = '#e5ebc9b0'; ctx.font = 'bold 16px system-ui';
   for (let x = 20; x <= 100; x += 10) {
     const [px] = xy({ x, y: 0 });
     if (px > pad && px < W - pad) ctx.fillText(String(Math.min(x - 10, 110 - x)), px, H - oy + 17);
   }
   ctx.save(); ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
   const labels = [];
-  for (const [player, role, color, offset] of [[thrower, 'Thrower', '#7351a3', 20], [receiver, 'Receiver', '#177449', -38]]) {
+  for (const [player, role, color, offset] of [[thrower, 'Thrower', '#ba9bec', 22], [receiver, 'Receiver', '#c0ee79', -40]]) {
     if (!player) continue;
     const [px, py] = xy(player), label = role + (player.label ? ' #' + player.label : '');
     const width = Math.ceil(ctx.measureText(label).width) + 14;
@@ -196,7 +264,7 @@ function draw() {
     labels.push({ x, y, width });
     ctx.strokeStyle = color; ctx.lineWidth = 1; ctx.beginPath();
     ctx.moveTo(px, py); ctx.lineTo(x + width / 2, y + 11); ctx.stroke();
-    ctx.fillStyle = '#ffffffed'; ctx.fillRect(x, y, width, 22); ctx.strokeRect(x, y, width, 22);
+    ctx.fillStyle = '#102719f5'; ctx.fillRect(x, y, width, 22); ctx.strokeRect(x, y, width, 22);
     ctx.fillStyle = color; ctx.fillText(label, x + 7, y + 11);
   }
   ctx.restore();
@@ -205,6 +273,8 @@ function draw() {
   el('scrub').value = index;
   el('clock').value = f.t.toFixed(1) + ' / ' + current.route.observed_seconds.toFixed(1) + ' s';
   const atThrow = index === current.frames.length - 1;
+  el('storyEarlier').setAttribute('aria-pressed', String(index === current.review_cue.earlier_frame_index));
+  el('storyThrow').setAttribute('aria-pressed', String(atThrow));
   const playbackStatus = atThrow ? 'Throw — replay ends before ball flight.' :
     'Replay stops at the throw, before ball flight.';
   if (el('playbackStatus').textContent !== playbackStatus) el('playbackStatus').textContent = playbackStatus;
@@ -216,7 +286,7 @@ function draw() {
     el('play').setAttribute('aria-label', atThrow ? 'Replay from play start' : 'Play replay');
   }
   const valid = f.t >= 1 && f.t <= current.route.observed_seconds - .3 + 1e-8 && f.downfield >= 2;
-  el('nearestReadout').textContent = f.separation.toFixed(2) + ' yd to closest opponent: ' + (nearest ? nearest.name : 'unknown');
+  el('nearestReadout').textContent = f.separation.toFixed(2) + ' yd gap · ' + (nearest ? nearest.name : 'unknown');
   el('gateStatus').textContent = !valid ? 'This moment is not counted' :
     f.separation > 2 ? 'Gap above 2 yards at this moment' : 'Opponent within 2 yards';
   el('gateStatus').dataset.eligible = String(valid && f.separation > 2);
@@ -259,7 +329,7 @@ async function loadReplay(id, scroll = false) {
   const version = ++loadVersion;
   stop(); loading = true;
   for (const control of ['play', 'reset', 'scrub']) el(control).disabled = true;
-  current = replays.get(id); index = current.initial_frame_index;
+  current = replays.get(id); index = current.review_cue.earlier_frame_index;
   const r = current.route, queued = queueById.get(id);
   const situation = current.situation, downName = { 1: '1st', 2: '2nd', 3: '3rd', 4: '4th' }[situation.down];
   const distance = situation.yards_to_go;
@@ -270,6 +340,7 @@ async function loadReplay(id, scroll = false) {
     (situation.goal_to_go ? ' to the goal line' : ' for a new set of downs');
   el('lineToGainLabel').textContent = situation.goal_to_go ? 'Goal line' : 'First-down line';
   el('lineToGainKey').hidden = situation.line_to_gain == null;
+  setStory(current);
   for (let i = 0; i < 2; i++) el('example' + i).setAttribute('aria-pressed', String(id === model.exampleIds[i]));
   const receiver = current.frames[0].players.find(p => p.id === r.nflId);
   el('selectedName').textContent = r.displayName + (receiver?.label ? ' #' + receiver.label : '');
@@ -300,29 +371,29 @@ async function loadReplay(id, scroll = false) {
     ' s (' + w.duration_seconds.toFixed(1) + ' s)').join('; ') + ' after the play starts.' : 'No lasting earlier gap meets all five rules.';
   renderQueue();
   const shapes = [
-    { type: 'line', x0: 0, x1: 0, y0: 0, y1: 1, yref: 'paper', line: { color: '#202e39', width: 2 } },
-    { type: 'line', x0: 0, x1: r.observed_seconds, y0: 2, y1: 2, line: { color: '#777', dash: 'dash' } },
+    { type: 'line', x0: 0, x1: 0, y0: 0, y1: 1, yref: 'paper', line: { color: '#f2f0e6', width: 2 } },
+    { type: 'line', x0: 0, x1: r.observed_seconds, y0: 2, y1: 2, line: { color: '#899a82', dash: 'dash' } },
     { type: 'rect', x0: 0, x1: 1, y0: 0, y1: 1, yref: 'paper', fillcolor: '#ddd', opacity: .35, line: { width: 0 }, layer: 'below' },
     { type: 'rect', x0: r.observed_seconds - .3, x1: r.observed_seconds, y0: 0, y1: 1, yref: 'paper', fillcolor: '#ddd', opacity: .35, line: { width: 0 }, layer: 'below' }
   ];
   sustained.forEach(w => shapes.push({ type: 'rect', x0: (w.start_frame - r.snap) / 10,
-    x1: (w.end_frame - r.snap) / 10, y0: 0, y1: 1, yref: 'paper', fillcolor: '#39a86a',
+    x1: (w.end_frame - r.snap) / 10, y0: 0, y1: 1, yref: 'paper', fillcolor: '#c0ee79',
     opacity: .2, line: { width: 0 }, layer: 'below' }));
   const replay = current;
   await Plotly.react('timeline', [
     { x: replay.frames.map(f => f.t), y: replay.frames.map(f => f.separation), mode: 'lines+markers',
-      marker: { size: 4 }, line: { color: '#1769a6' }, name: 'Nearest-defender spacing',
+      marker: { size: 4 }, line: { color: '#c0ee79' }, name: 'Nearest-defender spacing',
       hovertemplate: '%{x:.1f} s · %{y:.2f} yd<extra></extra>' },
     { x: [r.observed_seconds], y: [r.release_separation], mode: 'markers',
-      marker: { color: '#c44a36', size: 10 }, name: 'Throw · replay ends' }
-    ], { margin: { l: 63, r: 16, t: 22, b: 55 }, font: chartFont,
-    xaxis: { title: { text: 'Seconds since the play starts', font: { size: 14 } }, range: [0, r.observed_seconds + .1],
-      tickfont: { size: 13 }, gridcolor: '#e5ecef', zeroline: false, automargin: true },
-    yaxis: { title: { text: 'Gap to closest opponent (yd)', font: { size: 14 } }, rangemode: 'tozero',
-      tickfont: { size: 13 }, gridcolor: '#e5ecef', zeroline: false, automargin: true }, shapes,
+      marker: { color: '#e6bc70', size: 9 }, name: 'Throw · replay ends' }
+    ], { margin: { l: 34, r: 24, t: 12, b: 32 }, font: chartFont,
+    xaxis: { title: { text: 'Seconds after snap', font: { size: 10 } }, range: [0, r.observed_seconds + .1],
+      tickfont: { size: 10 }, gridcolor: '#304239', zeroline: false, automargin: true },
+    yaxis: { title: { text: 'yd', font: { size: 10 } }, rangemode: 'tozero',
+      tickfont: { size: 10 }, gridcolor: '#304239', zeroline: false, automargin: true }, shapes,
     annotations: [{ x: 1, xref: 'paper', y: 2, text: '2 yd', showarrow: false,
-      yanchor: 'bottom', xanchor: 'right', font: { size: 13, color: '#526571' }, bgcolor: '#ffffffdd' }],
-    showlegend: false, paper_bgcolor: 'white', plot_bgcolor: 'white' }, plotConfig);
+      yanchor: 'bottom', xanchor: 'right', font: { size: 10, color: '#a3b1aa' }, bgcolor: '#0c1512' }],
+    showlegend: false, paper_bgcolor: '#0c1512', plot_bgcolor: '#0c1512' }, { ...plotConfig, displayModeBar: false });
   if (version !== loadVersion) return;
   loading = false;
   for (const control of ['play', 'reset', 'scrub']) el(control).disabled = false;
@@ -376,12 +447,12 @@ examples.forEach((e, i) => traces.push({ x: [e.route.release_separation], y: [e.
   hovertemplate: 'Play ' + e.route.playId + '<br>Release %{x:.2f} yd · Earlier window %{y:.1f} s<extra></extra>' }));
 Plotly.newPlot('scatter', traces, { margin: { l: 70, r: 22, t: 25, b: 105 },
   xaxis: { title: { text: 'Spacing at release (yd)', font: { size: 15 } },
-    tickfont: { size: 13 }, gridcolor: '#e5ecef', automargin: true },
+    tickfont: { size: 10 }, gridcolor: '#304239', automargin: true },
   yaxis: { title: { text: 'Earlier window (s)', font: { size: 15 } }, rangemode: 'tozero',
-    tickfont: { size: 13 }, gridcolor: '#e5ecef', automargin: true },
+    tickfont: { size: 10 }, gridcolor: '#304239', automargin: true },
   legend: { orientation: 'h', y: -.25, font: { size: 13 } },
   shapes: [{ type: 'line', x0: 2, x1: 2, y0: 0, y1: 1, yref: 'paper', line: { color: '#999', dash: 'dot' } }],
-  font: chartFont, paper_bgcolor: 'white', plot_bgcolor: 'white',
+  font: chartFont, paper_bgcolor: '#0c1512', plot_bgcolor: '#0c1512',
 }, plotConfig).then(() => el('scatter').on('plotly_click', e => {
   const p = e.points[0]; if (p.data.customdata) loadReplay(p.data.customdata[p.pointIndex], true);
 }));
@@ -406,3 +477,5 @@ const note = document.createElement('p'); note.className = 'sub';
 note.textContent = 'Non-pass outcomes and invalid segments are counted per play; receiver/observation exclusions per route. These mixed-unit counts must not be added into a single attrition percentage.';
 el('eventDetails').append(note); el('commit').textContent = st.source_commit;
 loadReplay(model.exampleIds[0]);
+
+if (location.hash) revealSection(location.hash);

@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/nfl-player-mascot.png" alt="NFL Buddy mascot: an 8-bit football player with a football and computer" width="240">
+
 # NFL Buddy 
 
 ### Receiver spacing over time, built for NFL film review.

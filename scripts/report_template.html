@@ -3,92 +3,58 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Was there more space before the throw? · NFL receiver spacing</title>
+<title>NFL Buddy · Rewind to the gap</title>
 <style>__STYLES__</style>
 </head>
 <body>
-<a class="skip-link" href="#replaySection">Skip to the examples</a>
-<div class="topbar">
-  <div class="topbar-inner">
-    <a class="brand" href="#overview"><img class="brand-mark" src="__MASCOT__" alt="" width="60" height="40">NFL Buddy</a>
-    <nav class="section-nav" aria-label="Report sections">
-      <a href="#overview">Finding</a><a href="#replaySection">Try it</a><a href="#comparison">Evidence</a><a href="#methodology">Method</a><a href="#downloads">Downloads</a>
-    </nav>
-  </div>
-</div>
+<a class="skip-link" href="#replaySection">Skip to the field</a>
+<header class="topbar"><div class="topbar-inner">
+  <a class="brand" href="#overview"><img class="brand-mark" src="__MASCOT__" alt="" width="48" height="32">NFL BUDDY<span class="brand-divider">/</span><span class="brand-sub">THE TIMING ROOM</span></a>
+  <nav class="section-nav" aria-label="Report sections"><a href="#replaySection">The play</a><a href="#reviewQueue">Review queue</a><a href="#comparison">Evidence &amp; method</a></nav>
+</div></header>
 <main>
 <header id="overview" class="hero">
-  <div class="hero-copy">
-    <div class="hero-brand"><img class="hero-mascot" src="__MASCOT__" alt="8-bit football player holding a football and using a computer" width="144" height="96"><span>NFL Buddy</span></div>
-    <p class="eyebrow">A film-review tool for coaches &amp; analysts</p>
-    <h1>Was there more space before the throw?</h1>
-    <p class="lead">Find earlier gaps between a receiver—the player trying to catch the ball—and the nearest opponent. Replay those moments to choose plays for video review.</p>
-    <div class="hero-actions"><a class="button-link" href="#replaySection">Compare two plays ↓</a><a href="#comparison">See the evidence</a></div>
-    <div class="sample-strip" aria-label="Analysis sample">
-      <div><b>__GAME_COUNT__</b><span>games</span></div><div><b>__ROUTE_COUNT__</b><span>receiver runs</span></div><div><span>2021 · Weeks 1–8</span></div>
-    </div>
-  </div>
-  <div class="finding" aria-label="Main finding">
-    <p class="eyebrow">About 1 in 3</p>
-    <div class="finding-value">__RATE__</div>
-    <p class="finding-label">of studied runs close at the throw had a lasting gap earlier.</p>
-    <div class="finding-detail"><p><b>__HIDDEN_COUNT__ / __CLOSE_COUNT__ runs</b> · 95% interval: __INTERVAL__</p><p class="sub">Close: ≤2 yards. Earlier gap: &gt;2 yards for ≥0.5 s, with timing and position rules below.</p></div>
-    <p class="finding-limit">Spacing guides video review; it does not prove a pass was available.</p>
-  </div>
+  <div><p class="eyebrow">For coaches &amp; analysts · a film-review starting point</p><h1>Rewind to <em>the gap.</em></h1></div>
+  <p class="hero-intro">See the space before the throw.<br>Take one precise moment back to film.</p>
 </header>
-<div class="quick-help">
-  <details id="footballBasics"><summary>Football terms &amp; units</summary><p>Snap = the play starts. Release = the ball is thrown. A route = one receiver’s run. yd = yards; 2 yards ≈ 1.83 metres. s = seconds.</p><dl class="glossary">
-    <div><dt>Play / route</dt><dd>A play is one action by the teams. A route is one receiver’s run within that play; several receivers can run routes at once.</dd></div>
-    <div><dt>Separation / spacing</dt><dd>The distance from the receiver to the closest defender. The closest defender can change as players move.</dd></div>
-    <div><dt>Window</dt><dd>Here, a stretch of time with a gap above our distance threshold. It does not mean a clear path for throwing the ball.</dd></div>
-    <div><dt>Line of scrimmage / downfield</dt><dd>The line of scrimmage is where the ball starts the play. Downfield means beyond that line, toward the end the offense is attacking.</dd></div>
-    <div><dt>Down &amp; distance</dt><dd>The offense normally has four attempts (downs) to gain 10 yards for a new set. “3rd &amp; 8” means third attempt, with 8 yards still needed. Goal to go means the goal line is the target.</dd></div>
-    <div><dt>Alignment</dt><dd>Where the receiver starts. Wide means near the sideline; Slot means farther inside. HB means halfback and TE means tight end, two player roles.</dd></div>
-    <div><dt>Coverage</dt><dd>The defense’s plan for guarding receivers or areas of the field. Labels such as Cover-1 and Cover-2 identify different plans; you can leave this filter on All.</dd></div>
-    <div><dt>Film review / dropback</dt><dd>Film review means watching game video. A dropback is the quarterback’s movement back to prepare a pass; longer plays allow more time for gaps to appear.</dd></div>
-  </dl></details>
-  <details id="windowRules"><summary>What counts as an earlier gap?</summary><p>All five rules must hold:</p>  <div class="definition-grid">
-    <div><b>More than 2 yards</b><span>from the closest defender (about 1.83 metres)</span></div>
-    <div><b>At least 0.5 seconds</b><span>with that gap continuously</span></div>
-    <div><b>After 1.0 second</b><span>from the start of the play (snap)</span></div>
-    <div><b>At least 2 yards forward</b><span>beyond where the ball started (downfield)</span></div>
-    <div><b>Until 0.3 seconds</b><span>before the ball is thrown (release)</span></div>
+<section id="replaySection" class="replay-panel" tabindex="-1" aria-labelledby="replayHeading">
+  <div class="replay-header">
+    <div><p class="eyebrow" id="replayHeading">Follow the highlighted receiver</p><h2 id="selectedName"></h2><p class="thrower-caption">Thrower <b id="throwerName"></b><span class="situation-row"><b id="downDistance"></b></span></p></div>
+    <div class="example-switch" aria-label="Matched examples"><button id="example0" aria-pressed="true">A · Earlier space</button><button id="example1" aria-pressed="false">B · The contrast</button></div>
   </div>
-</details>
-</div>
-<div class="section-heading">
-  <div><p class="eyebrow">Try it in 20 seconds</p><h2>Similar gap at the throw. Different history.</h2></div>
-</div>
-<div class="workbench">
-<section class="card replay-panel" id="replaySection" tabindex="-1" aria-labelledby="replayHeading">
-  <div class="replay-title"><h2 id="replayHeading">Watch one receiver’s run</h2><a href="#reviewQueue">More plays</a></div>
-  <div class="player-identities" aria-label="Players in this replay">
-    <div class="thrower-identity"><span>Thrower</span><b id="throwerName"></b></div>
-    <div class="receiver-identity"><span>Selected receiver</span><b id="selectedName"></b></div>
+  <p id="loadingStatus" class="loading" role="status">Preparing the field…</p>
+  <div class="story-stage">
+    <div class="pitch-column">
+      <div class="field-surface">
+        <div class="field-toolbar"><span><i class="live-dot"></i>Recorded tracking <span class="field-direction">· offense →</span></span><div class="view-switch" aria-label="Field view"><button id="fitView" aria-pressed="true">Fit play</button><button id="fullView" aria-pressed="false">Full field</button></div></div>
+        <canvas id="field" width="1120" height="600" role="img" aria-label="Football field with the selected receiver highlighted"></canvas>
+        <div class="field-status"><span id="nearestReadout"></span><span class="gate-badge" id="gateStatus"></span></div>
+      </div>
+      <div class="controls"><button id="play" class="primary" aria-label="Play replay" disabled>Play</button><button id="reset" aria-label="Restart replay" disabled>↺</button><input id="scrub" type="range" min="0" value="0" step="1" aria-label="Replay frame" aria-describedby="playbackStatus" disabled><output id="clock" aria-label="Replay time"></output></div>
+      <div class="legend"><span><i class="dot receiver-dot"></i>Receiver</span><span><i class="dot thrower-dot"></i>Thrower</span><span><i class="dot teammate-dot"></i>Teammates</span><span><i class="dot opponent-dot"></i>Opponents</span><span><i class="dot ball-dot"></i>Ball</span><span id="lineToGainKey"><i class="gain-line-key"></i><span id="lineToGainLabel">First-down line</span></span></div>
+      <p id="playbackStatus" class="replay-boundary" role="status" aria-live="polite">Replay ends at the throw. Ball flight is not shown.</p>
+    </div>
+    <aside class="story-rail" aria-labelledby="storyHeading">
+      <p class="eyebrow">One play. Two moments.</p><h3 id="storyHeading">Space earlier.<br>Tight at the throw.</h3>
+      <div class="story-beats">
+        <button id="storyEarlier" class="story-beat" aria-pressed="true"><span class="beat-number">01</span><span><span id="earlierLabel" class="beat-label">Earlier space</span><b id="earlierGap"></b><span id="earlierTime" class="beat-time"></span></span><span class="beat-arrow">↗</span></button>
+        <div class="beat-connector" aria-hidden="true"></div>
+        <button id="storyThrow" class="story-beat" aria-pressed="false"><span class="beat-number">02</span><span><span class="beat-label">At the throw</span><b id="releaseMetric"></b><span id="throwTime" class="beat-time"></span></span><span class="beat-arrow">↘</span></button>
+      </div>
+      <div class="review-action"><p class="eyebrow">03 / Take this to film</p><h4 id="reviewActionTitle"></h4><p id="reviewQuestion"></p><button id="reviewMoment" class="primary"></button><button id="copyCue" class="text-button">Copy film-review cue ↗</button><p id="cueStatus" role="status" aria-live="polite"></p></div>
+      <p class="story-limit">A review cue, not proof of a missed pass.</p>
+      <details class="cue-details"><summary>Game, play &amp; review note</summary><textarea id="reviewCueText" readonly aria-label="Film-review cue" rows="6"></textarea></details>
+    </aside>
   </div>
-  <p class="situation-row"><b id="downDistance"></b><span id="situationHint"></span></p>
-  <div class="example-switch" aria-label="Matched examples"><button id="example0" aria-pressed="true">A · A lasting gap earlier</button><button id="example1" aria-pressed="false">B · No lasting gap earlier</button></div>
-  <div class="metrics">
-    <div class="metric"><b id="releaseMetric"></b><span>gap at the throw</span></div>
-    <div class="metric"><b id="historyMetric"></b><span>lasting gap earlier</span></div>
-  </div>
-  <p id="loadingStatus" class="loading" role="status">Preparing replays…</p>
-  <p id="playbackStatus" class="replay-boundary" role="status" aria-live="polite">Replay stops at the throw, before ball flight.</p>
-  <div class="controls"><button id="play" class="primary" aria-label="Play replay" disabled>Play</button><button id="reset" disabled>Restart</button><input id="scrub" type="range" min="0" value="0" step="1" aria-label="Replay frame" aria-describedby="playbackStatus" disabled><output id="clock" aria-label="Replay time"></output></div>
-  <div class="field-surface">
-    <div class="field-toolbar"><span>Team with the ball moves right →</span><div class="view-switch" aria-label="Field view"><button id="fitView" aria-pressed="true">Fit play</button><button id="fullView" aria-pressed="false">Full field</button></div></div>
-    <canvas id="field" width="1120" height="533" role="img" aria-label="NFL field replay with receiver and nearest defender highlighted"></canvas>
-  </div>
-  <div class="live-readout"><p id="nearestReadout"></p><span class="gate-badge" id="gateStatus"></span></div>
-  <dl class="motion-facts" aria-label="Speed and game situation at this frame">
-    <div><dt>Receiver speed</dt><dd id="receiverSpeed"></dd><span id="receiverSpeedDetail"></span></div>
-    <div id="gapTrendCard"><dt>Nearest gap</dt><dd id="gapTrend"></dd><span id="gapTrendRate"></span></div>
-    <div><dt id="firstDownDistanceLabel">To first-down line</dt><dd id="firstDownDistance"></dd><span>Position only; a catch and gain are not assured.</span></div>
-  </dl>
-  <div class="legend"><span><i class="dot" style="background:#7351a3"></i>Thrower</span><span><i class="dot" style="background:#177449"></i>Selected receiver</span><span><i class="dot" style="background:#1769a6"></i>Teammates</span><span><i class="dot" style="background:#c65332"></i>Opponents</span><span><i class="dot" style="background:#704d22"></i>Ball</span><span id="lineToGainKey"><i class="gain-line-key"></i><span id="lineToGainLabel">First-down line</span></span></div>
-  <div class="timeline-heading"><h3>Gap to the closest opponent</h3><p class="sub">Higher blue line = more space. Black cursor = the moment shown above.</p></div>
-  <div id="timeline" class="chart" aria-label="Nearest-defender separation timeline"></div>
-  <p class="chart-note"><b>Green:</b> qualifying earlier gap. <b>Grey:</b> excluded time. <b>Red point:</b> throw, where the replay ends.</p>
+  <div class="timeline-heading"><h3>Watch the gap change</h3><span><i class="window-key"></i> Earlier window <span id="historyMetric"></span></span></div>
+  <div id="timeline" class="chart timeline-chart" aria-label="Nearest-defender separation timeline"></div>
+  <details class="more-context"><summary>Speed, situation &amp; how to read the field</summary>
+    <p id="situationHint" class="detail-caption"></p>
+    <dl class="motion-facts" aria-label="Speed and game situation at this frame">
+      <div><dt>Receiver speed</dt><dd id="receiverSpeed"></dd><span id="receiverSpeedDetail"></span></div>
+      <div id="gapTrendCard"><dt>Nearest gap</dt><dd id="gapTrend"></dd><span id="gapTrendRate"></span></div>
+      <div><dt id="firstDownDistanceLabel">To first-down line</dt><dd id="firstDownDistance"></dd><span>Position only; a catch and gain are not assured.</span></div>
+    </dl>
   <details class="replay-context"><summary>Play context, timing &amp; matching</summary>
     <div class="detail-body">
       <dl class="facts-grid" aria-label="Play facts">
@@ -151,7 +117,10 @@
       </section>
     </div>
   </details>
+
+  </details>
 </section>
+<details class="section-drawer" id="queueDrawer"><summary><span class="drawer-index">02</span><span>Choose your next film review</span><span class="drawer-meta">50 routes · filter by receiver &amp; coverage</span><span class="drawer-plus" aria-hidden="true">+</span></summary><div class="drawer-body">
 <section class="card queue-panel" id="reviewQueue" aria-labelledby="queueHeading">
   <h2 id="queueHeading">More plays to explore</h2>
   <p class="sub">50 long-window examples, selected for video review. Not a player ranking or a typical sample.</p>
@@ -165,6 +134,34 @@
   <p id="queueEmpty" class="empty" hidden>No queued routes match these filters. Clear filters to see the full review list.</p>
   <p class="queue-footnote">Filters change only this list. Longer plays have more time to create gaps.</p>
 </section>
+</div></details>
+<details class="section-drawer" id="evidenceDrawer"><summary><span class="drawer-index">03</span><span>Why look earlier?</span><span class="drawer-meta">__RATE__ · __GAME_COUNT__ games · evidence &amp; method</span><span class="drawer-plus" aria-hidden="true">+</span></summary><div class="drawer-body">
+  <div class="finding" aria-label="Main finding">
+    <p class="eyebrow">About 1 in 3</p>
+    <div class="finding-value">__RATE__</div>
+    <p class="finding-label">of studied runs close at the throw had a lasting gap earlier.</p>
+    <div class="finding-detail"><p><b>__HIDDEN_COUNT__ / __CLOSE_COUNT__ runs</b> · 95% interval: __INTERVAL__</p><p class="sub">Close: ≤2 yards. Earlier gap: &gt;2 yards for ≥0.5 s, with timing and position rules below.</p></div>
+    <p class="finding-limit">Spacing guides video review; it does not prove a pass was available.</p>
+  </div>
+<div class="quick-help">
+  <details id="footballBasics"><summary>Football terms &amp; units</summary><p>Snap = the play starts. Release = the ball is thrown. A route = one receiver’s run. yd = yards; 2 yards ≈ 1.83 metres. s = seconds.</p><dl class="glossary">
+    <div><dt>Play / route</dt><dd>A play is one action by the teams. A route is one receiver’s run within that play; several receivers can run routes at once.</dd></div>
+    <div><dt>Separation / spacing</dt><dd>The distance from the receiver to the closest defender. The closest defender can change as players move.</dd></div>
+    <div><dt>Window</dt><dd>Here, a stretch of time with a gap above our distance threshold. It does not mean a clear path for throwing the ball.</dd></div>
+    <div><dt>Line of scrimmage / downfield</dt><dd>The line of scrimmage is where the ball starts the play. Downfield means beyond that line, toward the end the offense is attacking.</dd></div>
+    <div><dt>Down &amp; distance</dt><dd>The offense normally has four attempts (downs) to gain 10 yards for a new set. “3rd &amp; 8” means third attempt, with 8 yards still needed. Goal to go means the goal line is the target.</dd></div>
+    <div><dt>Alignment</dt><dd>Where the receiver starts. Wide means near the sideline; Slot means farther inside. HB means halfback and TE means tight end, two player roles.</dd></div>
+    <div><dt>Coverage</dt><dd>The defense’s plan for guarding receivers or areas of the field. Labels such as Cover-1 and Cover-2 identify different plans; you can leave this filter on All.</dd></div>
+    <div><dt>Film review / dropback</dt><dd>Film review means watching game video. A dropback is the quarterback’s movement back to prepare a pass; longer plays allow more time for gaps to appear.</dd></div>
+  </dl></details>
+  <details id="windowRules"><summary>What counts as an earlier gap?</summary><p>All five rules must hold:</p>  <div class="definition-grid">
+    <div><b>More than 2 yards</b><span>from the closest defender (about 1.83 metres)</span></div>
+    <div><b>At least 0.5 seconds</b><span>with that gap continuously</span></div>
+    <div><b>After 1.0 second</b><span>from the start of the play (snap)</span></div>
+    <div><b>At least 2 yards forward</b><span>beyond where the ball started (downfield)</span></div>
+    <div><b>Until 0.3 seconds</b><span>before the ball is thrown (release)</span></div>
+  </div>
+</details>
 </div>
 <section class="card evidence" id="comparison" aria-labelledby="comparisonHeading">
   <div class="section-heading"><div><p class="eyebrow">Supporting evidence</p><h2 id="comparisonHeading">Does the pattern hold beyond these examples?</h2><p>Each dot is one receiver run. Right = more space at the throw. Up = a longer gap earlier. Diamonds = A and B; click to replay.</p></div></div>
@@ -206,6 +203,8 @@
   <div class="download-links"><a href="findings.md">Detailed findings</a><a href="film_review_queue.csv">50-route review queue · CSV</a><a href="routes.csv">All eligible routes · CSV</a><a href="matched_pair.png">Static matched comparison · PNG</a><a href="analysis.json">Analysis and exclusions · JSON</a></div>
   <p class="provenance">2021 NFL data · Weeks 1–8 · no remote assets required<br>Source commit: <span id="commit"></span></p>
 </footer>
+</div></details>
+<p class="page-signoff">NFL BUDDY / Find the moment. Review the football.</p>
 </main>
 <script>__PLOTLY__</script>
 <script>__CLIENT__</script>

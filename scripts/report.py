@@ -71,6 +71,19 @@ def add_gap_trend(frames):
                               else "closing" if rate < -0.2 - 1e-9 else "steady")
 
 
+def review_cue(frames, windows):
+    """Use an observed qualifying window for a film cue; never invent a window."""
+    qualified = [w for w in windows if w["duration_seconds"] >= 0.5]
+    window = max(qualified, key=lambda w: w["duration_seconds"]) if qualified else None
+    eligible = [i for i, f in enumerate(frames) if
+                (window["start_frame"] <= f["frame"] <= window["end_frame"] if window else
+                 1 <= f["t"] <= frames[-1]["t"] - 0.3 + 1e-8 and f["downfield"] >= 2)]
+    peak = max(eligible, key=lambda i: frames[i]["separation"]) if eligible else 0
+    start = next(i for i, f in enumerate(frames) if f["frame"] == window["start_frame"]) if window else 0
+    return {"has_window": window is not None, "earlier_frame_index": peak,
+            "review_frame_index": start, "throw_frame_index": len(frames) - 1}
+
+
 def example_data(key, routes, raw, processed, names, scouting, sources=None, plays=None):
     route = routes.filter(pl.all_horizontal([pl.col(k) == key[k] for k in KEY])).row(0, named=True)
     if sources is None:
@@ -136,7 +149,8 @@ def example_data(key, routes, raw, processed, names, scouting, sources=None, pla
     return {"id": replay_id(key), "route": route,
             "thrower": thrower_data(route, scouting, tracking, names),
             "frames": frames, "windows": history["windows"],
-            "situation": situation, "line_of_scrimmage": line, "initial_frame_index": start}, manual
+            "situation": situation, "line_of_scrimmage": line, "initial_frame_index": start,
+            "review_cue": review_cue(frames, history["windows"])}, manual
 
 
 def pct(x):
