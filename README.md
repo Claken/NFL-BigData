@@ -1,6 +1,6 @@
 <div align="center">
 
-# What a release snapshot misses
+# NFL Buddy 
 
 ### Receiver spacing over time, built for NFL film review.
 
@@ -20,11 +20,11 @@
 
 ## TL;DR
 
-This tool is for NFL coaches and analysts who want to find receiver routes worth a closer look on film.
-A receiver can be close to a defender when the ball is released yet have had more space earlier, so a release snapshot can miss useful context.
-Across 122 games, **33.1% of eligible routes close at release had a sustained earlier spacing window** under our exploratory definition: 3,598 of 10,870 routes, with a descriptive game-bootstrap interval of 31.8%–34.5%.
-The interactive report answers how often this happens, how the pattern varies by alignment and coverage, and which examples to review, using synchronized field replays, separation timelines and a filterable 50-route queue.
-It helps a coach ask whether an earlier window was usable; spacing alone does not establish a passing opportunity or a quarterback mistake.
+We built an offline interactive report that replays receiver spacing through a route and queues plays for film review.
+
+Across 122 games, **33.1%** of routes close to a defender at release (3,598 of 10,870) had at least 0.5 seconds of earlier space, so a release snapshot can hide that window.
+
+NFL coaches and analysts can use it to choose which routes to watch on film; nearest-defender distance alone does not show whether the throw was available.
 
 ![Report overview showing the main finding and spacing-window definition](outputs/multigame/report_ui_overview.png)
 
