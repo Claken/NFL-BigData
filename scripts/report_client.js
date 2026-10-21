@@ -59,13 +59,13 @@ function renderQueue() {
       const tag = document.createElement('span'); tag.textContent = label; tags.append(tag);
     }
     const metrics = document.createElement('div'); metrics.className = 'route-numbers';
-    for (const [value, label] of [[r.longest_2_0.toFixed(1) + ' s', 'earlier window'], [r.release_separation.toFixed(2) + ' yd', 'at release']]) {
+    for (const [value, label] of [[r.longest_2_0.toFixed(1) + ' s', 'lasting gap earlier'], [r.release_separation.toFixed(2) + ' yd', 'gap at the throw']]) {
       const metric = document.createElement('div'), b = document.createElement('b'), caption = document.createElement('span');
       b.textContent = value; caption.textContent = label; metric.append(b, caption); metrics.append(metric);
     }
     const window = document.createElement('p'); window.className = 'route-window';
     window.textContent = 'Window ' + r.window_start_seconds.toFixed(1) + '–' + r.window_end_seconds.toFixed(1) +
-      ' s after snap · throw at ' + r.observed_seconds.toFixed(1) + ' s\nGame ' + r.gameId;
+      ' s after play starts · throw at ' + r.observed_seconds.toFixed(1) + ' s\nGame ' + r.gameId;
     window.style.whiteSpace = 'pre-line';
     const button = document.createElement('button');
     button.textContent = current?.id === r.replay_id ? 'Viewing this route ✓' : 'Watch route →';
@@ -170,9 +170,15 @@ function draw() {
   el('scrub').value = index;
   el('clock').value = f.t.toFixed(1) + ' / ' + current.route.observed_seconds.toFixed(1) + ' s';
   const valid = f.t >= 1 && f.t <= current.route.observed_seconds - .3 + 1e-8 && f.downfield >= 2;
-  el('nearestReadout').textContent = f.separation.toFixed(2) + ' yd to ' + (nearest ? nearest.name : 'nearest defender');
-  el('gateStatus').textContent = valid ? 'Time & depth eligible' : 'Outside time/depth gates';
-  el('gateStatus').dataset.eligible = String(valid);
+  el('nearestReadout').textContent = f.separation.toFixed(2) + ' yd to closest opponent: ' + (nearest ? nearest.name : 'unknown');
+  el('gateStatus').textContent = !valid ? 'This moment is not counted' :
+    f.separation > 2 ? 'Gap above 2 yards at this moment' : 'Opponent within 2 yards';
+  el('gateStatus').dataset.eligible = String(valid && f.separation > 2);
+  el('frameExplanation').textContent = f.t < 1 ? 'We do not count the first second of the play.' :
+    f.t > current.route.observed_seconds - .3 + 1e-8 ? 'We do not count the final 0.3 seconds before the throw.' :
+    f.downfield < 2 ? 'The receiver is less than 2 yards beyond the starting line at this moment, so it does not count.' :
+    f.separation <= 2 ? 'The closest opponent is within 2 yards. This moment does not count toward an earlier gap.' :
+    'The gap is more than 2 yards here. It must last at least half a second without a break to become a qualifying window.';
   canvas.setAttribute('aria-label', current.route.displayName + ' at ' + f.t.toFixed(1) + ' seconds since snap; nearest defender ' +
     (nearest ? nearest.name : 'unknown') + ', ' + f.separation.toFixed(2) + ' yards away. All 22 players shown.');
   el('frameStatus').textContent = 'Frame ' + f.frame + ' · Nearest: ' + (nearest ? nearest.name : 'unknown') +
@@ -198,12 +204,16 @@ async function loadReplay(id, scroll = false) {
   el('historyMetric').textContent = r.longest_2_0.toFixed(1) + ' s';
   el('timeMetric').textContent = r.observed_seconds.toFixed(1) + ' s';
   el('initialMetric').textContent = r.initial_separation.toFixed(2) + ' yd';
+  el('routeExplanation').textContent = 'At the throw, the closest opponent was ' + r.release_separation.toFixed(2) +
+    ' yards from ' + r.displayName + '. ' + (r.longest_2_0 >= .5 ?
+    'Earlier, a gap of more than 2 yards lasted ' + r.longest_2_0.toFixed(1) + ' seconds under our rules. That is a moment to inspect on video, not proof a pass was available.' :
+    'No earlier gap lasted at least half a second while meeting all five rules. This does not mean the player was never a possible target.');
   el('description').textContent = r.playDescription + ' · release event: ' + r.release_source;
   el('scrub').max = current.frames.length - 1;
   const sustained = current.windows.filter(w => w.duration_seconds >= .5);
-  el('windowSummary').textContent = sustained.length ? 'Earlier sustained windows: ' + sustained.map(w =>
+  el('windowSummary').textContent = sustained.length ? 'Lasting earlier gaps: ' + sustained.map(w =>
     ((w.start_frame - r.snap) / 10).toFixed(1) + '–' + ((w.end_frame - r.snap) / 10).toFixed(1) +
-    ' s (' + w.duration_seconds.toFixed(1) + ' s)').join('; ') + ' since snap.' : 'No sustained earlier spacing window under this definition.';
+    ' s (' + w.duration_seconds.toFixed(1) + ' s)').join('; ') + ' after the play starts.' : 'No lasting earlier gap meets all five rules.';
   renderQueue();
   const shapes = [
     { type: 'line', x0: 0, x1: 0, y0: 0, y1: 1, yref: 'paper', line: { color: '#202e39', width: 2 } },
@@ -222,9 +232,9 @@ async function loadReplay(id, scroll = false) {
     { x: [r.observed_seconds], y: [r.release_separation], mode: 'markers',
       marker: { color: '#c44a36', size: 10 }, name: 'Release' }
     ], { margin: { l: 63, r: 16, t: 22, b: 55 }, font: chartFont,
-    xaxis: { title: { text: 'Seconds since snap', font: { size: 14 } }, range: [0, r.observed_seconds + .1],
+    xaxis: { title: { text: 'Seconds since the play starts', font: { size: 14 } }, range: [0, r.observed_seconds + .1],
       tickfont: { size: 13 }, gridcolor: '#e5ecef', zeroline: false, automargin: true },
-    yaxis: { title: { text: 'Separation (yd)', font: { size: 14 } }, rangemode: 'tozero',
+    yaxis: { title: { text: 'Gap to closest opponent (yd)', font: { size: 14 } }, rangemode: 'tozero',
       tickfont: { size: 13 }, gridcolor: '#e5ecef', zeroline: false, automargin: true }, shapes,
     annotations: [{ x: 1, xref: 'paper', y: 2, text: '2 yd', showarrow: false,
       yanchor: 'bottom', xanchor: 'right', font: { size: 13, color: '#526571' }, bgcolor: '#ffffffdd' }],

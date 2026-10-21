@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>What a release snapshot misses · NFL receiver spacing</title>
+<title>Was there more space before the throw? · NFL receiver spacing</title>
 <style>__STYLES__</style>
 </head>
 <body>
@@ -12,50 +12,80 @@
   <div class="topbar-inner">
     <a class="brand" href="#overview"><span class="brand-mark" aria-hidden="true">NFL</span>Receiver spacing study</a>
     <nav class="section-nav" aria-label="Report sections">
-      <a href="#overview">Finding</a><a href="#reviewQueue">Review routes</a><a href="#comparison">Evidence</a><a href="#methodology">Method</a><a href="#downloads">Downloads</a>
+      <a href="#overview">Start here</a><a href="#footballBasics">Football basics</a><a href="#reviewQueue">Review plays</a><a href="#comparison">Evidence</a><a href="#methodology">Method</a><a href="#downloads">Downloads</a>
     </nav>
   </div>
 </div>
 <main>
 <header id="overview" class="hero">
   <div class="hero-copy">
-    <p class="eyebrow">2021 NFL tracking · Weeks 1–8</p>
-    <h1>What a release snapshot misses</h1>
-    <p class="lead">Similar spacing at the throw can hide very different histories. Explore earlier receiver spacing to find plays worth reviewing on film.</p>
-    <div class="hero-actions"><a class="button-link" href="#reviewQueue">Explore the review queue ↓</a><a href="#comparison">See the supporting evidence</a></div>
+    <p class="eyebrow">A guide to space before a pass · No football knowledge needed</p>
+    <h1>Was there more space before the throw?</h1>
+    <p class="lead">A player trying to catch the ball may have an opponent close by when the ball is thrown. Was that player farther from opponents a moment earlier? This tool replays player movement to find examples worth a closer look.</p>
+    <p class="audience"><b>Built for coaches and football analysts</b> choosing plays to review on video. Everyone can explore the examples below.</p>
+    <div class="hero-actions"><a class="button-link" href="#replaySection">Try the two examples ↓</a><a href="#footballBasics">Learn the basics first</a></div>
     <div class="sample-strip" aria-label="Analysis sample">
-      <div><b>__GAME_COUNT__</b><span>games</span></div><div><b>__ROUTE_COUNT__</b><span>eligible routes</span></div><div><b>__PLAY_COUNT__</b><span>pass plays</span></div>
+      <div><b>__GAME_COUNT__</b><span>games · 2021, Weeks 1–8</span></div><div><b>__ROUTE_COUNT__</b><span>receiver runs studied</span></div><div><b>__PLAY_COUNT__</b><span>passing plays studied</span></div>
     </div>
   </div>
   <div class="finding" aria-label="Main finding">
+    <p class="eyebrow">The answer in this sample · About 1 in 3</p>
     <div class="finding-value">__RATE__</div>
-    <p class="finding-label">of eligible routes close at release had a sustained earlier spacing window.</p>
-    <div class="finding-detail"><p><b>__HIDDEN_COUNT__ of __CLOSE_COUNT__ routes</b> at ≤2 yards from a defender at release.</p><p class="sub">95% game-bootstrap interval: <b>__INTERVAL__</b></p></div>
+    <p class="finding-label">of the studied receiver runs with an opponent close at the throw had a lasting gap earlier.</p>
+    <div class="finding-detail"><p><b>__HIDDEN_COUNT__ of __CLOSE_COUNT__ runs.</b> “Close” means within 2 yards; a “lasting gap” means more than 2 yards for at least half a second, within the rules below.</p><p class="sub">This percentage is for the eligible runs close at the throw, not all passes. 95% game-bootstrap interval: <b>__INTERVAL__</b> (<a href="#methodology">how uncertainty is measured</a>).</p></div>
   </div>
 </header>
-<section class="definition" aria-label="Spacing window definition">
-  <p class="definition-title">What counts as an earlier spacing window?</p>
-  <div class="definition-grid">
-    <div><b>&gt;2 yards</b><span>from the nearest defender</span></div>
-    <div><b>≥0.5 seconds</b><span>of consecutive spacing</span></div>
-    <div><b>After 1.0 second</b><span>from the snap</span></div>
-    <div><b>≥2 yards downfield</b><span>beyond the line of scrimmage</span></div>
-    <div><b>Stop 0.3 seconds</b><span>before the release</span></div>
+<section class="intro-guide" aria-labelledby="purposeHeading">
+  <h2 id="purposeHeading">What does this help someone do?</h2>
+  <div class="intro-grid">
+    <div><h3>Find plays to watch</h3><p>A coach or analyst can use the shortlist to choose plays for video review, instead of judging the receiver only at the instant of the throw.</p></div>
+    <div><h3>See what happened earlier</h3><p>The tool turns recorded player positions into an animation and a distance chart. It measures the nearest opponent every 0.1 seconds, then looks for a lasting gap.</p></div>
+    <div><h3>Ask the next football question</h3><p>Was that gap actually useful for a pass? The tool shows when to look. A person must review the passing path, timing and play design to answer that question.</p></div>
   </div>
 </section>
-<p class="interpretation"><b>A film-review signal.</b> Spacing alone does not show passing lanes, leverage or quarterback vision. A detected window does not prove that a pass was available.</p>
+<section class="card basics" id="footballBasics" aria-labelledby="basicsHeading">
+  <p class="eyebrow">Football in 30 seconds</p><h2 id="basicsHeading">One team has the ball. The other tries to stop it.</h2>
+  <p class="basics-intro">The team with the ball (the <b>offense</b>) tries to move it toward the far end of the field. On a passing play, the <b>quarterback</b> throws the ball toward a teammate, called a <b>receiver</b>. Players on the other team are <b>defenders</b>.</p>
+  <ol class="play-sequence" aria-label="The three moments in a passing play">
+    <li><b>The play starts</b><span>This is the <strong>snap</strong>. It starts our clock.</span></li>
+    <li><b>The receiver runs</b><span>The path is a <strong>route</strong>. We measure the gap to the nearest defender.</span></li>
+    <li><b>The ball is thrown</b><span>This instant is the <strong>release</strong>. A gap earlier can have disappeared by now.</span></li>
+  </ol>
+  <p class="units-note"><b>Reading the units:</b> yd = yards; 1 yard is about 0.91 metres, so 2 yards is about 1.83 metres. s = seconds. More distance means more physical space, not necessarily an easier or safer pass.</p>
+  <details><summary>Other terms you will see in the report</summary><dl class="glossary">
+    <div><dt>Play / route</dt><dd>A play is one action by the teams. A route is one receiver’s run within that play; several receivers can run routes at once.</dd></div>
+    <div><dt>Separation / spacing</dt><dd>The distance from the receiver to the closest defender. The closest defender can change as players move.</dd></div>
+    <div><dt>Window</dt><dd>Here, a stretch of time with a gap above our distance threshold. It does not mean a clear path for throwing the ball.</dd></div>
+    <div><dt>Line of scrimmage / downfield</dt><dd>The line of scrimmage is where the ball starts the play. Downfield means beyond that line, toward the end the offense is attacking.</dd></div>
+    <div><dt>Alignment</dt><dd>Where the receiver starts. Wide means near the sideline; Slot means farther inside. HB means halfback and TE means tight end, two player roles.</dd></div>
+    <div><dt>Coverage</dt><dd>The defense’s plan for guarding receivers or areas of the field. Labels such as Cover-1 and Cover-2 identify different plans; you can leave this filter on All.</dd></div>
+    <div><dt>Film review / dropback</dt><dd>Film review means watching game video. A dropback is the quarterback’s movement back to prepare a pass; longer plays allow more time for gaps to appear.</dd></div>
+  </dl></details>
+</section>
+<section class="definition" aria-label="Spacing window definition">
+  <h2 class="definition-title">How do we decide whether there was a lasting gap?</h2>
+  <p class="definition-intro">We use the same rules for every receiver run. An “earlier spacing window” must meet all five conditions:</p>
+  <div class="definition-grid">
+    <div><b>More than 2 yards</b><span>from the closest defender (about 1.83 metres)</span></div>
+    <div><b>At least 0.5 seconds</b><span>with that gap continuously</span></div>
+    <div><b>After 1.0 second</b><span>from the start of the play (snap)</span></div>
+    <div><b>At least 2 yards forward</b><span>beyond where the ball started (downfield)</span></div>
+    <div><b>Until 0.3 seconds</b><span>before the ball is thrown (release)</span></div>
+  </div>
+</section>
+<p class="interpretation"><b>Space is a clue, not a verdict.</b> An opponent can still block the ball’s path even when far from the receiver. This tool finds moments to review; it does not prove the quarterback should have thrown to that player.</p>
 <div class="section-heading">
-  <div><p class="eyebrow">Explore the plays</p><h2>Find a route. Inspect its history.</h2></div>
-  <div class="steps" aria-label="How to use the review tool"><span><b>1</b>Choose a route</span><span><b>2</b>Scrub the replay</span><span><b>3</b>Assess the football context</span></div>
+  <div><p class="eyebrow">Explore the plays</p><h2>See the gap appear and disappear.</h2><p>New here? Start with examples A and B. Their gaps at the throw look similar, but their earlier histories differ.</p></div>
+  <div class="steps" aria-label="How to use the review tool"><span><b>1</b>Choose A or B</span><span><b>2</b>Restart, then press Play</span><span><b>3</b>Watch the green player</span></div>
 </div>
 <div class="workbench">
 <section class="card queue-panel" id="reviewQueue" aria-labelledby="queueHeading">
-  <h2 id="queueHeading">Film-review queue</h2>
-  <p class="sub">The 50 longest earlier windows among routes close at release. A selected review list, not a receiver ranking or a representative sample.</p>
+  <h2 id="queueHeading">More plays to explore</h2>
+  <p class="sub">This film-review queue contains the 50 longest earlier gaps among receiver runs close at the throw. These are selected examples, not a ranking of players or a typical sample.</p>
   <div class="filters">
     <label class="receiver-filter" for="receiverFilter"><span>Receiver</span><select id="receiverFilter"></select></label>
-    <label for="alignmentFilter"><span>Alignment</span><select id="alignmentFilter"></select></label>
-    <label for="coverageFilter"><span>Coverage</span><select id="coverageFilter"></select></label>
+    <label for="alignmentFilter"><span>Starting position (alignment)</span><select id="alignmentFilter"></select></label>
+    <label for="coverageFilter"><span>Defensive plan (coverage)</span><select id="coverageFilter"></select></label>
   </div>
   <div class="queue-tools"><p id="queueCount" role="status" aria-live="polite"></p><button id="clearFilters">Clear filters</button></div>
   <div class="queue-list" role="list" aria-label="Film-review routes" tabindex="0" id="queueRows"></div>
@@ -63,35 +93,38 @@
   <p class="queue-footnote">Filters affect this list only. They do not change the aggregate finding or the current replay. Long dropbacks have more time to create windows.</p>
 </section>
 <section class="card replay-panel" id="replaySection" tabindex="-1" aria-labelledby="replayHeading">
-  <div class="replay-title"><h2 id="replayHeading">Replay the spacing history</h2><a href="#reviewQueue">Back to filters ↑</a></div>
+  <div class="replay-title"><h2 id="replayHeading">Watch one receiver’s run</h2><a href="#reviewQueue">Back to filters ↑</a></div>
   <p id="selectedName"></p><p id="selectedContext"></p><p id="routeOrigin" class="sub"></p>
-  <div class="example-switch" aria-label="Matched examples"><button id="example0" aria-pressed="true">A · Earlier sustained spacing</button><button id="example1" aria-pressed="false">B · No sustained window</button></div>
+  <div class="example-switch" aria-label="Matched examples"><button id="example0" aria-pressed="true">A · A lasting gap earlier</button><button id="example1" aria-pressed="false">B · No lasting gap earlier</button></div>
+  <p id="routeExplanation" class="route-explanation" aria-live="polite"></p>
   <details class="example-about"><summary>Why compare these two examples?</summary><p id="pairContext"></p><p>The matched pair has the same game, player, alignment and coverage, with similar initial spacing and throw time. It was selected for the largest history contrast among qualifying pairs; it is not a typical-play claim.</p></details>
   <div class="metrics">
-    <div class="metric"><b id="releaseMetric"></b><span>separation at release</span></div>
-    <div class="metric"><b id="historyMetric"></b><span>longest earlier window</span></div>
-    <div class="metric"><b id="timeMetric"></b><span>snap to release</span></div>
-    <div class="metric"><b id="initialMetric"></b><span>separation at snap</span></div>
+    <div class="metric"><b id="releaseMetric"></b><span>gap when the ball is thrown</span></div>
+    <div class="metric"><b id="historyMetric"></b><span>longest lasting gap earlier</span></div>
+    <div class="metric"><b id="timeMetric"></b><span>play start to throw</span></div>
+    <div class="metric"><b id="initialMetric"></b><span>gap at the start of the play</span></div>
   </div>
   <p id="windowSummary" class="window-summary"></p>
   <details><summary>Play description and release event</summary><p id="description"></p></details>
   <p id="loadingStatus" class="loading" role="status">Preparing the embedded route replays…</p>
+  <p class="replay-help"><b>How to watch:</b> The numbered dots are players; the small brown dot is the ball. Follow the <b>green receiver</b> and the <b>gold line</b> to the closest opponent. Press Restart, then Play, or drag the time slider. This is an animation of recorded positions, not game video.</p>
   <div class="controls"><button id="play" class="primary" aria-label="Play replay" disabled>Play</button><button id="reset" disabled>Restart</button><input id="scrub" type="range" min="0" value="0" step="1" aria-label="Replay frame" disabled><output id="clock" aria-label="Replay time"></output></div>
   <div class="field-surface">
-    <div class="field-toolbar"><span>Offense moves right →</span><div class="view-switch" aria-label="Field view"><button id="fitView" aria-pressed="true">Fit play</button><button id="fullView" aria-pressed="false">Full field</button></div></div>
+    <div class="field-toolbar"><span>Team with the ball moves right →</span><div class="view-switch" aria-label="Field view"><button id="fitView" aria-pressed="true">Fit play</button><button id="fullView" aria-pressed="false">Full field</button></div></div>
     <canvas id="field" width="1120" height="533" role="img" aria-label="NFL field replay with receiver and nearest defender highlighted"></canvas>
   </div>
   <div class="live-readout"><p id="nearestReadout"></p><span class="gate-badge" id="gateStatus"></span></div>
-  <div class="legend"><span><i class="dot" style="background:#1769a6"></i>Offense</span><span><i class="dot" style="background:#c65332"></i>Defense</span><span><i class="dot" style="background:#177449"></i>Selected receiver</span></div>
-  <p class="note">Gold line: nearest defender; ring: 2 yards. Purple line: line of scrimmage. The field is rotated so the offense moves right; field numbers show yard lines. Both views include all 22 players.</p>
-  <div class="timeline-heading"><h3>Separation over time</h3><p class="sub">The black cursor follows the selected replay frame.</p></div>
+  <p id="frameExplanation" class="note"></p>
+  <div class="legend"><span><i class="dot" style="background:#1769a6"></i>Receiver’s teammates (offense)</span><span><i class="dot" style="background:#c65332"></i>Opponents (defense)</span><span><i class="dot" style="background:#177449"></i>Receiver to follow</span><span><i class="dot" style="background:#704d22"></i>Ball</span></div>
+  <p class="note">Gold line: gap to the closest opponent. Ring: 2-yard radius around the receiver. Purple line: where the ball started (line of scrimmage). The field is rotated so the offense moves right; field numbers show yard lines. Both views include all 22 players.</p>
+  <div class="timeline-heading"><h3>How far away is the closest opponent?</h3><p class="sub">Read left to right as time passes. A higher blue line means more space. Above the dashed 2-yard line means a gap larger than our threshold; the black cursor marks the moment shown on the field.</p></div>
   <div id="timeline" class="chart" aria-label="Nearest-defender separation timeline"></div>
-  <p class="chart-note"><b>Green shading:</b> sustained earlier windows. <b>Grey:</b> time excluded from the history. <b>Red point:</b> release. A frame also needs ≥2 yards downfield to count.</p>
+  <p class="chart-note"><b>Green shading:</b> a lasting earlier gap that meets all five rules. <b>Grey:</b> time we do not count. <b>Red point:</b> the ball is thrown. The receiver also needs to be at least 2 yards beyond the starting line for a gap to count.</p>
   <details class="frame-details"><summary>Frame details and keyboard controls</summary><p id="frameStatus"></p><p>Focus the time slider and use the left/right arrow keys to step one frame at a time. Home returns to the snap; End moves to the release. Scrubbing moves the field and timeline cursor together.</p></details>
 </section>
 </div>
 <section class="card evidence" id="comparison" aria-labelledby="comparisonHeading">
-  <div class="section-heading"><div><p class="eyebrow">Supporting evidence</p><h2 id="comparisonHeading">Compare within alignment and coverage</h2></div></div>
+  <div class="section-heading"><div><p class="eyebrow">Supporting evidence</p><h2 id="comparisonHeading">Does the same pattern appear in other plays?</h2><p>Compare receivers with the same starting position (alignment) and defensive plan (coverage). Each dot below is one receiver run. Farther right means a bigger gap at the throw; higher means a longer lasting gap earlier. The two large diamonds are examples A and B.</p></div></div>
   <p id="cohortContext" class="comparison-intro"></p>
   <div id="scatter" class="chart widechart" aria-label="Comparison of release separation and earlier window duration"></div>
   <p class="chart-note">Hover over a point for its player and play IDs. Click either highlighted example to open its replay. The matched pair stays highlighted independently of the review-queue filters.</p>
@@ -103,7 +136,7 @@
 </section>
 <section class="card evidence" id="sensitivitySection" aria-labelledby="sensitivityHeading">
   <p class="eyebrow">Sensitivity checks</p><h2 id="sensitivityHeading">How much do the choices matter?</h2>
-  <p class="sub" style="margin-top:10px">The rate changes with the definition. These checks expose that sensitivity rather than establish an optimal threshold.</p>
+  <p class="sub" style="margin-top:10px">Would the answer change if we counted only later moments, or required the receiver to run farther forward? Yes. These checks repeat the calculation with different rules; they do not establish a best rule.</p>
   <div class="sensitivity-cards">
     <div class="sensitivity-card"><b>__RATE__</b><span>Main definition<br>start at 1 second, ≥2 yards downfield</span></div>
     <div class="sensitivity-card"><b>__LATE_RATE__</b><span>Start later<br>history begins 1.5 seconds after snap</span></div>
@@ -115,7 +148,7 @@
 </section>
 <section class="card evidence" id="methodology" aria-labelledby="methodHeading">
   <p class="eyebrow">Read the method</p><h2 id="methodHeading">Definitions, exclusions and limits</h2>
-  <p class="sub" style="margin:10px 0 24px">The analysis is reproducible, but a spacing window still needs football context. NFL mentor review remains outstanding.</p>
+  <p class="sub" style="margin:10px 0 24px">The technical details below explain which runs we count and how to repeat the analysis. The uncertainty interval describes variation across games in this sample; it does not guarantee the same result next season. NFL mentor review remains outstanding.</p>
   <div class="method-grid">
     <details><summary>Which routes are included?</summary><p>Routes must have complete snap-to-release tracking, all 11 defenders, validated 10 Hz timing, finite coordinates, a known line of scrimmage, an in-bounds receiver track, a WR/TE/RB pass-route role, at least 1.8 seconds observed and a receiver reaching at least 2 yards downfield. Only completed, incomplete and intercepted pass outcomes are included. All route runners are evaluated; no target label or route-type label is assumed.</p></details>
     <details><summary>How are windows measured?</summary><p>Separation is the distance to the nearest of all 11 defenders at the same frame, including pass rushers. The nearest player can change. Spacing must be strictly greater than 2 yards, from 1 second after the snap through 0.3 seconds before release, while at least 2 yards downfield. Six consecutive 10 Hz samples span 0.5 seconds. Durations use observed endpoints; missing, ineligible or below-threshold frames break windows. No interpolation is used.</p></details>

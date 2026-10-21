@@ -4,7 +4,7 @@
   "javascript_syntax": "passed",
   "analysis_outputs_unchanged": true,
   "prior_locked_full_analysis_build": "passed; unchanged analysis files checked against that build",
-  "fresh_locked_report_rebuild": "passed; all generated report/data files match byte for byte",
+  "fresh_locked_report_rebuild": "passed using the locked environment; 52 replays and 156 independent checks retained, with all 10 analysis/replay/evidence exports byte-identical to the pre-wording build",
   "queue_routes": 50,
   "unique_packaged_replays": 52,
   "manual_nearest_defender_checks": 156,
@@ -26,7 +26,7 @@
   "offline_limit": "All replay data and assets embedded; network-disabled browser mode not tested.",
   "event_dataset_year": "user reports organiser accepts 2021 data",
   "mentor_review": "pending",
-  "publication_and_submission": "not performed",
+  "publication_and_submission": "Project published to Claken/NFL-BigData; event form submission not performed.",
   "ui_polish": {
     "layout": "clear finding summary, section navigation, responsive queue cards beside replay on wide screens, readable numeric evidence tables",
     "preserved": "52 replays, 50 queue routes, 8 comparison groups, 9 sensitivity rows, complete play/frame/method/exclusion information",
@@ -62,5 +62,26 @@
       "report_ui_overview.png",
       "report_ui_review.png"
     ]
+  },
+  "plain_language_report": {
+    "audience": "Coaches and football analysts selecting plays for video review; beginners can explore without prior NFL knowledge.",
+    "question": "Was there more space before the throw?",
+    "explanation": "Explicit purpose, three measurement/use steps, football primer, glossary, unit conversions, five rules, replay and chart reading guides.",
+    "dynamic_guidance": "Each selected route explains its throw distance and earlier history; each replay frame explains time, position and distance eligibility.",
+    "preserved": "All 10 analysis, replay and evidence exports are byte-identical; 52 replays, 50 queue routes, 8 comparison groups and 9 sensitivity rows retained.",
+    "browser_checks": [
+      "Desktop 1440x900 and mobile 390x844 fit without document-level horizontal overflow.",
+      "Expanded football glossary is readable.",
+      "A explains 1.43 yd at throw and 0.9 s earlier gap; B explains 1.33 yd and no qualifying earlier gap.",
+      "Restart shows the first-second exclusion; playback advances; End shows final-0.3-second exclusion.",
+      "Full field view remains functional.",
+      "Mobile Allen Robinson filter returns one route, loads the matching explanation and scrubs to 7.1 s release."
+    ],
+    "preview_files": [
+      "report_ui_overview.png",
+      "report_ui_review.png"
+    ],
+    "html_checks": "Unique IDs, valid anchors and companion links, no external assets or unreplaced template values.",
+    "console_errors": 0
   }
 }
