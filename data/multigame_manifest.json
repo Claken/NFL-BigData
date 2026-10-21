@@ -1,0 +1,895 @@
+{
+  "repository": "https://github.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data",
+  "commit": "85da22eeff2f1d5be106faa9dfe06a1205f2defd",
+  "files": [
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/README.md",
+      "bytes": 12158,
+      "git_blob_sha1": "8dec9e6588de119e9f049b11a4b47c3cb9fdd96d",
+      "sha256": "2635179566106248a5070b15ad5d6020a805f734971f4fc3e212c91f41006539"
+    },
+    {
+      "path": "data/games.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/games.csv",
+      "bytes": 6737,
+      "git_blob_sha1": "bc0759203ed0ee7a9aa7e17ea3aa03b4bc294c0b",
+      "sha256": "1770c67529d1641683fff2666833fe15b03933c2d3242e2b5afb777c193c50c0"
+    },
+    {
+      "path": "data/pffScoutingData.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/pffScoutingData.csv",
+      "bytes": 13014038,
+      "git_blob_sha1": "eabd6fe68a15d370aebddfc4dc1d0431ce407411",
+      "sha256": "4efcc3ad33b11135f394e4da6de595c0b64a0da7cf585ab4b455d9b0567760d5"
+    },
+    {
+      "path": "data/players.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/players.csv",
+      "bytes": 103891,
+      "git_blob_sha1": "92a75a6b158db0062a25bdf2939f32462e25b72f",
+      "sha256": "5a311351ac609c3a7ee4f5014685fad3a193b7d631a7d4842fdb65fcf41c3d15"
+    },
+    {
+      "path": "data/plays.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/plays.csv",
+      "bytes": 2347966,
+      "git_blob_sha1": "969c38623939070609310bdd7d3900eda767f880",
+      "sha256": "bfb36981ae2f187d50a0337dc6bce8beb01e1d08f2cded83e3eba3842c9a0237"
+    },
+    {
+      "path": "data/tracking/tracking_2021090900.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021090900.csv",
+      "bytes": 9461760,
+      "git_blob_sha1": "4cb4a6b72fd8c84a0c9ede6e42c0c50a4a404851",
+      "sha256": "b500f6be9570896e5548a65968d1564999da78750dd7157fae9a394388b6a354"
+    },
+    {
+      "path": "data/tracking/tracking_2021091200.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091200.csv",
+      "bytes": 7117085,
+      "git_blob_sha1": "f80e4ae1c53895be31c1ac6289e9bfb79cbb5176",
+      "sha256": "640ae28ddba90adc09f7e1d4ac798d8ce2be92da6742e8d9bbbe187d9e3db949"
+    },
+    {
+      "path": "data/tracking/tracking_2021091201.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091201.csv",
+      "bytes": 7842946,
+      "git_blob_sha1": "f53fb8437477bf832825f6fe92e542e48dfea24d",
+      "sha256": "b121c5f97985db0aadc51c1948ddf1cc5f5cbf968c53c33a532818d392f6ae6b"
+    },
+    {
+      "path": "data/tracking/tracking_2021091202.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091202.csv",
+      "bytes": 7007257,
+      "git_blob_sha1": "44ae9e5a4f6de365c8478c1342bebe8b55d95518",
+      "sha256": "556f861920e706167809c92c8f9e1c5aaa04d3c612637bbb1a1d14a7080c7688"
+    },
+    {
+      "path": "data/tracking/tracking_2021091203.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091203.csv",
+      "bytes": 7293583,
+      "git_blob_sha1": "93daec7011c8161e4e39a179c44198920e4d6f2e",
+      "sha256": "8f29bb6d691b521d3fc774a10e3ab6b77e9f0a94ae11a4bc3350219be4e452ee"
+    },
+    {
+      "path": "data/tracking/tracking_2021091204.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091204.csv",
+      "bytes": 8373499,
+      "git_blob_sha1": "814ce9513ce8dcb56be889b98f2558e48174462e",
+      "sha256": "ea83a6b1efefcc760dff6031da85461267679fb0d955317fa7e9fa14fba4a006"
+    },
+    {
+      "path": "data/tracking/tracking_2021091205.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091205.csv",
+      "bytes": 7747238,
+      "git_blob_sha1": "4cabeada6a06997a3f42fe094d8053fe6c7048c4",
+      "sha256": "e0ccc69db6daefbb00434d5a00ed23cd0920e0cd4a12532aa257e0ddc95b888c"
+    },
+    {
+      "path": "data/tracking/tracking_2021091206.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091206.csv",
+      "bytes": 6545022,
+      "git_blob_sha1": "07f3d648a0deccae30f0f44879297d0a03005fa4",
+      "sha256": "e97242fefa1106db6a31832fde7880a74e65614f54d2cc6660a6fef7b4b27691"
+    },
+    {
+      "path": "data/tracking/tracking_2021091207.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091207.csv",
+      "bytes": 6550310,
+      "git_blob_sha1": "f01578b91ac87f002e568276899cbca6474dfbb5",
+      "sha256": "e1f56b5f583971969717759d89a236878ceac8c24912e03f76ec26145ce6e92a"
+    },
+    {
+      "path": "data/tracking/tracking_2021091208.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091208.csv",
+      "bytes": 6630984,
+      "git_blob_sha1": "6c998fcf366a3c3f456e7d0192ff5f49fc6f668e",
+      "sha256": "f1b693192689f598aa54454e98fa980fa084218c8a93f97cf2c1ad30cde69e9b"
+    },
+    {
+      "path": "data/tracking/tracking_2021091209.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091209.csv",
+      "bytes": 6654591,
+      "git_blob_sha1": "1f82e79ea4085bf2e60f28c2077c55294e67da28",
+      "sha256": "e4a45de956fc01dbf1010e2e6c0a2fc2a7795ab9f2bf429ee671ca338a2a370c"
+    },
+    {
+      "path": "data/tracking/tracking_2021091210.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091210.csv",
+      "bytes": 5528515,
+      "git_blob_sha1": "4a48b2cfdd2eaac884aeb21ce5270a6d52941221",
+      "sha256": "7c946231746b43e2f80c0508a737c6b6c17e0faba766d7d1fbb85b07692b6774"
+    },
+    {
+      "path": "data/tracking/tracking_2021091211.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091211.csv",
+      "bytes": 4908044,
+      "git_blob_sha1": "668555fa29254543753820c7a715567075c0c328",
+      "sha256": "68d0a208f97fc6d33bc229c6a5f74880accdb63b8c10ea012be226cc5f159963"
+    },
+    {
+      "path": "data/tracking/tracking_2021091212.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091212.csv",
+      "bytes": 7402581,
+      "git_blob_sha1": "b2e33c25d0a8afc65fa13c27dd54c1f476b2b755",
+      "sha256": "4c3e9e816f27e3c7522b646a92d9ec32e86fc65d1e93b2976051e725687c883a"
+    },
+    {
+      "path": "data/tracking/tracking_2021091213.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091213.csv",
+      "bytes": 5875612,
+      "git_blob_sha1": "af3bc1b5b37bb0ba6758052e79e42f0b3b41a450",
+      "sha256": "72a969f951c50d2401bdcfbef946d4156676cbd8086958e534467bb7a6a6fb78"
+    },
+    {
+      "path": "data/tracking/tracking_2021091300.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091300.csv",
+      "bytes": 9423329,
+      "git_blob_sha1": "e489860480b6ca114aa9967ee6559fe9fafafb50",
+      "sha256": "a263953428c233f1b80d3c53b4d1172b98b2bfca6e3bcb2f5d2f8f52e8711544"
+    },
+    {
+      "path": "data/tracking/tracking_2021091600.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091600.csv",
+      "bytes": 7561571,
+      "git_blob_sha1": "35e9214aa3fe720ee30f75a096754d57ac4600b0",
+      "sha256": "d0552c9dc3b0f28e50a3b2a16a78045fea9a5723e96abb25b9ea31915ae929d3"
+    },
+    {
+      "path": "data/tracking/tracking_2021091900.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091900.csv",
+      "bytes": 6703387,
+      "git_blob_sha1": "6bc4fe461d1fcc824671d9c02b949782eb25c086",
+      "sha256": "0127e807dd0d8fb2d814fa421403ff5d14444d8d6ca42bd7dd90df2456067ac9"
+    },
+    {
+      "path": "data/tracking/tracking_2021091901.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091901.csv",
+      "bytes": 6357609,
+      "git_blob_sha1": "2ff799ceaf040554721fd97ea1aaf2eef960f64d",
+      "sha256": "dfbb993edb6c028f4c5133a943bca52290dfceec64b871d6530a87e49f78cbb1"
+    },
+    {
+      "path": "data/tracking/tracking_2021091902.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091902.csv",
+      "bytes": 5316847,
+      "git_blob_sha1": "3a0ea686676ea2c5864a4e8013100af7c0a2fdb6",
+      "sha256": "1271fcb78ff43772b763ab53f50d500e4b86153b99535125df77aa19848d3fa0"
+    },
+    {
+      "path": "data/tracking/tracking_2021091903.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091903.csv",
+      "bytes": 6905532,
+      "git_blob_sha1": "6c76b03ff7c574a3b727d592484d4d384a9bbe1b",
+      "sha256": "5a57bad0cbc646f7086d60b28ffdc86301538c773d2119b944fa0cf64a4c82c1"
+    },
+    {
+      "path": "data/tracking/tracking_2021091904.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091904.csv",
+      "bytes": 7300454,
+      "git_blob_sha1": "06ade45265a96cc01acdfee160bff5874f72035c",
+      "sha256": "1a24f00594f1e106803b31dd84e19c1b1b41b00b5ae0995ede7896d8e526c476"
+    },
+    {
+      "path": "data/tracking/tracking_2021091905.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091905.csv",
+      "bytes": 7802223,
+      "git_blob_sha1": "6c813deee1338ea8b8e56aa00ad665ebe6d8cb7c",
+      "sha256": "2e0f9e604015c98bcb94d06478e0a65b514bb5c1d9cb9db2833028cf41a22380"
+    },
+    {
+      "path": "data/tracking/tracking_2021091906.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091906.csv",
+      "bytes": 6784147,
+      "git_blob_sha1": "9053d1c0e8308d287dff80139344ca54cad1b7fc",
+      "sha256": "f82bdf65f6b151407974912c87d47b3dc239774dbb65641bff62125998dd1df8"
+    },
+    {
+      "path": "data/tracking/tracking_2021091907.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091907.csv",
+      "bytes": 5258462,
+      "git_blob_sha1": "42136f54a434b902211d2c45e71bb6801c98c7c7",
+      "sha256": "e98c53e7bb75d6536c097801dc796de7fb3622b7e0f397fb04c8b9d7ecef8cc8"
+    },
+    {
+      "path": "data/tracking/tracking_2021091908.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091908.csv",
+      "bytes": 6671843,
+      "git_blob_sha1": "638d214a7947f2dea15dd66d1c76f42dfae84b98",
+      "sha256": "c8c0f3334c999d7095bb76545c2880f86b96b98aa0ea518fd419bb3f1fa7d810"
+    },
+    {
+      "path": "data/tracking/tracking_2021091909.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091909.csv",
+      "bytes": 6065500,
+      "git_blob_sha1": "1242f2b6c110bf13480331aef33b40f23259a034",
+      "sha256": "475d69c2a153faa59484efba909ba94a3458b64e9143e846fe23094557be12d6"
+    },
+    {
+      "path": "data/tracking/tracking_2021091910.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091910.csv",
+      "bytes": 7610401,
+      "git_blob_sha1": "2901384e444d64a9130e6751f046175be9582fb5",
+      "sha256": "ad510f0816f789563c53986d3d6222ddabc5a701695d7276315d46ada774e9b5"
+    },
+    {
+      "path": "data/tracking/tracking_2021091911.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091911.csv",
+      "bytes": 6980306,
+      "git_blob_sha1": "494658f1a9dddbd648ce9862937368f45e38f9a6",
+      "sha256": "918e38eebfa32e5c943aba28b82318b1decc46e3ed5884dff5d8dd8aa12125a2"
+    },
+    {
+      "path": "data/tracking/tracking_2021091912.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091912.csv",
+      "bytes": 7556687,
+      "git_blob_sha1": "0c5031667f7809a6ff5cb07888a0b6467fb91334",
+      "sha256": "3e8758c8054639b9389bf4b19383881e4736a609750bd652420d19a4a08403e4"
+    },
+    {
+      "path": "data/tracking/tracking_2021091913.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021091913.csv",
+      "bytes": 5561798,
+      "git_blob_sha1": "37a505381f6231cbad04e1057fff897168bb2681",
+      "sha256": "a9b21628e2ba0937db9bf8dd26a56ef0623eda220adf06ec00b4740d95466b49"
+    },
+    {
+      "path": "data/tracking/tracking_2021092000.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021092000.csv",
+      "bytes": 6186802,
+      "git_blob_sha1": "717d327f8a8c0e475e28fc174327a475097bfa29",
+      "sha256": "fd6e8d9ca1176b81fb0da924535f73eee9b383bb49c210d59a436305270681d8"
+    },
+    {
+      "path": "data/tracking/tracking_2021092300.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021092300.csv",
+      "bytes": 6611817,
+      "git_blob_sha1": "8917519ea56f45b4f383ef6deb7250333a883ced",
+      "sha256": "6ed54139df289d8835daab96c573b83f4779e41c21c5cd6e4522373d86735c3d"
+    },
+    {
+      "path": "data/tracking/tracking_2021092600.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021092600.csv",
+      "bytes": 8106544,
+      "git_blob_sha1": "933917b8870f51426690a69698f4c5d6ab9e7e04",
+      "sha256": "8d20626e5da4e74b883f2242f22667b873ee7d1b93fae62af1725fc085f48fc6"
+    },
+    {
+      "path": "data/tracking/tracking_2021092601.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021092601.csv",
+      "bytes": 6650455,
+      "git_blob_sha1": "bec3fac5c864be269cdaa4c14c1abb9ed0ce7b0f",
+      "sha256": "46ef1c01d43d861cdce71605cb5e8e16a1763f0560b1f91551bae70400d3d215"
+    },
+    {
+      "path": "data/tracking/tracking_2021092602.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021092602.csv",
+      "bytes": 7608029,
+      "git_blob_sha1": "96cda64440fba222eefb426c88ba7ec46ed0edc0",
+      "sha256": "1fcff453c257f16898661920a0ba31b199f2a7dae72a9e16dfd041a316568a2b"
+    },
+    {
+      "path": "data/tracking/tracking_2021092603.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021092603.csv",
+      "bytes": 6186549,
+      "git_blob_sha1": "d4ae51ac9ea1bd3755ec8233d59a44dffcd32c11",
+      "sha256": "10a8d73b773e2037f861a44efcafd057c965783a25406e2d687436a4b54153e9"
+    },
+    {
+      "path": "data/tracking/tracking_2021092604.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021092604.csv",
+      "bytes": 8490030,
+      "git_blob_sha1": "4a8220685134b9fce759a07f3eb8c7039d933a1a",
+      "sha256": "10441749dd4a719e4a23060fe2bd61a42632c13793352631033e8665d56c4123"
+    },
+    {
+      "path": "data/tracking/tracking_2021092605.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021092605.csv",
+      "bytes": 7844447,
+      "git_blob_sha1": "b7d3bf2f585af64fb0756b8b62c0280719c8ea86",
+      "sha256": "c51174ac40d105561d42489a50a01963e952f9b0151ae54b8183bc20db343d36"
+    },
+    {
+      "path": "data/tracking/tracking_2021092606.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021092606.csv",
+      "bytes": 7680753,
+      "git_blob_sha1": "2249d2ab4197bf9198fd3c5240d01aeb55ed464d",
+      "sha256": "c1e9032a52d293f311c5ff408b38e9884df633e2b73830e7b2ca043a4e494bd0"
+    },
+    {
+      "path": "data/tracking/tracking_2021092607.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021092607.csv",
+      "bytes": 6813709,
+      "git_blob_sha1": "02158fd302c04f7aa0a8f15c8b5ca93c197aa911",
+      "sha256": "8d7adf18fcdbaf162b204421bbc8ac16e599c578542043e64d542c15918a4aab"
+    },
+    {
+      "path": "data/tracking/tracking_2021092608.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021092608.csv",
+      "bytes": 5757201,
+      "git_blob_sha1": "1e2bdd3b6147f37c156ab730d7b3a022a1ac2eb9",
+      "sha256": "f4f386e876da4621b9be2444b125bf7f2129078d2bfc088343b2b0da96318c6b"
+    },
+    {
+      "path": "data/tracking/tracking_2021092609.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021092609.csv",
+      "bytes": 6278763,
+      "git_blob_sha1": "6ddfb0659739ade5fb4952327a8ea4f949ef139f",
+      "sha256": "49acd4b2d063f9dc75d76ab955283c61518d5c18cded634b605e5d9d564ff8ae"
+    },
+    {
+      "path": "data/tracking/tracking_2021092610.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021092610.csv",
+      "bytes": 9486017,
+      "git_blob_sha1": "0fd34df7b5ae74ee098d8ccbee45fe2679a2f7fe",
+      "sha256": "966d5e95a4a54a6724c95b32b36597c91a1925155dc8e5637fa29a2e7e1b37d6"
+    },
+    {
+      "path": "data/tracking/tracking_2021092611.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021092611.csv",
+      "bytes": 7501480,
+      "git_blob_sha1": "060544046791295ffa939e41200c0d339d5379ef",
+      "sha256": "91a4dea3759829c5d2e1ab9f1319adbe8016864d5f9aacc36cef749783f239d7"
+    },
+    {
+      "path": "data/tracking/tracking_2021092612.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021092612.csv",
+      "bytes": 6092105,
+      "git_blob_sha1": "8892d8e7af4251b84bd447f4fe71e064751b3972",
+      "sha256": "8b980a56b5a18c8b42cbae430e0324b537443d6a9553265edaa24b55264ebdcd"
+    },
+    {
+      "path": "data/tracking/tracking_2021092613.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021092613.csv",
+      "bytes": 6562884,
+      "git_blob_sha1": "2cea3de50f284de3b3b74c2ac5d987ebc934509c",
+      "sha256": "fecdb39e58443000a55f65f3fd4f8bcf0cc50bc01b4ec0619ba0b2afa4c4f1e4"
+    },
+    {
+      "path": "data/tracking/tracking_2021092700.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021092700.csv",
+      "bytes": 6928728,
+      "git_blob_sha1": "7d90d15847c194809410f906478237526957af55",
+      "sha256": "0b0dbccb89fc6fd023eefa717c965080781eedc00a1043f28b61217bcefa4cb4"
+    },
+    {
+      "path": "data/tracking/tracking_2021093000.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021093000.csv",
+      "bytes": 5717091,
+      "git_blob_sha1": "cd19b1d0023b125e28db2c1502a927fbe13ecaa5",
+      "sha256": "0a8240b26017b2b760cef2f4d7f2ad6fca11a79547761728d19be71024fef099"
+    },
+    {
+      "path": "data/tracking/tracking_2021100300.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021100300.csv",
+      "bytes": 8038830,
+      "git_blob_sha1": "f8c0691c84f08882ee01fb1c43b6d1f6fb12fbcf",
+      "sha256": "74dcf80b5eae28dba00220add8806853c9063c8ad7bbde13896061dc5686f306"
+    },
+    {
+      "path": "data/tracking/tracking_2021100301.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021100301.csv",
+      "bytes": 5027458,
+      "git_blob_sha1": "6ca4e4458a9dd7205d63aa719915bc8efef56cae",
+      "sha256": "e56a9a9650d47e40182462b7167560b8405a0e313fa9224ab14c5ec17cdbf21c"
+    },
+    {
+      "path": "data/tracking/tracking_2021100302.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021100302.csv",
+      "bytes": 6148048,
+      "git_blob_sha1": "4d78967171f4d33288e92491ded1db3c3438cd48",
+      "sha256": "e46bb56ee1ba55dc2ea069a64af2df9473fbcaba1e04c8275c415eed8eb25ba6"
+    },
+    {
+      "path": "data/tracking/tracking_2021100303.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021100303.csv",
+      "bytes": 6318249,
+      "git_blob_sha1": "4d23325a2124b6eb7f50e86b5ed42fe6bc47e05e",
+      "sha256": "ca16de22036bec4b7dc009f5cb3d253680fbb34336ea35ece843d59b121cb2ad"
+    },
+    {
+      "path": "data/tracking/tracking_2021100304.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021100304.csv",
+      "bytes": 6812193,
+      "git_blob_sha1": "72939718cc06b182df4b47fffd1901ec1d1176cf",
+      "sha256": "cd53faf84e10b7cf9019b5b9d6cc2ca24eecb37f18fb820b826e8ccd4003ece2"
+    },
+    {
+      "path": "data/tracking/tracking_2021100305.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021100305.csv",
+      "bytes": 7436499,
+      "git_blob_sha1": "67f79409e58cc15308b3fbfe4fdfa373b4ccc248",
+      "sha256": "d37809d6f64444b5eb1efe8ce01edf0783af999c2b62a234f412896e5d9db83a"
+    },
+    {
+      "path": "data/tracking/tracking_2021100306.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021100306.csv",
+      "bytes": 6092134,
+      "git_blob_sha1": "f139419eb9d926fb724306082db8cf4fac398f8c",
+      "sha256": "68535d29b2e97596bb7c416d43c0561a7a9da5ce1352cf00f7d3059e9273c198"
+    },
+    {
+      "path": "data/tracking/tracking_2021100307.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021100307.csv",
+      "bytes": 8574590,
+      "git_blob_sha1": "c18556dcc57f07017410b3d5b2b5cf74efd0e5e6",
+      "sha256": "8f28fa3ec298effdf8d1c67d53e19916183a718d0c246c09d3c5a8770b1ecdc2"
+    },
+    {
+      "path": "data/tracking/tracking_2021100308.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021100308.csv",
+      "bytes": 7075673,
+      "git_blob_sha1": "f649cfb4165aec0858504532eb4b80694638da22",
+      "sha256": "418880d94c374b60b0708989ae3b7f33e43bd07a17446e45a409e6bf8f730ce6"
+    },
+    {
+      "path": "data/tracking/tracking_2021100309.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021100309.csv",
+      "bytes": 7440146,
+      "git_blob_sha1": "c6b15d33d1f5daab61fccac89a999c40c0ccb615",
+      "sha256": "b340c216539f46486c313e5a33948f9f5573066d55195e275304545aa32b0d77"
+    },
+    {
+      "path": "data/tracking/tracking_2021100310.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021100310.csv",
+      "bytes": 6365339,
+      "git_blob_sha1": "c11ace7e15437282f0284394c2088326a21d44a2",
+      "sha256": "e84d2c323e2648a0c2b54b135d587870188a077b53e7f8a1290c398e4970a896"
+    },
+    {
+      "path": "data/tracking/tracking_2021100311.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021100311.csv",
+      "bytes": 8011089,
+      "git_blob_sha1": "4eaf96012aa80c74c32c868b82a8f736a02ab3eb",
+      "sha256": "35fb953cc295cfd07e2368486f1032900a229c0c5c14f01f817984bab68d50a2"
+    },
+    {
+      "path": "data/tracking/tracking_2021100312.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021100312.csv",
+      "bytes": 6084979,
+      "git_blob_sha1": "cf5bf8349ab6f53d3526d95fc9f69aeac714bbec",
+      "sha256": "a154cc8caa0795e4eda3281b209d08a3c578e6a5b2631a581b555ba796cbea0c"
+    },
+    {
+      "path": "data/tracking/tracking_2021100313.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021100313.csv",
+      "bytes": 7771234,
+      "git_blob_sha1": "46975282292406335a636db78f5a83cf31d7588f",
+      "sha256": "19363c6cc667a9e00cb8fc594b49352b37c7bfd906a6859c9dd2de1ed1595ce0"
+    },
+    {
+      "path": "data/tracking/tracking_2021100400.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021100400.csv",
+      "bytes": 6941335,
+      "git_blob_sha1": "6ca0a996917b46fb33e6c3797694fb5d85affccf",
+      "sha256": "35c3c48e879c23dab91a4d3bfb89e4971731f70902558e0fa48ebd37edd41edd"
+    },
+    {
+      "path": "data/tracking/tracking_2021100700.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021100700.csv",
+      "bytes": 7185411,
+      "git_blob_sha1": "4956b824a03c929df25d24f3f1d368cbc036de34",
+      "sha256": "728e42e3d4fa3fd5255ff4d2caa256859cad02808698bee7c3b16714f85fcace"
+    },
+    {
+      "path": "data/tracking/tracking_2021101000.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101000.csv",
+      "bytes": 7892647,
+      "git_blob_sha1": "cd5a57cc73592ef9b05338d0c36dea222467a099",
+      "sha256": "64eaf025cfffd064e99200ffe29eafb826964461fc45e93468922fae40015818"
+    },
+    {
+      "path": "data/tracking/tracking_2021101001.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101001.csv",
+      "bytes": 7213460,
+      "git_blob_sha1": "c55f97a89a4e172f6bfd759a22509c93f0757b0b",
+      "sha256": "0d05ed12b77e09237689c8ac45574f1b4a42ffe2a4321ecbd2afe412555d0d31"
+    },
+    {
+      "path": "data/tracking/tracking_2021101002.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101002.csv",
+      "bytes": 7465261,
+      "git_blob_sha1": "68be8f3660d44d497adfc158e7b4095b97312f51",
+      "sha256": "776aa6cc52754739ecbe84867541c4c23ba4306bed063920f7b6ef01bf0debb9"
+    },
+    {
+      "path": "data/tracking/tracking_2021101003.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101003.csv",
+      "bytes": 5274253,
+      "git_blob_sha1": "14d17efd0bcf69789646b571328294edf1d27c2e",
+      "sha256": "9c4d79b2299bf70f83ec51cce7b1dbbf98ddb7df3645a8ca9e27d7356747f815"
+    },
+    {
+      "path": "data/tracking/tracking_2021101004.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101004.csv",
+      "bytes": 6314716,
+      "git_blob_sha1": "1edbfd56edc8899298e23a4899f617773ae2876b",
+      "sha256": "e812cb9b26885cb2d97a4f2c19dbdd60db9fac57ae17c96ba31cf34ab29832db"
+    },
+    {
+      "path": "data/tracking/tracking_2021101005.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101005.csv",
+      "bytes": 6756626,
+      "git_blob_sha1": "1c27bebbff4f9964fe24cdd46833311af220686f",
+      "sha256": "a66ee0b820bd4436470881b5dc7d1bbb77b8aa3ce7c6abc6097208697afd74df"
+    },
+    {
+      "path": "data/tracking/tracking_2021101006.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101006.csv",
+      "bytes": 5691083,
+      "git_blob_sha1": "7269ff950043e99cb015a5152bcf16871457bb47",
+      "sha256": "c51f1a14037c2dd026e315d79594d12403ed04605f16a079305b944982476e49"
+    },
+    {
+      "path": "data/tracking/tracking_2021101007.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101007.csv",
+      "bytes": 7619499,
+      "git_blob_sha1": "c641914745419b7d3b685801dd480fb92fd9ccc7",
+      "sha256": "a9c1b8e4eb249c05eb64deb2dbf8190fd21180452b977f317d56c8444e138540"
+    },
+    {
+      "path": "data/tracking/tracking_2021101008.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101008.csv",
+      "bytes": 8715689,
+      "git_blob_sha1": "fc6d20917daaff13ae6ab54e1c979816aa22a547",
+      "sha256": "12d29354b04e2d968c80db41a331dfbe779fdc803f6a18ffeb209ccab90ca4f4"
+    },
+    {
+      "path": "data/tracking/tracking_2021101009.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101009.csv",
+      "bytes": 6886211,
+      "git_blob_sha1": "8dda1f5234fa89f65f9b9e4455a6c4faf62284b8",
+      "sha256": "a3ae7bc49fb73e5bdae94702e8cdbf2f68508b3f605f21afca41c74885a0318a"
+    },
+    {
+      "path": "data/tracking/tracking_2021101010.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101010.csv",
+      "bytes": 5098344,
+      "git_blob_sha1": "81f4b1cce84dab6fe03ebe0606803a00cc0b49cd",
+      "sha256": "818a423fb2aa88960452c1b1550c44a832ef1d430f941b304a89969db3be99e5"
+    },
+    {
+      "path": "data/tracking/tracking_2021101011.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101011.csv",
+      "bytes": 6397903,
+      "git_blob_sha1": "0661f6811fe3a4675a45921364528be4b617a1b8",
+      "sha256": "99b1cdd9efad95440d78107ab58eea0ba0f99c6e0b1d4bc3664f6027141ff8f4"
+    },
+    {
+      "path": "data/tracking/tracking_2021101012.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101012.csv",
+      "bytes": 6862789,
+      "git_blob_sha1": "8e6150cec1fe9433b0709377c84614037628abff",
+      "sha256": "9c931e92f1605f31e6c0296b098ed9a517cb5a85437947daab142aa7a7fbca5f"
+    },
+    {
+      "path": "data/tracking/tracking_2021101013.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101013.csv",
+      "bytes": 8839097,
+      "git_blob_sha1": "0a19cb0d8cb2a37fea02f2d3f87985fcfd7bf55a",
+      "sha256": "44cbfe616803445a682453d7e57b7929e2e76bd85194d28378df1544db152512"
+    },
+    {
+      "path": "data/tracking/tracking_2021101100.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101100.csv",
+      "bytes": 8011535,
+      "git_blob_sha1": "e70892bb7151de668f4a5b5f54153d2399236b8a",
+      "sha256": "27c83a8ee0d528e60106d348beb517c9d6b68677cab2a38dcc02b3d1d73686c2"
+    },
+    {
+      "path": "data/tracking/tracking_2021101400.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101400.csv",
+      "bytes": 6370785,
+      "git_blob_sha1": "cafa2d0a31e544db0407eb6ddbbba31e366d69e0",
+      "sha256": "dcf7f2127e86b0d7472edede5e5a6d8437958707f3eb07e4a375a7dd9121c798"
+    },
+    {
+      "path": "data/tracking/tracking_2021101700.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101700.csv",
+      "bytes": 8269627,
+      "git_blob_sha1": "174b0d7d9a102949a43733babfed5916b086267c",
+      "sha256": "b5ae0782cc478a7390bca3a4eff0dfb19f9f62ce69c9342ced6d12263f6adc9a"
+    },
+    {
+      "path": "data/tracking/tracking_2021101701.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101701.csv",
+      "bytes": 6472677,
+      "git_blob_sha1": "54520c86ca6b05ae10711029b5f95f8d9196131e",
+      "sha256": "5ada78f8c10c6e5817808cd909638d425dfa31033fd1d047f953b4870a56b8c2"
+    },
+    {
+      "path": "data/tracking/tracking_2021101702.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101702.csv",
+      "bytes": 8324036,
+      "git_blob_sha1": "1b912fed55e38ddf3ff85f9b8091a4b43b860748",
+      "sha256": "4e879f39cb5988487c2571b693590f8e8d98c93afba660c3a5176f2d539cfea1"
+    },
+    {
+      "path": "data/tracking/tracking_2021101703.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101703.csv",
+      "bytes": 6115576,
+      "git_blob_sha1": "56d77ada104e83a1448508da63808999b88578d2",
+      "sha256": "e0e81f6eba41486eb0ad7fe5d6a106245db092d4c9b4e71b553aef8e89eebb03"
+    },
+    {
+      "path": "data/tracking/tracking_2021101704.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101704.csv",
+      "bytes": 7779068,
+      "git_blob_sha1": "aa54a1e0fba13c3b98f963bedc9c127393986e58",
+      "sha256": "8a8939c06d9253636df8daaa930b59aba1f121b4abbfa22ed9a5f92928bb872a"
+    },
+    {
+      "path": "data/tracking/tracking_2021101705.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101705.csv",
+      "bytes": 5393527,
+      "git_blob_sha1": "0ee1d25a1ac35f167d9af285f3f44bf6e5d39f6b",
+      "sha256": "56366012b992c077e799dff43b2b458dbc431eff7a9e42fcaf7d1d9d8f6db4cd"
+    },
+    {
+      "path": "data/tracking/tracking_2021101706.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101706.csv",
+      "bytes": 7284055,
+      "git_blob_sha1": "c4111623fa4682957e9eb67cef7e347c6d50404b",
+      "sha256": "ad4dc1d705f9aba65047a0b09e83c3958dbe115d0ac8c303cb71469b440e79d6"
+    },
+    {
+      "path": "data/tracking/tracking_2021101707.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101707.csv",
+      "bytes": 8424468,
+      "git_blob_sha1": "1d3fe2e090b5be1961e1e699267dbe638dd17a04",
+      "sha256": "d391fe08deffa6e7beeaa603863348fffc6f053db4871b05671b88d12fd77462"
+    },
+    {
+      "path": "data/tracking/tracking_2021101708.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101708.csv",
+      "bytes": 6518785,
+      "git_blob_sha1": "b1c4069192b43834697d813868222a4dcf5b4c64",
+      "sha256": "6718fff53cd98e77529f4b53c57a85851e24c522fb3539c410ada6925d9368c4"
+    },
+    {
+      "path": "data/tracking/tracking_2021101709.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101709.csv",
+      "bytes": 8237023,
+      "git_blob_sha1": "50f09c3e8dae38ad3317eedfad3d01e45ad529a9",
+      "sha256": "5ba0f06f3e80529aae049a28260e74ab65b0cd4a6813fe60601b34b8562b5bfc"
+    },
+    {
+      "path": "data/tracking/tracking_2021101710.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101710.csv",
+      "bytes": 7102419,
+      "git_blob_sha1": "fb564f9f3530e075d57b7f1e36d91e7481bd363b",
+      "sha256": "a38ca2404c4b14b807c04e6fca3affabb552cd96402a477e1dafbf97ab4c410e"
+    },
+    {
+      "path": "data/tracking/tracking_2021101711.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101711.csv",
+      "bytes": 5749634,
+      "git_blob_sha1": "f223a038f0ad02c236f9aeb6d7d29d6840fd6af8",
+      "sha256": "77cf77f0e6e6b60c584fc56b7c8a37d7949b48367088d2895531b9877ae36232"
+    },
+    {
+      "path": "data/tracking/tracking_2021101800.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021101800.csv",
+      "bytes": 7499899,
+      "git_blob_sha1": "2a72b4a37619f21eac99577b1510d76c61e5828a",
+      "sha256": "719d206b6fdede7bfdc40a76204f6c82b163abd902467d9163032810a1e6e5d9"
+    },
+    {
+      "path": "data/tracking/tracking_2021102100.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021102100.csv",
+      "bytes": 5880072,
+      "git_blob_sha1": "78d0b2d7d2f72badd56605312983762893961364",
+      "sha256": "b82692de341402eda8903642488f06cb822c8d76ec2525446b4bd47a83a508f9"
+    },
+    {
+      "path": "data/tracking/tracking_2021102400.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021102400.csv",
+      "bytes": 9267618,
+      "git_blob_sha1": "cb5f216d0c37862741b28143d04fa33d105abf58",
+      "sha256": "c2c86356fda5327447a0449fdd1669a4d13379a785abf3dd38d333b3ab93b263"
+    },
+    {
+      "path": "data/tracking/tracking_2021102401.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021102401.csv",
+      "bytes": 7966686,
+      "git_blob_sha1": "30701cd2e9f3e4ef921fe3ae7c1a05956152a0d3",
+      "sha256": "12a9e8216eb2b1bd3355042e3b3d4f086a59ac55f13fa004ee59417d7cafa120"
+    },
+    {
+      "path": "data/tracking/tracking_2021102402.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021102402.csv",
+      "bytes": 7268959,
+      "git_blob_sha1": "893e13342851d780da2b0efbafece93600baea22",
+      "sha256": "17fc239bc9f4bf3cafe4ce7c7748bd2ad85562b743567d9c673ec06e231281c6"
+    },
+    {
+      "path": "data/tracking/tracking_2021102403.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021102403.csv",
+      "bytes": 7267930,
+      "git_blob_sha1": "57eed3413f944ed4e94525f728370b280587a997",
+      "sha256": "3a2bb6640d3436eca3ff3a3a5a0cd1fca9dec32c33927c615a6ef6f42c002c88"
+    },
+    {
+      "path": "data/tracking/tracking_2021102404.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021102404.csv",
+      "bytes": 7498421,
+      "git_blob_sha1": "287896bfcba51e8f186503d37cb6d49939c306d0",
+      "sha256": "f117e46c7c3a1b31685979bc338da05ce67f55675361deffca35fa6718493007"
+    },
+    {
+      "path": "data/tracking/tracking_2021102405.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021102405.csv",
+      "bytes": 8168255,
+      "git_blob_sha1": "fff06c3ef9a9d0ddf8063e2a2ca66f3e749f49bb",
+      "sha256": "c5e494bc50af2ea63e458c83e555f4e200d898115b05be525cba636ae4b0071f"
+    },
+    {
+      "path": "data/tracking/tracking_2021102406.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021102406.csv",
+      "bytes": 6772963,
+      "git_blob_sha1": "89f13149615a67389d73d6aba0c2e91bb41ca175",
+      "sha256": "5060eaaad3e7195445bfd166a30b900e557170d3d69589d3ae037f2f98c76a02"
+    },
+    {
+      "path": "data/tracking/tracking_2021102407.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021102407.csv",
+      "bytes": 6583123,
+      "git_blob_sha1": "5e1857362caf2137f72bebe1dbdde27f50106011",
+      "sha256": "1405c511bc3b39b14e9375b8ec33b9d134be274ea0b0d44f00f0e13bd9cfc899"
+    },
+    {
+      "path": "data/tracking/tracking_2021102408.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021102408.csv",
+      "bytes": 6474076,
+      "git_blob_sha1": "3d26b6bb29ef7d144b05c974f1c79340410fe50e",
+      "sha256": "0f31342bd89d9fb568e2b8b1939043044a8380f8263f37d960a6744d0fa6b323"
+    },
+    {
+      "path": "data/tracking/tracking_2021102409.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021102409.csv",
+      "bytes": 6564335,
+      "git_blob_sha1": "bcd7dbb9ba079aa1167c43600c2c1404f1759602",
+      "sha256": "ff842fdde12df2fe7ff406bc226a405ee39f53b72229fc746de99013904f8ac9"
+    },
+    {
+      "path": "data/tracking/tracking_2021102410.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021102410.csv",
+      "bytes": 5553870,
+      "git_blob_sha1": "f28e3d73ea459a4831101dd62dbdd60f75611ec3",
+      "sha256": "bfccfc5ee299093c340a262b3c17e179001e78a678f6afb32cd09f6c9c80e50a"
+    },
+    {
+      "path": "data/tracking/tracking_2021102500.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021102500.csv",
+      "bytes": 7278933,
+      "git_blob_sha1": "8543a2963fb09d9c8947e64840d5f93bbd6212b4",
+      "sha256": "48615cf8e55e72adca8f7c069b703b6850a5d1d275c2e6b0894e75295a090616"
+    },
+    {
+      "path": "data/tracking/tracking_2021102800.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021102800.csv",
+      "bytes": 5207649,
+      "git_blob_sha1": "33c948e55c61b464c295e61e68f92de0b962894f",
+      "sha256": "f37c7f17c57d47f2065a463646d30f56334981f7b4b4776b42435578f936ce32"
+    },
+    {
+      "path": "data/tracking/tracking_2021103100.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021103100.csv",
+      "bytes": 5173177,
+      "git_blob_sha1": "75e6be2d8829f0cd886091b27fa17960d2b52fce",
+      "sha256": "0d02c2a758d1a6c09596cc5fb992dd108b2e10d396e66b4e68c6ceb1de82c43e"
+    },
+    {
+      "path": "data/tracking/tracking_2021103101.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021103101.csv",
+      "bytes": 6582873,
+      "git_blob_sha1": "aae08948f137242326cbe19b38878efbbb5cbf48",
+      "sha256": "ee6c4fab470c0c43fe1ec9e188865bb7b6a2c276f41de06dfeee34b9f4d62cf4"
+    },
+    {
+      "path": "data/tracking/tracking_2021103102.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021103102.csv",
+      "bytes": 5929279,
+      "git_blob_sha1": "abf71f7ddeb3dcfe781d0c02cf01f917ba00ea1f",
+      "sha256": "794faf55aa5bbb731a27a728d05071d7a86cbc0dc9029e54afccc125c4f20fcd"
+    },
+    {
+      "path": "data/tracking/tracking_2021103103.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021103103.csv",
+      "bytes": 5608389,
+      "git_blob_sha1": "c3d7b69eed538a5c5f6fa5d9eec56ddba78a0d79",
+      "sha256": "d675f6848c333cc86caba7d4642d48e5e5dee795a03496871c21da3d1949c483"
+    },
+    {
+      "path": "data/tracking/tracking_2021103104.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021103104.csv",
+      "bytes": 5692630,
+      "git_blob_sha1": "738add2e2725ea182732a39b825ef0eecf9ccd88",
+      "sha256": "89b248eb66d5278a9d0eae7e492e7957a13236b41feaf616780302a089d4e7b8"
+    },
+    {
+      "path": "data/tracking/tracking_2021103105.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021103105.csv",
+      "bytes": 6217754,
+      "git_blob_sha1": "7252bef2a9b3af8bd4007b47135b0f7d1acb7756",
+      "sha256": "206021b6ed998557bc4b8343bea4b13e9950845020475972012cde37cb300d12"
+    },
+    {
+      "path": "data/tracking/tracking_2021103106.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021103106.csv",
+      "bytes": 8473885,
+      "git_blob_sha1": "01380bd1262018f322ae87024a7f4910819f2776",
+      "sha256": "78ccf157aa717359fdbe257520765373be6a5f4945fda2869d71b72b70252eec"
+    },
+    {
+      "path": "data/tracking/tracking_2021103107.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021103107.csv",
+      "bytes": 7127531,
+      "git_blob_sha1": "a242e5fb8b07e8c40341d58fac3b7f0e862b20af",
+      "sha256": "b9b1343d5510c0e9eb99509fe0524cec96cf08d2c9ce1d4a15ed185f7c69236b"
+    },
+    {
+      "path": "data/tracking/tracking_2021103108.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021103108.csv",
+      "bytes": 7341823,
+      "git_blob_sha1": "e9a74e16b93e5533c8bdb678c68038c825469187",
+      "sha256": "8aab51bfedeece610251e037bb109d631e3def5a95b9dd7ce40f9b9de053082f"
+    },
+    {
+      "path": "data/tracking/tracking_2021103109.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021103109.csv",
+      "bytes": 7366553,
+      "git_blob_sha1": "0de9e17147185b821c236f177fdcd1b160eabe58",
+      "sha256": "512eeccf4c3e9a8704187b716998df707242014a5fff73ac8fb688e530ab9751"
+    },
+    {
+      "path": "data/tracking/tracking_2021103110.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021103110.csv",
+      "bytes": 6317727,
+      "git_blob_sha1": "b3887ff7e1787377045ef234718b77db6dc71529",
+      "sha256": "a724b8ee6434b2b3db7212eb86abc356f455b9e252f227b3ef4ed03e5bcca6cc"
+    },
+    {
+      "path": "data/tracking/tracking_2021103111.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021103111.csv",
+      "bytes": 7191386,
+      "git_blob_sha1": "3e7ebb47c34ff858297e1789d4cc76a313df813a",
+      "sha256": "5d37aa8c6e1c0a8e20f23a1c27c48b3710ccd2868f479e53492af3b4b74e7637"
+    },
+    {
+      "path": "data/tracking/tracking_2021103112.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021103112.csv",
+      "bytes": 8067691,
+      "git_blob_sha1": "101e548e2ab621d2cfb304845ae237ce4ee35c6b",
+      "sha256": "c4e30b7e0517cd78b424daf4188a654567ceae6dd7161853d99dd257b8ccd844"
+    },
+    {
+      "path": "data/tracking/tracking_2021110100.csv",
+      "url": "https://raw.githubusercontent.com/ThompsonJamesBliss/nfl-big-data-bowl-regional-event-data/85da22eeff2f1d5be106faa9dfe06a1205f2defd/data/tracking/tracking_2021110100.csv",
+      "bytes": 7789881,
+      "git_blob_sha1": "9d2ec73febeccff04baa67e85c7fb709443cc944",
+      "sha256": "69b52b2a72c043f553089a18180dc9a2e5e1084d4cffab04d4a38dd021b7a174"
+    }
+  ]
+}

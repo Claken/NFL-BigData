@@ -1,0 +1,3788 @@
+{
+  "source_commit": "85da22eeff2f1d5be106faa9dfe06a1205f2defd",
+  "games_requested": 122,
+  "games_analyzed": 122,
+  "eligible_routes": 26050,
+  "eligible_plays": 7217,
+  "weeks": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "definition": {
+    "event_policy": "Unique primary release; unique automatic fallback only when absent; C/I/IN only",
+    "alternate_policy": "Automatic release when unique, else primary-preferred",
+    "history_start_seconds": 1.0,
+    "history_ends_seconds_before_release": 0.3,
+    "minimum_downfield_yards": 2.0,
+    "minimum_observation_seconds": 1.8,
+    "sustained_minimum_endpoint_span_seconds": 0.5,
+    "main_threshold_yards": 2.0,
+    "strict_threshold": true,
+    "uncertainty": "2000 whole-game cluster bootstrap resamples, seed 20261021",
+    "position_filter": [
+      "WR",
+      "TE",
+      "RB"
+    ]
+  },
+  "main": {
+    "threshold_yards": 2.0,
+    "routes": 26050,
+    "closed_at_release_routes": 10870,
+    "earlier_sustained_routes": 3598,
+    "fraction": 0.3310027598896044,
+    "game_bootstrap_95_percent_interval": [
+      0.31835557287660277,
+      0.344602851088244
+    ],
+    "games": 122,
+    "closed_at_release_plays": 5611
+  },
+  "threshold_sensitivity": [
+    {
+      "threshold_yards": 1.5,
+      "routes": 26050,
+      "closed_at_release_routes": 7803,
+      "earlier_sustained_routes": 3020,
+      "fraction": 0.3870306292451621,
+      "game_bootstrap_95_percent_interval": [
+        0.3724041780092245,
+        0.4024455204462718
+      ],
+      "games": 122,
+      "closed_at_release_plays": 4652
+    },
+    {
+      "threshold_yards": 2.0,
+      "routes": 26050,
+      "closed_at_release_routes": 10870,
+      "earlier_sustained_routes": 3598,
+      "fraction": 0.3310027598896044,
+      "game_bootstrap_95_percent_interval": [
+        0.31835557287660277,
+        0.344602851088244
+      ],
+      "games": 122,
+      "closed_at_release_plays": 5611
+    },
+    {
+      "threshold_yards": 2.5,
+      "routes": 26050,
+      "closed_at_release_routes": 13519,
+      "earlier_sustained_routes": 4062,
+      "fraction": 0.3004660107996154,
+      "game_bootstrap_95_percent_interval": [
+        0.2889016827911493,
+        0.31338282953137697
+      ],
+      "games": 122,
+      "closed_at_release_plays": 6186
+    },
+    {
+      "threshold_yards": 3.0,
+      "routes": 26050,
+      "closed_at_release_routes": 15897,
+      "earlier_sustained_routes": 4086,
+      "fraction": 0.25702962823174186,
+      "game_bootstrap_95_percent_interval": [
+        0.24563904721030302,
+        0.26894465071085
+      ],
+      "games": 122,
+      "closed_at_release_plays": 6583
+    }
+  ],
+  "late_start_sensitivity": {
+    "threshold_yards": 2.0,
+    "routes": 26050,
+    "closed_at_release_routes": 10870,
+    "earlier_sustained_routes": 3090,
+    "fraction": 0.2842686292548298,
+    "game_bootstrap_95_percent_interval": [
+      0.2717729708232323,
+      0.29735587603765057
+    ],
+    "games": 122,
+    "closed_at_release_plays": 5611
+  },
+  "deeper_sensitivity": {
+    "threshold_yards": 2.0,
+    "routes": 26050,
+    "closed_at_release_routes": 10870,
+    "earlier_sustained_routes": 1845,
+    "fraction": 0.16973321067157313,
+    "game_bootstrap_95_percent_interval": [
+      0.159971295774469,
+      0.1804191335518687
+    ],
+    "games": 122,
+    "closed_at_release_plays": 5611
+  },
+  "initially_close_sensitivity": {
+    "threshold_yards": 2.0,
+    "routes": 2575,
+    "closed_at_release_routes": 1484,
+    "earlier_sustained_routes": 233,
+    "fraction": 0.15700808625336926,
+    "game_bootstrap_95_percent_interval": [
+      0.1389619240154571,
+      0.1747315039084003
+    ],
+    "games": 121,
+    "closed_at_release_plays": 1354
+  },
+  "week_sensitivity": [
+    {
+      "week": 1,
+      "threshold_yards": 2.0,
+      "routes": 3630,
+      "closed_at_release_routes": 1477,
+      "earlier_sustained_routes": 479,
+      "fraction": 0.3243060257278267,
+      "game_bootstrap_95_percent_interval": [
+        0.2942262299295251,
+        0.35624228055212465
+      ],
+      "games": 16,
+      "closed_at_release_plays": 758
+    },
+    {
+      "week": 2,
+      "threshold_yards": 2.0,
+      "routes": 3174,
+      "closed_at_release_routes": 1258,
+      "earlier_sustained_routes": 417,
+      "fraction": 0.3314785373608903,
+      "game_bootstrap_95_percent_interval": [
+        0.2944730720970486,
+        0.3708397612003381
+      ],
+      "games": 16,
+      "closed_at_release_plays": 683
+    },
+    {
+      "week": 3,
+      "threshold_yards": 2.0,
+      "routes": 3477,
+      "closed_at_release_routes": 1471,
+      "earlier_sustained_routes": 493,
+      "fraction": 0.33514615907545886,
+      "game_bootstrap_95_percent_interval": [
+        0.30368846098131325,
+        0.36113024243158304
+      ],
+      "games": 16,
+      "closed_at_release_plays": 740
+    },
+    {
+      "week": 4,
+      "threshold_yards": 2.0,
+      "routes": 3335,
+      "closed_at_release_routes": 1465,
+      "earlier_sustained_routes": 474,
+      "fraction": 0.3235494880546075,
+      "game_bootstrap_95_percent_interval": [
+        0.29200389145775163,
+        0.3604658340511053
+      ],
+      "games": 16,
+      "closed_at_release_plays": 738
+    },
+    {
+      "week": 5,
+      "threshold_yards": 2.0,
+      "routes": 3417,
+      "closed_at_release_routes": 1499,
+      "earlier_sustained_routes": 509,
+      "fraction": 0.33955970647098066,
+      "game_bootstrap_95_percent_interval": [
+        0.30748528315215257,
+        0.378184567512475
+      ],
+      "games": 16,
+      "closed_at_release_plays": 756
+    },
+    {
+      "week": 6,
+      "threshold_yards": 2.0,
+      "routes": 3098,
+      "closed_at_release_routes": 1258,
+      "earlier_sustained_routes": 436,
+      "fraction": 0.3465818759936407,
+      "game_bootstrap_95_percent_interval": [
+        0.30181390503490196,
+        0.39457607650389986
+      ],
+      "games": 14,
+      "closed_at_release_plays": 670
+    },
+    {
+      "week": 7,
+      "threshold_yards": 2.0,
+      "routes": 2738,
+      "closed_at_release_routes": 1084,
+      "earlier_sustained_routes": 346,
+      "fraction": 0.3191881918819188,
+      "game_bootstrap_95_percent_interval": [
+        0.270152851028358,
+        0.37487162652603867
+      ],
+      "games": 13,
+      "closed_at_release_plays": 568
+    },
+    {
+      "week": 8,
+      "threshold_yards": 2.0,
+      "routes": 3181,
+      "closed_at_release_routes": 1358,
+      "earlier_sustained_routes": 444,
+      "fraction": 0.3269513991163476,
+      "game_bootstrap_95_percent_interval": [
+        0.2983409884825631,
+        0.3591734671243112
+      ],
+      "games": 15,
+      "closed_at_release_plays": 698
+    }
+  ],
+  "event_sensitivity": {
+    "common_cohort_primary": {
+      "threshold_yards": 2.0,
+      "routes": 25691,
+      "closed_at_release_routes": 10765,
+      "earlier_sustained_routes": 3595,
+      "fraction": 0.3339526242452392,
+      "game_bootstrap_95_percent_interval": [
+        0.32103861030238373,
+        0.3478394039501374
+      ],
+      "games": 122,
+      "closed_at_release_plays": 5560
+    },
+    "common_cohort_alternate": {
+      "threshold_yards": 2.0,
+      "routes": 25691,
+      "closed_at_release_routes": 10759,
+      "earlier_sustained_routes": 3533,
+      "fraction": 0.32837624314527375,
+      "game_bootstrap_95_percent_interval": [
+        0.31557219525695623,
+        0.3421503622737461
+      ],
+      "games": 122,
+      "closed_at_release_plays": 5538
+    },
+    "sustained_status_changed_routes": 479,
+    "both_markers_plays": 3677,
+    "auto_minus_primary_frame_counts": {
+      "-5": 2,
+      "-3": 7,
+      "-2": 284,
+      "-1": 2413,
+      "1": 828,
+      "2": 124,
+      "3": 16,
+      "4": 2,
+      "5": 1
+    },
+    "automatic_fallback_plays": 21
+  },
+  "alignment_coverage_groups": [
+    {
+      "alignment": "Wide",
+      "coverage": "Cover-1",
+      "threshold_yards": 2.0,
+      "routes": 2974,
+      "closed_at_release_routes": 2041,
+      "earlier_sustained_routes": 372,
+      "fraction": 0.18226359627633512,
+      "game_bootstrap_95_percent_interval": [
+        0.16106583028968832,
+        0.20497900169752625
+      ],
+      "games": 121,
+      "closed_at_release_plays": 1415
+    },
+    {
+      "alignment": "Wide",
+      "coverage": "Cover-3",
+      "threshold_yards": 2.0,
+      "routes": 4029,
+      "closed_at_release_routes": 1310,
+      "earlier_sustained_routes": 669,
+      "fraction": 0.5106870229007634,
+      "game_bootstrap_95_percent_interval": [
+        0.4783591492507224,
+        0.543726144631811
+      ],
+      "games": 122,
+      "closed_at_release_plays": 1102
+    },
+    {
+      "alignment": "Slot",
+      "coverage": "Cover-1",
+      "threshold_yards": 2.0,
+      "routes": 1167,
+      "closed_at_release_routes": 813,
+      "earlier_sustained_routes": 153,
+      "fraction": 0.1881918819188192,
+      "game_bootstrap_95_percent_interval": [
+        0.16212629903839623,
+        0.2153049541079441
+      ],
+      "games": 119,
+      "closed_at_release_plays": 696
+    },
+    {
+      "alignment": "Wide",
+      "coverage": "Quarters",
+      "threshold_yards": 2.0,
+      "routes": 1561,
+      "closed_at_release_routes": 486,
+      "earlier_sustained_routes": 276,
+      "fraction": 0.5679012345679012,
+      "game_bootstrap_95_percent_interval": [
+        0.5102359715908307,
+        0.6275815349470204
+      ],
+      "games": 110,
+      "closed_at_release_plays": 408
+    },
+    {
+      "alignment": "Wide",
+      "coverage": "Cover-2",
+      "threshold_yards": 2.0,
+      "routes": 1711,
+      "closed_at_release_routes": 459,
+      "earlier_sustained_routes": 143,
+      "fraction": 0.3115468409586057,
+      "game_bootstrap_95_percent_interval": [
+        0.2574617629673415,
+        0.3694206566347468
+      ],
+      "games": 108,
+      "closed_at_release_plays": 384
+    },
+    {
+      "alignment": "Slot",
+      "coverage": "Cover-3",
+      "threshold_yards": 2.0,
+      "routes": 1503,
+      "closed_at_release_routes": 452,
+      "earlier_sustained_routes": 230,
+      "fraction": 0.5088495575221239,
+      "game_bootstrap_95_percent_interval": [
+        0.463289950928099,
+        0.5565051679904667
+      ],
+      "games": 115,
+      "closed_at_release_plays": 424
+    },
+    {
+      "alignment": "Wide",
+      "coverage": "Cover-6",
+      "threshold_yards": 2.0,
+      "routes": 1305,
+      "closed_at_release_routes": 422,
+      "earlier_sustained_routes": 170,
+      "fraction": 0.4028436018957346,
+      "game_bootstrap_95_percent_interval": [
+        0.3556468341466983,
+        0.45389510341916417
+      ],
+      "games": 108,
+      "closed_at_release_plays": 361
+    },
+    {
+      "alignment": "Slot outside",
+      "coverage": "Cover-1",
+      "threshold_yards": 2.0,
+      "routes": 633,
+      "closed_at_release_routes": 420,
+      "earlier_sustained_routes": 78,
+      "fraction": 0.18571428571428572,
+      "game_bootstrap_95_percent_interval": [
+        0.15025845921817607,
+        0.22250495182012844
+      ],
+      "games": 109,
+      "closed_at_release_plays": 420
+    },
+    {
+      "alignment": "Slot inside",
+      "coverage": "Cover-1",
+      "threshold_yards": 2.0,
+      "routes": 547,
+      "closed_at_release_routes": 376,
+      "earlier_sustained_routes": 76,
+      "fraction": 0.20212765957446807,
+      "game_bootstrap_95_percent_interval": [
+        0.1536416179556355,
+        0.24934400245423868
+      ],
+      "games": 113,
+      "closed_at_release_plays": 376
+    },
+    {
+      "alignment": "Wide",
+      "coverage": "Red Zone",
+      "threshold_yards": 2.0,
+      "routes": 542,
+      "closed_at_release_routes": 315,
+      "earlier_sustained_routes": 106,
+      "fraction": 0.33650793650793653,
+      "game_bootstrap_95_percent_interval": [
+        0.27732041522491346,
+        0.3982173503460368
+      ],
+      "games": 97,
+      "closed_at_release_plays": 227
+    },
+    {
+      "alignment": "Inline TE",
+      "coverage": "Cover-1",
+      "threshold_yards": 2.0,
+      "routes": 380,
+      "closed_at_release_routes": 251,
+      "earlier_sustained_routes": 40,
+      "fraction": 0.1593625498007968,
+      "game_bootstrap_95_percent_interval": [
+        0.11193149061559157,
+        0.20890964373144433
+      ],
+      "games": 93,
+      "closed_at_release_plays": 243
+    },
+    {
+      "alignment": "Slot",
+      "coverage": "Quarters",
+      "threshold_yards": 2.0,
+      "routes": 695,
+      "closed_at_release_routes": 242,
+      "earlier_sustained_routes": 105,
+      "fraction": 0.43388429752066116,
+      "game_bootstrap_95_percent_interval": [
+        0.3563218390804598,
+        0.5175438596491229
+      ],
+      "games": 98,
+      "closed_at_release_plays": 224
+    },
+    {
+      "alignment": "Wide",
+      "coverage": "Cover-0",
+      "threshold_yards": 2.0,
+      "routes": 365,
+      "closed_at_release_routes": 208,
+      "earlier_sustained_routes": 40,
+      "fraction": 0.19230769230769232,
+      "game_bootstrap_95_percent_interval": [
+        0.1283388180447004,
+        0.26316431322207956
+      ],
+      "games": 66,
+      "closed_at_release_plays": 147
+    },
+    {
+      "alignment": "Inline TE",
+      "coverage": "Cover-3",
+      "threshold_yards": 2.0,
+      "routes": 604,
+      "closed_at_release_routes": 193,
+      "earlier_sustained_routes": 67,
+      "fraction": 0.3471502590673575,
+      "game_bootstrap_95_percent_interval": [
+        0.28742184140007276,
+        0.40885194515214834
+      ],
+      "games": 87,
+      "closed_at_release_plays": 189
+    },
+    {
+      "alignment": "Wide",
+      "coverage": "2-Man",
+      "threshold_yards": 2.0,
+      "routes": 288,
+      "closed_at_release_routes": 191,
+      "earlier_sustained_routes": 53,
+      "fraction": 0.2774869109947644,
+      "game_bootstrap_95_percent_interval": [
+        0.20731432652164358,
+        0.34343744190369957
+      ],
+      "games": 63,
+      "closed_at_release_plays": 133
+    },
+    {
+      "alignment": "Slot outside",
+      "coverage": "Cover-3",
+      "threshold_yards": 2.0,
+      "routes": 698,
+      "closed_at_release_routes": 190,
+      "earlier_sustained_routes": 103,
+      "fraction": 0.5421052631578948,
+      "game_bootstrap_95_percent_interval": [
+        0.4806562127613476,
+        0.6010679088891789
+      ],
+      "games": 92,
+      "closed_at_release_plays": 190
+    },
+    {
+      "alignment": "Slot inside",
+      "coverage": "Cover-3",
+      "threshold_yards": 2.0,
+      "routes": 598,
+      "closed_at_release_routes": 173,
+      "earlier_sustained_routes": 85,
+      "fraction": 0.4913294797687861,
+      "game_bootstrap_95_percent_interval": [
+        0.419886092353864,
+        0.5705147058823529
+      ],
+      "games": 94,
+      "closed_at_release_plays": 173
+    },
+    {
+      "alignment": "Slot",
+      "coverage": "Cover-6",
+      "threshold_yards": 2.0,
+      "routes": 485,
+      "closed_at_release_routes": 172,
+      "earlier_sustained_routes": 71,
+      "fraction": 0.4127906976744186,
+      "game_bootstrap_95_percent_interval": [
+        0.3390780245470485,
+        0.48370517169759064
+      ],
+      "games": 78,
+      "closed_at_release_plays": 162
+    },
+    {
+      "alignment": "Slot",
+      "coverage": "Cover-2",
+      "threshold_yards": 2.0,
+      "routes": 723,
+      "closed_at_release_routes": 136,
+      "earlier_sustained_routes": 77,
+      "fraction": 0.5661764705882353,
+      "game_bootstrap_95_percent_interval": [
+        0.482263125669677,
+        0.6454207326827707
+      ],
+      "games": 72,
+      "closed_at_release_plays": 132
+    },
+    {
+      "alignment": "Slot",
+      "coverage": "Red Zone",
+      "threshold_yards": 2.0,
+      "routes": 211,
+      "closed_at_release_routes": 121,
+      "earlier_sustained_routes": 43,
+      "fraction": 0.35537190082644626,
+      "game_bootstrap_95_percent_interval": [
+        0.26467738258093937,
+        0.45047237502989707
+      ],
+      "games": 66,
+      "closed_at_release_plays": 108
+    },
+    {
+      "alignment": "Slot outside",
+      "coverage": "Quarters",
+      "threshold_yards": 2.0,
+      "routes": 332,
+      "closed_at_release_routes": 93,
+      "earlier_sustained_routes": 48,
+      "fraction": 0.5161290322580645,
+      "game_bootstrap_95_percent_interval": [
+        0.41174836601307185,
+        0.6185567010309279
+      ],
+      "games": 62,
+      "closed_at_release_plays": 93
+    },
+    {
+      "alignment": "Slot",
+      "coverage": "2-Man",
+      "threshold_yards": 2.0,
+      "routes": 125,
+      "closed_at_release_routes": 93,
+      "earlier_sustained_routes": 9,
+      "fraction": 0.0967741935483871,
+      "game_bootstrap_95_percent_interval": [
+        0.0392156862745098,
+        0.1685427101665087
+      ],
+      "games": 47,
+      "closed_at_release_plays": 75
+    },
+    {
+      "alignment": "Slot inside",
+      "coverage": "Quarters",
+      "threshold_yards": 2.0,
+      "routes": 288,
+      "closed_at_release_routes": 84,
+      "earlier_sustained_routes": 39,
+      "fraction": 0.4642857142857143,
+      "game_bootstrap_95_percent_interval": [
+        0.36361138861138864,
+        0.5679012345679012
+      ],
+      "games": 57,
+      "closed_at_release_plays": 84
+    },
+    {
+      "alignment": "Slot inside",
+      "coverage": "Cover-6",
+      "threshold_yards": 2.0,
+      "routes": 234,
+      "closed_at_release_routes": 84,
+      "earlier_sustained_routes": 45,
+      "fraction": 0.5357142857142857,
+      "game_bootstrap_95_percent_interval": [
+        0.4347683066361556,
+        0.6410493827160493
+      ],
+      "games": 60,
+      "closed_at_release_plays": 84
+    },
+    {
+      "alignment": "Inline TE",
+      "coverage": "Quarters",
+      "threshold_yards": 2.0,
+      "routes": 202,
+      "closed_at_release_routes": 81,
+      "earlier_sustained_routes": 25,
+      "fraction": 0.30864197530864196,
+      "game_bootstrap_95_percent_interval": [
+        0.2073170731707317,
+        0.414294425087108
+      ],
+      "games": 56,
+      "closed_at_release_plays": 80
+    },
+    {
+      "alignment": "Slot inside",
+      "coverage": "Cover-2",
+      "threshold_yards": 2.0,
+      "routes": 264,
+      "closed_at_release_routes": 78,
+      "earlier_sustained_routes": 60,
+      "fraction": 0.7692307692307693,
+      "game_bootstrap_95_percent_interval": [
+        0.6547508818342151,
+        0.868421052631579
+      ],
+      "games": 56,
+      "closed_at_release_plays": 78
+    },
+    {
+      "alignment": "Slot outside",
+      "coverage": "Cover-6",
+      "threshold_yards": 2.0,
+      "routes": 267,
+      "closed_at_release_routes": 78,
+      "earlier_sustained_routes": 45,
+      "fraction": 0.5769230769230769,
+      "game_bootstrap_95_percent_interval": [
+        0.4523727984344423,
+        0.7045600233100233
+      ],
+      "games": 55,
+      "closed_at_release_plays": 78
+    },
+    {
+      "alignment": "Slot outside",
+      "coverage": "Red Zone",
+      "threshold_yards": 2.0,
+      "routes": 124,
+      "closed_at_release_routes": 73,
+      "earlier_sustained_routes": 26,
+      "fraction": 0.3561643835616438,
+      "game_bootstrap_95_percent_interval": [
+        0.2465753424657534,
+        0.4745762711864407
+      ],
+      "games": 50,
+      "closed_at_release_plays": 73
+    },
+    {
+      "alignment": "Slot",
+      "coverage": "Cover-0",
+      "threshold_yards": 2.0,
+      "routes": 141,
+      "closed_at_release_routes": 70,
+      "earlier_sustained_routes": 18,
+      "fraction": 0.2571428571428571,
+      "game_bootstrap_95_percent_interval": [
+        0.15853658536585366,
+        0.36766640866873057
+      ],
+      "games": 44,
+      "closed_at_release_plays": 64
+    },
+    {
+      "alignment": "Inline TE",
+      "coverage": "Cover-6",
+      "threshold_yards": 2.0,
+      "routes": 208,
+      "closed_at_release_routes": 67,
+      "earlier_sustained_routes": 21,
+      "fraction": 0.31343283582089554,
+      "game_bootstrap_95_percent_interval": [
+        0.2,
+        0.423728813559322
+      ],
+      "games": 42,
+      "closed_at_release_plays": 67
+    },
+    {
+      "alignment": "Backfield HB",
+      "coverage": "Cover-1",
+      "threshold_yards": 2.0,
+      "routes": 135,
+      "closed_at_release_routes": 66,
+      "earlier_sustained_routes": 5,
+      "fraction": 0.07575757575757576,
+      "game_bootstrap_95_percent_interval": [
+        0.015384615384615385,
+        0.1492723880597014
+      ],
+      "games": 45,
+      "closed_at_release_plays": 66
+    },
+    {
+      "alignment": "Slot inside",
+      "coverage": "Red Zone",
+      "threshold_yards": 2.0,
+      "routes": 105,
+      "closed_at_release_routes": 64,
+      "earlier_sustained_routes": 24,
+      "fraction": 0.375,
+      "game_bootstrap_95_percent_interval": [
+        0.2647058823529412,
+        0.48485962566844915
+      ],
+      "games": 44,
+      "closed_at_release_plays": 64
+    },
+    {
+      "alignment": "Inline TE",
+      "coverage": "Cover-2",
+      "threshold_yards": 2.0,
+      "routes": 241,
+      "closed_at_release_routes": 60,
+      "earlier_sustained_routes": 26,
+      "fraction": 0.43333333333333335,
+      "game_bootstrap_95_percent_interval": [
+        0.3076923076923077,
+        0.5781455592105262
+      ],
+      "games": 37,
+      "closed_at_release_plays": 59
+    },
+    {
+      "alignment": "Slot outside",
+      "coverage": "2-Man",
+      "threshold_yards": 2.0,
+      "routes": 66,
+      "closed_at_release_routes": 53,
+      "earlier_sustained_routes": 4,
+      "fraction": 0.07547169811320754,
+      "game_bootstrap_95_percent_interval": [
+        0.018867924528301886,
+        0.14893617021276595
+      ],
+      "games": 36,
+      "closed_at_release_plays": 53
+    },
+    {
+      "alignment": "Wide",
+      "coverage": "Bracket",
+      "threshold_yards": 2.0,
+      "routes": 74,
+      "closed_at_release_routes": 52,
+      "earlier_sustained_routes": 13,
+      "fraction": 0.25,
+      "game_bootstrap_95_percent_interval": [
+        0.1296031746031746,
+        0.4
+      ],
+      "games": 29,
+      "closed_at_release_plays": 39
+    },
+    {
+      "alignment": "Backfield HB",
+      "coverage": "Cover-3",
+      "threshold_yards": 2.0,
+      "routes": 228,
+      "closed_at_release_routes": 50,
+      "earlier_sustained_routes": 19,
+      "fraction": 0.38,
+      "game_bootstrap_95_percent_interval": [
+        0.24560575968222442,
+        0.52
+      ],
+      "games": 43,
+      "closed_at_release_plays": 50
+    },
+    {
+      "alignment": "TE inside",
+      "coverage": "Cover-1",
+      "threshold_yards": 2.0,
+      "routes": 62,
+      "closed_at_release_routes": 45,
+      "earlier_sustained_routes": 6,
+      "fraction": 0.13333333333333333,
+      "game_bootstrap_95_percent_interval": [
+        0.025,
+        0.25
+      ],
+      "games": 32,
+      "closed_at_release_plays": 45
+    },
+    {
+      "alignment": "Inline TE",
+      "coverage": "Red Zone",
+      "threshold_yards": 2.0,
+      "routes": 75,
+      "closed_at_release_routes": 43,
+      "earlier_sustained_routes": 10,
+      "fraction": 0.23255813953488372,
+      "game_bootstrap_95_percent_interval": [
+        0.1111111111111111,
+        0.36585365853658536
+      ],
+      "games": 36,
+      "closed_at_release_plays": 42
+    },
+    {
+      "alignment": "TE outside",
+      "coverage": "Cover-1",
+      "threshold_yards": 2.0,
+      "routes": 70,
+      "closed_at_release_routes": 41,
+      "earlier_sustained_routes": 9,
+      "fraction": 0.21951219512195122,
+      "game_bootstrap_95_percent_interval": [
+        0.11761285909712722,
+        0.3333333333333333
+      ],
+      "games": 27,
+      "closed_at_release_plays": 41
+    },
+    {
+      "alignment": "TE inside",
+      "coverage": "Cover-3",
+      "threshold_yards": 2.0,
+      "routes": 120,
+      "closed_at_release_routes": 39,
+      "earlier_sustained_routes": 17,
+      "fraction": 0.4358974358974359,
+      "game_bootstrap_95_percent_interval": [
+        0.3076923076923077,
+        0.5714285714285714
+      ],
+      "games": 32,
+      "closed_at_release_plays": 39
+    },
+    {
+      "alignment": "Slot outside",
+      "coverage": "Cover-0",
+      "threshold_yards": 2.0,
+      "routes": 79,
+      "closed_at_release_routes": 39,
+      "earlier_sustained_routes": 12,
+      "fraction": 0.3076923076923077,
+      "game_bootstrap_95_percent_interval": [
+        0.15,
+        0.4750297619047617
+      ],
+      "games": 32,
+      "closed_at_release_plays": 39
+    },
+    {
+      "alignment": "TE outside",
+      "coverage": "Cover-3",
+      "threshold_yards": 2.0,
+      "routes": 137,
+      "closed_at_release_routes": 37,
+      "earlier_sustained_routes": 19,
+      "fraction": 0.5135135135135135,
+      "game_bootstrap_95_percent_interval": [
+        0.35135135135135137,
+        0.6571428571428571
+      ],
+      "games": 35,
+      "closed_at_release_plays": 37
+    },
+    {
+      "alignment": "Slot outside",
+      "coverage": "Cover-2",
+      "threshold_yards": 2.0,
+      "routes": 322,
+      "closed_at_release_routes": 36,
+      "earlier_sustained_routes": 20,
+      "fraction": 0.5555555555555556,
+      "game_bootstrap_95_percent_interval": [
+        0.3870347394540943,
+        0.7142857142857143
+      ],
+      "games": 29,
+      "closed_at_release_plays": 36
+    },
+    {
+      "alignment": "Slot inside",
+      "coverage": "2-Man",
+      "threshold_yards": 2.0,
+      "routes": 59,
+      "closed_at_release_routes": 35,
+      "earlier_sustained_routes": 3,
+      "fraction": 0.08571428571428572,
+      "game_bootstrap_95_percent_interval": [
+        0.0,
+        0.1935483870967742
+      ],
+      "games": 27,
+      "closed_at_release_plays": 35
+    },
+    {
+      "alignment": "Slot inside",
+      "coverage": "Cover-0",
+      "threshold_yards": 2.0,
+      "routes": 67,
+      "closed_at_release_routes": 33,
+      "earlier_sustained_routes": 15,
+      "fraction": 0.45454545454545453,
+      "game_bootstrap_95_percent_interval": [
+        0.3029545454545455,
+        0.6
+      ],
+      "games": 30,
+      "closed_at_release_plays": 33
+    },
+    {
+      "alignment": "Backfield HB",
+      "coverage": "Quarters",
+      "threshold_yards": 2.0,
+      "routes": 98,
+      "closed_at_release_routes": 32,
+      "earlier_sustained_routes": 5,
+      "fraction": 0.15625,
+      "game_bootstrap_95_percent_interval": [
+        0.03125,
+        0.3125
+      ],
+      "games": 28,
+      "closed_at_release_plays": 32
+    },
+    {
+      "alignment": "Backfield HB",
+      "coverage": "Red Zone",
+      "threshold_yards": 2.0,
+      "routes": 57,
+      "closed_at_release_routes": 27,
+      "earlier_sustained_routes": 4,
+      "fraction": 0.14814814814814814,
+      "game_bootstrap_95_percent_interval": [
+        0.03571428571428571,
+        0.2962962962962963
+      ],
+      "games": 25,
+      "closed_at_release_plays": 27
+    },
+    {
+      "alignment": "Inline TE",
+      "coverage": "Cover-0",
+      "threshold_yards": 2.0,
+      "routes": 41,
+      "closed_at_release_routes": 26,
+      "earlier_sustained_routes": 6,
+      "fraction": 0.23076923076923078,
+      "game_bootstrap_95_percent_interval": [
+        0.08,
+        0.38461538461538464
+      ],
+      "games": 21,
+      "closed_at_release_plays": 25
+    },
+    {
+      "alignment": "Slot",
+      "coverage": "Bracket",
+      "threshold_yards": 2.0,
+      "routes": 33,
+      "closed_at_release_routes": 24,
+      "earlier_sustained_routes": 3,
+      "fraction": 0.125,
+      "game_bootstrap_95_percent_interval": [
+        0.0,
+        0.2727272727272727
+      ],
+      "games": 16,
+      "closed_at_release_plays": 19
+    },
+    {
+      "alignment": "Inline TE",
+      "coverage": "2-Man",
+      "threshold_yards": 2.0,
+      "routes": 37,
+      "closed_at_release_routes": 22,
+      "earlier_sustained_routes": 1,
+      "fraction": 0.045454545454545456,
+      "game_bootstrap_95_percent_interval": [
+        0.0,
+        0.15789473684210525
+      ],
+      "games": 18,
+      "closed_at_release_plays": 22
+    },
+    {
+      "alignment": "Wide",
+      "coverage": "Prevent",
+      "threshold_yards": 2.0,
+      "routes": 56,
+      "closed_at_release_routes": 21,
+      "earlier_sustained_routes": 18,
+      "fraction": 0.8571428571428571,
+      "game_bootstrap_95_percent_interval": [
+        0.6661764705882353,
+        1.0
+      ],
+      "games": 13,
+      "closed_at_release_plays": 15
+    },
+    {
+      "alignment": "Backfield HB",
+      "coverage": "Cover-6",
+      "threshold_yards": 2.0,
+      "routes": 84,
+      "closed_at_release_routes": 19,
+      "earlier_sustained_routes": 4,
+      "fraction": 0.21052631578947367,
+      "game_bootstrap_95_percent_interval": [
+        0.05263157894736842,
+        0.4
+      ],
+      "games": 17,
+      "closed_at_release_plays": 19
+    },
+    {
+      "alignment": "Backfield HB",
+      "coverage": "Cover-2",
+      "threshold_yards": 2.0,
+      "routes": 102,
+      "closed_at_release_routes": 15,
+      "earlier_sustained_routes": 5,
+      "fraction": 0.3333333333333333,
+      "game_bootstrap_95_percent_interval": [
+        0.13333333333333333,
+        0.5625
+      ],
+      "games": 14,
+      "closed_at_release_plays": 15
+    },
+    {
+      "alignment": "TE outside",
+      "coverage": "Quarters",
+      "threshold_yards": 2.0,
+      "routes": 44,
+      "closed_at_release_routes": 15,
+      "earlier_sustained_routes": 9,
+      "fraction": 0.6,
+      "game_bootstrap_95_percent_interval": [
+        0.35294117647058826,
+        0.8571428571428571
+      ],
+      "games": 13,
+      "closed_at_release_plays": 15
+    },
+    {
+      "alignment": "TE outside",
+      "coverage": "Cover-2",
+      "threshold_yards": 2.0,
+      "routes": 44,
+      "closed_at_release_routes": 14,
+      "earlier_sustained_routes": 5,
+      "fraction": 0.35714285714285715,
+      "game_bootstrap_95_percent_interval": [
+        0.14285714285714285,
+        0.6
+      ],
+      "games": 13,
+      "closed_at_release_plays": 14
+    },
+    {
+      "alignment": "TE inside",
+      "coverage": "Cover-2",
+      "threshold_yards": 2.0,
+      "routes": 32,
+      "closed_at_release_routes": 5,
+      "earlier_sustained_routes": 2,
+      "fraction": 0.4,
+      "game_bootstrap_95_percent_interval": [
+        0.0,
+        0.8
+      ],
+      "games": 5,
+      "closed_at_release_plays": 5
+    }
+  ],
+  "pair": {
+    "matching_pairs": 16,
+    "selection_rule": "Largest history gap within pre-specified tight matching tolerances",
+    "release_tolerance_yards": 0.15,
+    "initial_tolerance_yards": 0.5,
+    "throw_time_tolerance_seconds": 0.3,
+    "examples": [
+      {
+        "gameId": 2021091910,
+        "playId": 3195,
+        "nflId": 47991
+      },
+      {
+        "gameId": 2021091910,
+        "playId": 2885,
+        "nflId": 47991
+      }
+    ]
+  },
+  "exclusion_counts": {
+    "non_pass_outcome": 992,
+    "never_two_yards_downfield": 6863,
+    "observation_shorter_than_1.8_seconds": 1500,
+    "receiver_outside_field": 30,
+    "alternate_never_two_yards_downfield": 121,
+    "missing_ambiguous_or_unordered_events": 25,
+    "alternate_observation_shorter_than_1.8_seconds": 238,
+    "inconsistent_timestamp_cadence": 4,
+    "missing_line_of_scrimmage": 1
+  },
+  "per_game_audit": [
+    {
+      "gameId": 2021090900,
+      "tracking_rows": 92644,
+      "tracking_plays": 97,
+      "exclusions": {
+        "non_pass_outcome": 4,
+        "never_two_yards_downfield": 78,
+        "observation_shorter_than_1.8_seconds": 24,
+        "receiver_outside_field": 1,
+        "alternate_never_two_yards_downfield": 3
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 297
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 88616,
+      "joined_rows": 88616,
+      "eligible_pass_segments": 93,
+      "eligible_routes": 337
+    },
+    {
+      "gameId": 2021091200,
+      "tracking_rows": 69299,
+      "tracking_plays": 73,
+      "exclusions": {
+        "non_pass_outcome": 9,
+        "missing_ambiguous_or_unordered_events": 1,
+        "never_two_yards_downfield": 64
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 223
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 66286,
+      "joined_rows": 66286,
+      "eligible_pass_segments": 63,
+      "eligible_routes": 224
+    },
+    {
+      "gameId": 2021091201,
+      "tracking_rows": 76406,
+      "tracking_plays": 81,
+      "exclusions": {
+        "non_pass_outcome": 8,
+        "never_two_yards_downfield": 61,
+        "alternate_observation_shorter_than_1.8_seconds": 4,
+        "observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 239
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 73084,
+      "joined_rows": 73084,
+      "eligible_pass_segments": 73,
+      "eligible_routes": 281
+    },
+    {
+      "gameId": 2021091202,
+      "tracking_rows": 68172,
+      "tracking_plays": 72,
+      "exclusions": {
+        "non_pass_outcome": 6,
+        "missing_ambiguous_or_unordered_events": 1,
+        "observation_shorter_than_1.8_seconds": 15,
+        "never_two_yards_downfield": 60
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 216
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 65208,
+      "joined_rows": 65208,
+      "eligible_pass_segments": 65,
+      "eligible_routes": 216
+    },
+    {
+      "gameId": 2021091203,
+      "tracking_rows": 71116,
+      "tracking_plays": 76,
+      "exclusions": {
+        "non_pass_outcome": 8,
+        "missing_ambiguous_or_unordered_events": 1,
+        "never_two_yards_downfield": 51,
+        "observation_shorter_than_1.8_seconds": 15,
+        "alternate_never_two_yards_downfield": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 216
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 68024,
+      "joined_rows": 68024,
+      "eligible_pass_segments": 67,
+      "eligible_routes": 240
+    },
+    {
+      "gameId": 2021091204,
+      "tracking_rows": 82271,
+      "tracking_plays": 89,
+      "exclusions": {
+        "non_pass_outcome": 8,
+        "never_two_yards_downfield": 78,
+        "observation_shorter_than_1.8_seconds": 20
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 258
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 78694,
+      "joined_rows": 78694,
+      "eligible_pass_segments": 81,
+      "eligible_routes": 274
+    },
+    {
+      "gameId": 2021091205,
+      "tracking_rows": 75739,
+      "tracking_plays": 79,
+      "exclusions": {
+        "non_pass_outcome": 4,
+        "never_two_yards_downfield": 71,
+        "observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 245
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 72446,
+      "joined_rows": 72446,
+      "eligible_pass_segments": 75,
+      "eligible_routes": 276
+    },
+    {
+      "gameId": 2021091206,
+      "tracking_rows": 63917,
+      "tracking_plays": 64,
+      "exclusions": {
+        "non_pass_outcome": 12,
+        "missing_ambiguous_or_unordered_events": 1,
+        "never_two_yards_downfield": 46,
+        "alternate_never_two_yards_downfield": 4,
+        "observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 205
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 61138,
+      "joined_rows": 61138,
+      "eligible_pass_segments": 51,
+      "eligible_routes": 189
+    },
+    {
+      "gameId": 2021091207,
+      "tracking_rows": 63848,
+      "tracking_plays": 67,
+      "exclusions": {
+        "non_pass_outcome": 10,
+        "never_two_yards_downfield": 42,
+        "alternate_never_two_yards_downfield": 1,
+        "observation_shorter_than_1.8_seconds": 19
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 206
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 61072,
+      "joined_rows": 61072,
+      "eligible_pass_segments": 57,
+      "eligible_routes": 204
+    },
+    {
+      "gameId": 2021091208,
+      "tracking_rows": 64653,
+      "tracking_plays": 71,
+      "exclusions": {
+        "non_pass_outcome": 7,
+        "never_two_yards_downfield": 65,
+        "observation_shorter_than_1.8_seconds": 22
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 208
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 61842,
+      "joined_rows": 61842,
+      "eligible_pass_segments": 64,
+      "eligible_routes": 204
+    },
+    {
+      "gameId": 2021091209,
+      "tracking_rows": 65274,
+      "tracking_plays": 66,
+      "exclusions": {
+        "non_pass_outcome": 9,
+        "never_two_yards_downfield": 46,
+        "alternate_observation_shorter_than_1.8_seconds": 5,
+        "observation_shorter_than_1.8_seconds": 34,
+        "receiver_outside_field": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 204
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 62436,
+      "joined_rows": 62436,
+      "eligible_pass_segments": 57,
+      "eligible_routes": 182
+    },
+    {
+      "gameId": 2021091210,
+      "tracking_rows": 54096,
+      "tracking_plays": 60,
+      "exclusions": {
+        "non_pass_outcome": 4,
+        "never_two_yards_downfield": 41,
+        "observation_shorter_than_1.8_seconds": 38,
+        "receiver_outside_field": 1,
+        "alternate_observation_shorter_than_1.8_seconds": 2
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 171
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 51744,
+      "joined_rows": 51744,
+      "eligible_pass_segments": 56,
+      "eligible_routes": 167
+    },
+    {
+      "gameId": 2021091211,
+      "tracking_rows": 48323,
+      "tracking_plays": 48,
+      "exclusions": {
+        "non_pass_outcome": 4,
+        "never_two_yards_downfield": 30,
+        "observation_shorter_than_1.8_seconds": 23
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 157
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 46222,
+      "joined_rows": 46222,
+      "eligible_pass_segments": 44,
+      "eligible_routes": 143
+    },
+    {
+      "gameId": 2021091212,
+      "tracking_rows": 72266,
+      "tracking_plays": 76,
+      "exclusions": {
+        "non_pass_outcome": 11,
+        "never_two_yards_downfield": 54,
+        "alternate_observation_shorter_than_1.8_seconds": 2,
+        "observation_shorter_than_1.8_seconds": 14,
+        "receiver_outside_field": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 232
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 69124,
+      "joined_rows": 69124,
+      "eligible_pass_segments": 65,
+      "eligible_routes": 231
+    },
+    {
+      "gameId": 2021091213,
+      "tracking_rows": 57799,
+      "tracking_plays": 61,
+      "exclusions": {
+        "non_pass_outcome": 6,
+        "inconsistent_timestamp_cadence": 1,
+        "never_two_yards_downfield": 65,
+        "observation_shorter_than_1.8_seconds": 10
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [
+        3284
+      ],
+      "cadence_transition_spacings": {
+        "10": 182,
+        "3": 1
+      },
+      "invalid_timing_plays": [
+        3284
+      ],
+      "player_rows": 55286,
+      "joined_rows": 55286,
+      "eligible_pass_segments": 54,
+      "eligible_routes": 180
+    },
+    {
+      "gameId": 2021091300,
+      "tracking_rows": 92299,
+      "tracking_plays": 95,
+      "exclusions": {
+        "non_pass_outcome": 14,
+        "never_two_yards_downfield": 59,
+        "observation_shorter_than_1.8_seconds": 9,
+        "alternate_never_two_yards_downfield": 4,
+        "alternate_observation_shorter_than_1.8_seconds": 3
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 290
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 88286,
+      "joined_rows": 88286,
+      "eligible_pass_segments": 81,
+      "eligible_routes": 282
+    },
+    {
+      "gameId": 2021091600,
+      "tracking_rows": 73761,
+      "tracking_plays": 80,
+      "exclusions": {
+        "non_pass_outcome": 10,
+        "never_two_yards_downfield": 61,
+        "observation_shorter_than_1.8_seconds": 22,
+        "alternate_never_two_yards_downfield": 2
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 236
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 70554,
+      "joined_rows": 70554,
+      "eligible_pass_segments": 70,
+      "eligible_routes": 246
+    },
+    {
+      "gameId": 2021091900,
+      "tracking_rows": 65780,
+      "tracking_plays": 65,
+      "exclusions": {
+        "non_pass_outcome": 10,
+        "alternate_never_two_yards_downfield": 1,
+        "never_two_yards_downfield": 44,
+        "observation_shorter_than_1.8_seconds": 4,
+        "receiver_outside_field": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 218
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 62920,
+      "joined_rows": 62920,
+      "eligible_pass_segments": 55,
+      "eligible_routes": 192
+    },
+    {
+      "gameId": 2021091901,
+      "tracking_rows": 62100,
+      "tracking_plays": 65,
+      "exclusions": {
+        "non_pass_outcome": 12,
+        "inconsistent_timestamp_cadence": 1,
+        "never_two_yards_downfield": 50,
+        "observation_shorter_than_1.8_seconds": 10
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [
+        1274
+      ],
+      "cadence_transition_spacings": {
+        "10": 199,
+        "2": 1,
+        "6": 1
+      },
+      "invalid_timing_plays": [
+        1274
+      ],
+      "player_rows": 59400,
+      "joined_rows": 59400,
+      "eligible_pass_segments": 52,
+      "eligible_routes": 177
+    },
+    {
+      "gameId": 2021091902,
+      "tracking_rows": 51819,
+      "tracking_plays": 52,
+      "exclusions": {
+        "non_pass_outcome": 10,
+        "never_two_yards_downfield": 48,
+        "observation_shorter_than_1.8_seconds": 3
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 172
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 49566,
+      "joined_rows": 49566,
+      "eligible_pass_segments": 42,
+      "eligible_routes": 150
+    },
+    {
+      "gameId": 2021091903,
+      "tracking_rows": 67850,
+      "tracking_plays": 64,
+      "exclusions": {
+        "non_pass_outcome": 10,
+        "never_two_yards_downfield": 56,
+        "observation_shorter_than_1.8_seconds": 5,
+        "alternate_never_two_yards_downfield": 3
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 225
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 64900,
+      "joined_rows": 64900,
+      "eligible_pass_segments": 54,
+      "eligible_routes": 195
+    },
+    {
+      "gameId": 2021091904,
+      "tracking_rows": 71346,
+      "tracking_plays": 70,
+      "exclusions": {
+        "non_pass_outcome": 7,
+        "missing_ambiguous_or_unordered_events": 1,
+        "missing_line_of_scrimmage": 1,
+        "never_two_yards_downfield": 71,
+        "observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 231
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 68244,
+      "joined_rows": 68244,
+      "eligible_pass_segments": 61,
+      "eligible_routes": 211
+    },
+    {
+      "gameId": 2021091905,
+      "tracking_rows": 75923,
+      "tracking_plays": 75,
+      "exclusions": {
+        "non_pass_outcome": 13,
+        "never_two_yards_downfield": 58,
+        "observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 249
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 72622,
+      "joined_rows": 72622,
+      "eligible_pass_segments": 62,
+      "eligible_routes": 225
+    },
+    {
+      "gameId": 2021091906,
+      "tracking_rows": 66539,
+      "tracking_plays": 65,
+      "exclusions": {
+        "non_pass_outcome": 9,
+        "never_two_yards_downfield": 53,
+        "alternate_never_two_yards_downfield": 2
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 218
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 63646,
+      "joined_rows": 63646,
+      "eligible_pass_segments": 56,
+      "eligible_routes": 195
+    },
+    {
+      "gameId": 2021091907,
+      "tracking_rows": 51451,
+      "tracking_plays": 52,
+      "exclusions": {
+        "non_pass_outcome": 10,
+        "missing_ambiguous_or_unordered_events": 1,
+        "alternate_never_two_yards_downfield": 2,
+        "never_two_yards_downfield": 41,
+        "alternate_observation_shorter_than_1.8_seconds": 4
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 167
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 49214,
+      "joined_rows": 49214,
+      "eligible_pass_segments": 41,
+      "eligible_routes": 140
+    },
+    {
+      "gameId": 2021091908,
+      "tracking_rows": 65504,
+      "tracking_plays": 74,
+      "exclusions": {
+        "non_pass_outcome": 5,
+        "observation_shorter_than_1.8_seconds": 9,
+        "never_two_yards_downfield": 70
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 200
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 62656,
+      "joined_rows": 62656,
+      "eligible_pass_segments": 69,
+      "eligible_routes": 246
+    },
+    {
+      "gameId": 2021091909,
+      "tracking_rows": 58995,
+      "tracking_plays": 59,
+      "exclusions": {
+        "non_pass_outcome": 7,
+        "missing_ambiguous_or_unordered_events": 1,
+        "never_two_yards_downfield": 52,
+        "observation_shorter_than_1.8_seconds": 4,
+        "alternate_observation_shorter_than_1.8_seconds": 2
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 193
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 56430,
+      "joined_rows": 56430,
+      "eligible_pass_segments": 51,
+      "eligible_routes": 173
+    },
+    {
+      "gameId": 2021091910,
+      "tracking_rows": 74520,
+      "tracking_plays": 85,
+      "exclusions": {
+        "non_pass_outcome": 6,
+        "never_two_yards_downfield": 71,
+        "observation_shorter_than_1.8_seconds": 20
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 231
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 71280,
+      "joined_rows": 71280,
+      "eligible_pass_segments": 79,
+      "eligible_routes": 265
+    },
+    {
+      "gameId": 2021091911,
+      "tracking_rows": 68310,
+      "tracking_plays": 69,
+      "exclusions": {
+        "non_pass_outcome": 6,
+        "observation_shorter_than_1.8_seconds": 20,
+        "never_two_yards_downfield": 65,
+        "alternate_observation_shorter_than_1.8_seconds": 6,
+        "alternate_never_two_yards_downfield": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 222
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 65340,
+      "joined_rows": 65340,
+      "eligible_pass_segments": 63,
+      "eligible_routes": 209
+    },
+    {
+      "gameId": 2021091912,
+      "tracking_rows": 73784,
+      "tracking_plays": 76,
+      "exclusions": {
+        "non_pass_outcome": 10,
+        "missing_ambiguous_or_unordered_events": 1,
+        "never_two_yards_downfield": 70,
+        "alternate_never_two_yards_downfield": 2,
+        "observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 244
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 70576,
+      "joined_rows": 70576,
+      "eligible_pass_segments": 65,
+      "eligible_routes": 214
+    },
+    {
+      "gameId": 2021091913,
+      "tracking_rows": 54533,
+      "tracking_plays": 56,
+      "exclusions": {
+        "non_pass_outcome": 4,
+        "never_two_yards_downfield": 38,
+        "observation_shorter_than_1.8_seconds": 34
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 177
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 52162,
+      "joined_rows": 52162,
+      "eligible_pass_segments": 52,
+      "eligible_routes": 158
+    },
+    {
+      "gameId": 2021092000,
+      "tracking_rows": 60559,
+      "tracking_plays": 60,
+      "exclusions": {
+        "non_pass_outcome": 7,
+        "never_two_yards_downfield": 54,
+        "observation_shorter_than_1.8_seconds": 15,
+        "alternate_never_two_yards_downfield": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 199
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 57926,
+      "joined_rows": 57926,
+      "eligible_pass_segments": 53,
+      "eligible_routes": 178
+    },
+    {
+      "gameId": 2021092300,
+      "tracking_rows": 64584,
+      "tracking_plays": 68,
+      "exclusions": {
+        "non_pass_outcome": 8,
+        "never_two_yards_downfield": 47,
+        "observation_shorter_than_1.8_seconds": 25,
+        "alternate_observation_shorter_than_1.8_seconds": 3
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 211
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 61776,
+      "joined_rows": 61776,
+      "eligible_pass_segments": 60,
+      "eligible_routes": 196
+    },
+    {
+      "gameId": 2021092600,
+      "tracking_rows": 79212,
+      "tracking_plays": 74,
+      "exclusions": {
+        "non_pass_outcome": 9,
+        "never_two_yards_downfield": 71,
+        "alternate_observation_shorter_than_1.8_seconds": 6,
+        "observation_shorter_than_1.8_seconds": 15
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 258
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 75768,
+      "joined_rows": 75768,
+      "eligible_pass_segments": 65,
+      "eligible_routes": 228
+    },
+    {
+      "gameId": 2021092601,
+      "tracking_rows": 65090,
+      "tracking_plays": 63,
+      "exclusions": {
+        "non_pass_outcome": 19,
+        "never_two_yards_downfield": 50,
+        "alternate_observation_shorter_than_1.8_seconds": 4
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 212
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 62260,
+      "joined_rows": 62260,
+      "eligible_pass_segments": 44,
+      "eligible_routes": 156
+    },
+    {
+      "gameId": 2021092602,
+      "tracking_rows": 74405,
+      "tracking_plays": 68,
+      "exclusions": {
+        "non_pass_outcome": 12,
+        "never_two_yards_downfield": 44,
+        "receiver_outside_field": 1,
+        "alternate_never_two_yards_downfield": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 250
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 71170,
+      "joined_rows": 71170,
+      "eligible_pass_segments": 56,
+      "eligible_routes": 202
+    },
+    {
+      "gameId": 2021092603,
+      "tracking_rows": 60513,
+      "tracking_plays": 62,
+      "exclusions": {
+        "non_pass_outcome": 8,
+        "never_two_yards_downfield": 47,
+        "observation_shorter_than_1.8_seconds": 10,
+        "alternate_never_two_yards_downfield": 2,
+        "alternate_observation_shorter_than_1.8_seconds": 5,
+        "receiver_outside_field": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 197
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 57882,
+      "joined_rows": 57882,
+      "eligible_pass_segments": 54,
+      "eligible_routes": 194
+    },
+    {
+      "gameId": 2021092604,
+      "tracking_rows": 83352,
+      "tracking_plays": 81,
+      "exclusions": {
+        "non_pass_outcome": 9,
+        "never_two_yards_downfield": 68,
+        "observation_shorter_than_1.8_seconds": 22
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 272
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 79728,
+      "joined_rows": 79728,
+      "eligible_pass_segments": 72,
+      "eligible_routes": 242
+    },
+    {
+      "gameId": 2021092605,
+      "tracking_rows": 77050,
+      "tracking_plays": 77,
+      "exclusions": {
+        "non_pass_outcome": 11,
+        "missing_ambiguous_or_unordered_events": 1,
+        "never_two_yards_downfield": 49,
+        "alternate_never_two_yards_downfield": 4,
+        "alternate_observation_shorter_than_1.8_seconds": 12,
+        "observation_shorter_than_1.8_seconds": 14
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [
+        1069
+      ],
+      "cadence_transition_spacings": {
+        "10": 247,
+        "7": 1
+      },
+      "invalid_timing_plays": [
+        1069
+      ],
+      "player_rows": 73700,
+      "joined_rows": 73700,
+      "eligible_pass_segments": 65,
+      "eligible_routes": 232
+    },
+    {
+      "gameId": 2021092606,
+      "tracking_rows": 74957,
+      "tracking_plays": 76,
+      "exclusions": {
+        "non_pass_outcome": 10,
+        "never_two_yards_downfield": 61,
+        "alternate_never_two_yards_downfield": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 244
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 71698,
+      "joined_rows": 71698,
+      "eligible_pass_segments": 66,
+      "eligible_routes": 232
+    },
+    {
+      "gameId": 2021092607,
+      "tracking_rows": 66654,
+      "tracking_plays": 76,
+      "exclusions": {
+        "non_pass_outcome": 6,
+        "never_two_yards_downfield": 60,
+        "observation_shorter_than_1.8_seconds": 55
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 203
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 63756,
+      "joined_rows": 63756,
+      "eligible_pass_segments": 70,
+      "eligible_routes": 223
+    },
+    {
+      "gameId": 2021092608,
+      "tracking_rows": 55867,
+      "tracking_plays": 60,
+      "exclusions": {
+        "non_pass_outcome": 6,
+        "never_two_yards_downfield": 49,
+        "alternate_never_two_yards_downfield": 2,
+        "observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 170
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 53438,
+      "joined_rows": 53438,
+      "eligible_pass_segments": 54,
+      "eligible_routes": 197
+    },
+    {
+      "gameId": 2021092609,
+      "tracking_rows": 61318,
+      "tracking_plays": 62,
+      "exclusions": {
+        "non_pass_outcome": 8,
+        "observation_shorter_than_1.8_seconds": 10,
+        "never_two_yards_downfield": 54,
+        "alternate_never_two_yards_downfield": 2
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 196
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 58652,
+      "joined_rows": 58652,
+      "eligible_pass_segments": 54,
+      "eligible_routes": 186
+    },
+    {
+      "gameId": 2021092610,
+      "tracking_rows": 93334,
+      "tracking_plays": 97,
+      "exclusions": {
+        "non_pass_outcome": 10,
+        "never_two_yards_downfield": 77,
+        "alternate_never_two_yards_downfield": 1,
+        "observation_shorter_than_1.8_seconds": 20
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 300
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 89276,
+      "joined_rows": 89276,
+      "eligible_pass_segments": 87,
+      "eligible_routes": 289
+    },
+    {
+      "gameId": 2021092611,
+      "tracking_rows": 73899,
+      "tracking_plays": 81,
+      "exclusions": {
+        "missing_ambiguous_or_unordered_events": 1,
+        "non_pass_outcome": 6,
+        "never_two_yards_downfield": 60,
+        "alternate_never_two_yards_downfield": 1,
+        "observation_shorter_than_1.8_seconds": 3
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 230
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 70686,
+      "joined_rows": 70686,
+      "eligible_pass_segments": 74,
+      "eligible_routes": 289
+    },
+    {
+      "gameId": 2021092612,
+      "tracking_rows": 59754,
+      "tracking_plays": 62,
+      "exclusions": {
+        "non_pass_outcome": 6,
+        "never_two_yards_downfield": 39,
+        "receiver_outside_field": 2,
+        "alternate_observation_shorter_than_1.8_seconds": 4,
+        "observation_shorter_than_1.8_seconds": 10
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 193
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 57156,
+      "joined_rows": 57156,
+      "eligible_pass_segments": 56,
+      "eligible_routes": 209
+    },
+    {
+      "gameId": 2021092613,
+      "tracking_rows": 64446,
+      "tracking_plays": 69,
+      "exclusions": {
+        "non_pass_outcome": 6,
+        "never_two_yards_downfield": 48,
+        "observation_shorter_than_1.8_seconds": 13,
+        "alternate_never_two_yards_downfield": 1,
+        "alternate_observation_shorter_than_1.8_seconds": 3
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 205
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 61644,
+      "joined_rows": 61644,
+      "eligible_pass_segments": 63,
+      "eligible_routes": 210
+    },
+    {
+      "gameId": 2021092700,
+      "tracking_rows": 67390,
+      "tracking_plays": 65,
+      "exclusions": {
+        "non_pass_outcome": 14,
+        "never_two_yards_downfield": 47,
+        "alternate_never_two_yards_downfield": 3,
+        "observation_shorter_than_1.8_seconds": 5,
+        "receiver_outside_field": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 223
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 64460,
+      "joined_rows": 64460,
+      "eligible_pass_segments": 51,
+      "eligible_routes": 192
+    },
+    {
+      "gameId": 2021093000,
+      "tracking_rows": 55982,
+      "tracking_plays": 53,
+      "exclusions": {
+        "non_pass_outcome": 6,
+        "never_two_yards_downfield": 44,
+        "receiver_outside_field": 1,
+        "observation_shorter_than_1.8_seconds": 14
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 183
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 53548,
+      "joined_rows": 53548,
+      "eligible_pass_segments": 47,
+      "eligible_routes": 161
+    },
+    {
+      "gameId": 2021100300,
+      "tracking_rows": 78407,
+      "tracking_plays": 78,
+      "exclusions": {
+        "non_pass_outcome": 9,
+        "never_two_yards_downfield": 65,
+        "alternate_never_two_yards_downfield": 2,
+        "observation_shorter_than_1.8_seconds": 15,
+        "alternate_observation_shorter_than_1.8_seconds": 4
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 252
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 74998,
+      "joined_rows": 74998,
+      "eligible_pass_segments": 69,
+      "eligible_routes": 236
+    },
+    {
+      "gameId": 2021100301,
+      "tracking_rows": 49036,
+      "tracking_plays": 47,
+      "exclusions": {
+        "non_pass_outcome": 8,
+        "never_two_yards_downfield": 34,
+        "observation_shorter_than_1.8_seconds": 5,
+        "alternate_observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 164
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 46904,
+      "joined_rows": 46904,
+      "eligible_pass_segments": 39,
+      "eligible_routes": 135
+    },
+    {
+      "gameId": 2021100302,
+      "tracking_rows": 60007,
+      "tracking_plays": 60,
+      "exclusions": {
+        "missing_ambiguous_or_unordered_events": 2,
+        "non_pass_outcome": 7,
+        "never_two_yards_downfield": 44,
+        "observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 199
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 57398,
+      "joined_rows": 57398,
+      "eligible_pass_segments": 51,
+      "eligible_routes": 186
+    },
+    {
+      "gameId": 2021100303,
+      "tracking_rows": 61410,
+      "tracking_plays": 68,
+      "exclusions": {
+        "non_pass_outcome": 8,
+        "missing_ambiguous_or_unordered_events": 3,
+        "never_two_yards_downfield": 50,
+        "observation_shorter_than_1.8_seconds": 14
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 186
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 58740,
+      "joined_rows": 58740,
+      "eligible_pass_segments": 57,
+      "eligible_routes": 193
+    },
+    {
+      "gameId": 2021100304,
+      "tracking_rows": 66378,
+      "tracking_plays": 65,
+      "exclusions": {
+        "non_pass_outcome": 8,
+        "never_two_yards_downfield": 39,
+        "observation_shorter_than_1.8_seconds": 10,
+        "alternate_observation_shorter_than_1.8_seconds": 14,
+        "alternate_never_two_yards_downfield": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 221
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 63492,
+      "joined_rows": 63492,
+      "eligible_pass_segments": 57,
+      "eligible_routes": 211
+    },
+    {
+      "gameId": 2021100305,
+      "tracking_rows": 72657,
+      "tracking_plays": 75,
+      "exclusions": {
+        "non_pass_outcome": 8,
+        "never_two_yards_downfield": 47,
+        "alternate_never_two_yards_downfield": 3,
+        "observation_shorter_than_1.8_seconds": 5,
+        "receiver_outside_field": 2
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 232
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 69498,
+      "joined_rows": 69498,
+      "eligible_pass_segments": 67,
+      "eligible_routes": 232
+    },
+    {
+      "gameId": 2021100306,
+      "tracking_rows": 59616,
+      "tracking_plays": 61,
+      "exclusions": {
+        "non_pass_outcome": 3,
+        "never_two_yards_downfield": 54,
+        "alternate_never_two_yards_downfield": 2
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 194
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 57024,
+      "joined_rows": 57024,
+      "eligible_pass_segments": 58,
+      "eligible_routes": 205
+    },
+    {
+      "gameId": 2021100307,
+      "tracking_rows": 83605,
+      "tracking_plays": 86,
+      "exclusions": {
+        "non_pass_outcome": 10,
+        "missing_ambiguous_or_unordered_events": 1,
+        "never_two_yards_downfield": 83,
+        "observation_shorter_than_1.8_seconds": 15,
+        "alternate_never_two_yards_downfield": 2
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 270
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 79970,
+      "joined_rows": 79970,
+      "eligible_pass_segments": 75,
+      "eligible_routes": 242
+    },
+    {
+      "gameId": 2021100308,
+      "tracking_rows": 69391,
+      "tracking_plays": 72,
+      "exclusions": {
+        "non_pass_outcome": 14,
+        "missing_ambiguous_or_unordered_events": 1,
+        "never_two_yards_downfield": 59,
+        "receiver_outside_field": 1,
+        "observation_shorter_than_1.8_seconds": 13
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 217
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 66374,
+      "joined_rows": 66374,
+      "eligible_pass_segments": 57,
+      "eligible_routes": 196
+    },
+    {
+      "gameId": 2021100309,
+      "tracking_rows": 73048,
+      "tracking_plays": 76,
+      "exclusions": {
+        "non_pass_outcome": 10,
+        "never_two_yards_downfield": 58,
+        "alternate_observation_shorter_than_1.8_seconds": 8,
+        "observation_shorter_than_1.8_seconds": 15
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 236
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 69872,
+      "joined_rows": 69872,
+      "eligible_pass_segments": 66,
+      "eligible_routes": 237
+    },
+    {
+      "gameId": 2021100310,
+      "tracking_rows": 62445,
+      "tracking_plays": 65,
+      "exclusions": {
+        "non_pass_outcome": 12,
+        "observation_shorter_than_1.8_seconds": 10,
+        "never_two_yards_downfield": 35
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 199
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 59730,
+      "joined_rows": 59730,
+      "eligible_pass_segments": 53,
+      "eligible_routes": 167
+    },
+    {
+      "gameId": 2021100311,
+      "tracking_rows": 78177,
+      "tracking_plays": 79,
+      "exclusions": {
+        "non_pass_outcome": 10,
+        "never_two_yards_downfield": 49,
+        "observation_shorter_than_1.8_seconds": 18,
+        "alternate_never_two_yards_downfield": 3,
+        "receiver_outside_field": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 254
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 74778,
+      "joined_rows": 74778,
+      "eligible_pass_segments": 69,
+      "eligible_routes": 224
+    },
+    {
+      "gameId": 2021100312,
+      "tracking_rows": 59731,
+      "tracking_plays": 69,
+      "exclusions": {
+        "non_pass_outcome": 6,
+        "alternate_observation_shorter_than_1.8_seconds": 4,
+        "never_two_yards_downfield": 69,
+        "observation_shorter_than_1.8_seconds": 29
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 186
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 57134,
+      "joined_rows": 57134,
+      "eligible_pass_segments": 63,
+      "eligible_routes": 199
+    },
+    {
+      "gameId": 2021100313,
+      "tracking_rows": 76613,
+      "tracking_plays": 86,
+      "exclusions": {
+        "non_pass_outcome": 6,
+        "missing_ambiguous_or_unordered_events": 1,
+        "never_two_yards_downfield": 75,
+        "alternate_never_two_yards_downfield": 1,
+        "observation_shorter_than_1.8_seconds": 9
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 243
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 73282,
+      "joined_rows": 73282,
+      "eligible_pass_segments": 79,
+      "eligible_routes": 272
+    },
+    {
+      "gameId": 2021100400,
+      "tracking_rows": 68103,
+      "tracking_plays": 73,
+      "exclusions": {
+        "non_pass_outcome": 8,
+        "never_two_yards_downfield": 68,
+        "observation_shorter_than_1.8_seconds": 4,
+        "alternate_never_two_yards_downfield": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 224
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 65142,
+      "joined_rows": 65142,
+      "eligible_pass_segments": 65,
+      "eligible_routes": 239
+    },
+    {
+      "gameId": 2021100700,
+      "tracking_rows": 70748,
+      "tracking_plays": 71,
+      "exclusions": {
+        "non_pass_outcome": 6,
+        "missing_ambiguous_or_unordered_events": 1,
+        "never_two_yards_downfield": 55
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 229
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 67672,
+      "joined_rows": 67672,
+      "eligible_pass_segments": 64,
+      "eligible_routes": 246
+    },
+    {
+      "gameId": 2021101000,
+      "tracking_rows": 76889,
+      "tracking_plays": 77,
+      "exclusions": {
+        "non_pass_outcome": 3,
+        "never_two_yards_downfield": 64,
+        "alternate_never_two_yards_downfield": 1,
+        "receiver_outside_field": 3,
+        "observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 244
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 73546,
+      "joined_rows": 73546,
+      "eligible_pass_segments": 74,
+      "eligible_routes": 246
+    },
+    {
+      "gameId": 2021101001,
+      "tracking_rows": 70472,
+      "tracking_plays": 70,
+      "exclusions": {
+        "non_pass_outcome": 8,
+        "never_two_yards_downfield": 52,
+        "observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [
+        2821
+      ],
+      "cadence_transition_spacings": {
+        "10": 230,
+        "7": 1
+      },
+      "invalid_timing_plays": [
+        2821
+      ],
+      "player_rows": 67408,
+      "joined_rows": 67408,
+      "eligible_pass_segments": 62,
+      "eligible_routes": 240
+    },
+    {
+      "gameId": 2021101002,
+      "tracking_rows": 73370,
+      "tracking_plays": 73,
+      "exclusions": {
+        "non_pass_outcome": 7,
+        "never_two_yards_downfield": 67,
+        "observation_shorter_than_1.8_seconds": 10
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 241
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 70180,
+      "joined_rows": 70180,
+      "eligible_pass_segments": 66,
+      "eligible_routes": 241
+    },
+    {
+      "gameId": 2021101003,
+      "tracking_rows": 51612,
+      "tracking_plays": 54,
+      "exclusions": {
+        "non_pass_outcome": 5,
+        "never_two_yards_downfield": 41,
+        "observation_shorter_than_1.8_seconds": 18,
+        "alternate_observation_shorter_than_1.8_seconds": 3,
+        "alternate_never_two_yards_downfield": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 164
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 49368,
+      "joined_rows": 49368,
+      "eligible_pass_segments": 49,
+      "eligible_routes": 158
+    },
+    {
+      "gameId": 2021101004,
+      "tracking_rows": 61686,
+      "tracking_plays": 63,
+      "exclusions": {
+        "non_pass_outcome": 9,
+        "missing_ambiguous_or_unordered_events": 1,
+        "never_two_yards_downfield": 47,
+        "observation_shorter_than_1.8_seconds": 25,
+        "alternate_never_two_yards_downfield": 1,
+        "alternate_observation_shorter_than_1.8_seconds": 4
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 198
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 59004,
+      "joined_rows": 59004,
+      "eligible_pass_segments": 53,
+      "eligible_routes": 161
+    },
+    {
+      "gameId": 2021101005,
+      "tracking_rows": 65895,
+      "tracking_plays": 69,
+      "exclusions": {
+        "non_pass_outcome": 7,
+        "never_two_yards_downfield": 56,
+        "receiver_outside_field": 1,
+        "observation_shorter_than_1.8_seconds": 4
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 214
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 63030,
+      "joined_rows": 63030,
+      "eligible_pass_segments": 62,
+      "eligible_routes": 218
+    },
+    {
+      "gameId": 2021101006,
+      "tracking_rows": 55453,
+      "tracking_plays": 63,
+      "exclusions": {
+        "non_pass_outcome": 5,
+        "never_two_yards_downfield": 80,
+        "observation_shorter_than_1.8_seconds": 5,
+        "alternate_never_two_yards_downfield": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 165
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 53042,
+      "joined_rows": 53042,
+      "eligible_pass_segments": 58,
+      "eligible_routes": 194
+    },
+    {
+      "gameId": 2021101007,
+      "tracking_rows": 74704,
+      "tracking_plays": 76,
+      "exclusions": {
+        "non_pass_outcome": 6,
+        "never_two_yards_downfield": 52,
+        "observation_shorter_than_1.8_seconds": 32,
+        "alternate_observation_shorter_than_1.8_seconds": 6
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 243
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 71456,
+      "joined_rows": 71456,
+      "eligible_pass_segments": 70,
+      "eligible_routes": 233
+    },
+    {
+      "gameId": 2021101008,
+      "tracking_rows": 85606,
+      "tracking_plays": 80,
+      "exclusions": {
+        "non_pass_outcome": 11,
+        "inconsistent_timestamp_cadence": 1,
+        "never_two_yards_downfield": 77,
+        "observation_shorter_than_1.8_seconds": 4
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [
+        607
+      ],
+      "cadence_transition_spacings": {
+        "10": 286
+      },
+      "invalid_timing_plays": [
+        607
+      ],
+      "player_rows": 81884,
+      "joined_rows": 81884,
+      "eligible_pass_segments": 68,
+      "eligible_routes": 225
+    },
+    {
+      "gameId": 2021101009,
+      "tracking_rows": 67229,
+      "tracking_plays": 69,
+      "exclusions": {
+        "non_pass_outcome": 9,
+        "never_two_yards_downfield": 70
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 219
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 64306,
+      "joined_rows": 64306,
+      "eligible_pass_segments": 60,
+      "eligible_routes": 207
+    },
+    {
+      "gameId": 2021101010,
+      "tracking_rows": 50071,
+      "tracking_plays": 52,
+      "exclusions": {
+        "non_pass_outcome": 7,
+        "never_two_yards_downfield": 38,
+        "alternate_never_two_yards_downfield": 1,
+        "observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 167
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 47894,
+      "joined_rows": 47894,
+      "eligible_pass_segments": 45,
+      "eligible_routes": 156
+    },
+    {
+      "gameId": 2021101011,
+      "tracking_rows": 62813,
+      "tracking_plays": 59,
+      "exclusions": {
+        "non_pass_outcome": 9,
+        "never_two_yards_downfield": 32,
+        "observation_shorter_than_1.8_seconds": 10,
+        "receiver_outside_field": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 213
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 60082,
+      "joined_rows": 60082,
+      "eligible_pass_segments": 50,
+      "eligible_routes": 164
+    },
+    {
+      "gameId": 2021101012,
+      "tracking_rows": 66493,
+      "tracking_plays": 68,
+      "exclusions": {
+        "non_pass_outcome": 5,
+        "never_two_yards_downfield": 63,
+        "observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 217
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 63602,
+      "joined_rows": 63602,
+      "eligible_pass_segments": 63,
+      "eligible_routes": 223
+    },
+    {
+      "gameId": 2021101013,
+      "tracking_rows": 86664,
+      "tracking_plays": 84,
+      "exclusions": {
+        "non_pass_outcome": 11,
+        "never_two_yards_downfield": 61,
+        "alternate_never_two_yards_downfield": 4,
+        "observation_shorter_than_1.8_seconds": 10
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 280
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 82896,
+      "joined_rows": 82896,
+      "eligible_pass_segments": 73,
+      "eligible_routes": 275
+    },
+    {
+      "gameId": 2021101100,
+      "tracking_rows": 78108,
+      "tracking_plays": 80,
+      "exclusions": {
+        "non_pass_outcome": 12,
+        "never_two_yards_downfield": 59,
+        "alternate_never_two_yards_downfield": 1,
+        "observation_shorter_than_1.8_seconds": 14
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 252
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 74712,
+      "joined_rows": 74712,
+      "eligible_pass_segments": 68,
+      "eligible_routes": 230
+    },
+    {
+      "gameId": 2021101400,
+      "tracking_rows": 62537,
+      "tracking_plays": 63,
+      "exclusions": {
+        "non_pass_outcome": 6,
+        "never_two_yards_downfield": 50,
+        "alternate_never_two_yards_downfield": 1,
+        "observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 201
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 59818,
+      "joined_rows": 59818,
+      "eligible_pass_segments": 57,
+      "eligible_routes": 209
+    },
+    {
+      "gameId": 2021101700,
+      "tracking_rows": 80661,
+      "tracking_plays": 86,
+      "exclusions": {
+        "non_pass_outcome": 5,
+        "never_two_yards_downfield": 69,
+        "observation_shorter_than_1.8_seconds": 27,
+        "alternate_never_two_yards_downfield": 3
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 260
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 77154,
+      "joined_rows": 77154,
+      "eligible_pass_segments": 81,
+      "eligible_routes": 262
+    },
+    {
+      "gameId": 2021101701,
+      "tracking_rows": 63181,
+      "tracking_plays": 63,
+      "exclusions": {
+        "non_pass_outcome": 9,
+        "never_two_yards_downfield": 55,
+        "observation_shorter_than_1.8_seconds": 9,
+        "alternate_never_two_yards_downfield": 2,
+        "alternate_observation_shorter_than_1.8_seconds": 3
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 204
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 60434,
+      "joined_rows": 60434,
+      "eligible_pass_segments": 54,
+      "eligible_routes": 169
+    },
+    {
+      "gameId": 2021101702,
+      "tracking_rows": 81259,
+      "tracking_plays": 85,
+      "exclusions": {
+        "non_pass_outcome": 10,
+        "never_two_yards_downfield": 55,
+        "observation_shorter_than_1.8_seconds": 19,
+        "alternate_never_two_yards_downfield": 1,
+        "receiver_outside_field": 2
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 256
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 77726,
+      "joined_rows": 77726,
+      "eligible_pass_segments": 75,
+      "eligible_routes": 261
+    },
+    {
+      "gameId": 2021101703,
+      "tracking_rows": 60030,
+      "tracking_plays": 57,
+      "exclusions": {
+        "non_pass_outcome": 14,
+        "never_two_yards_downfield": 47,
+        "observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 195
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 57420,
+      "joined_rows": 57420,
+      "eligible_pass_segments": 43,
+      "eligible_routes": 145
+    },
+    {
+      "gameId": 2021101704,
+      "tracking_rows": 75969,
+      "tracking_plays": 80,
+      "exclusions": {
+        "non_pass_outcome": 9,
+        "never_two_yards_downfield": 68,
+        "observation_shorter_than_1.8_seconds": 10,
+        "alternate_never_two_yards_downfield": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 242
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 72666,
+      "joined_rows": 72666,
+      "eligible_pass_segments": 71,
+      "eligible_routes": 258
+    },
+    {
+      "gameId": 2021101705,
+      "tracking_rows": 52739,
+      "tracking_plays": 56,
+      "exclusions": {
+        "non_pass_outcome": 6,
+        "never_two_yards_downfield": 47,
+        "observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 171
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 50446,
+      "joined_rows": 50446,
+      "eligible_pass_segments": 50,
+      "eligible_routes": 172
+    },
+    {
+      "gameId": 2021101706,
+      "tracking_rows": 71415,
+      "tracking_plays": 78,
+      "exclusions": {
+        "non_pass_outcome": 8,
+        "missing_ambiguous_or_unordered_events": 1,
+        "never_two_yards_downfield": 68,
+        "alternate_observation_shorter_than_1.8_seconds": 13,
+        "observation_shorter_than_1.8_seconds": 25
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 225
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 68310,
+      "joined_rows": 68310,
+      "eligible_pass_segments": 69,
+      "eligible_routes": 231
+    },
+    {
+      "gameId": 2021101707,
+      "tracking_rows": 82570,
+      "tracking_plays": 83,
+      "exclusions": {
+        "non_pass_outcome": 6,
+        "never_two_yards_downfield": 76,
+        "observation_shorter_than_1.8_seconds": 13,
+        "alternate_observation_shorter_than_1.8_seconds": 3,
+        "alternate_never_two_yards_downfield": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 265
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 78980,
+      "joined_rows": 78980,
+      "eligible_pass_segments": 77,
+      "eligible_routes": 274
+    },
+    {
+      "gameId": 2021101708,
+      "tracking_rows": 63779,
+      "tracking_plays": 64,
+      "exclusions": {
+        "non_pass_outcome": 10,
+        "never_two_yards_downfield": 42,
+        "observation_shorter_than_1.8_seconds": 35
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 208
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 61006,
+      "joined_rows": 61006,
+      "eligible_pass_segments": 54,
+      "eligible_routes": 169
+    },
+    {
+      "gameId": 2021101709,
+      "tracking_rows": 80546,
+      "tracking_plays": 83,
+      "exclusions": {
+        "non_pass_outcome": 8,
+        "never_two_yards_downfield": 70,
+        "alternate_never_two_yards_downfield": 8,
+        "observation_shorter_than_1.8_seconds": 9,
+        "alternate_observation_shorter_than_1.8_seconds": 4
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 255
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 77044,
+      "joined_rows": 77044,
+      "eligible_pass_segments": 75,
+      "eligible_routes": 270
+    },
+    {
+      "gameId": 2021101710,
+      "tracking_rows": 69598,
+      "tracking_plays": 73,
+      "exclusions": {
+        "non_pass_outcome": 3,
+        "never_two_yards_downfield": 57,
+        "observation_shorter_than_1.8_seconds": 10,
+        "alternate_observation_shorter_than_1.8_seconds": 3
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 220
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 66572,
+      "joined_rows": 66572,
+      "eligible_pass_segments": 70,
+      "eligible_routes": 254
+    },
+    {
+      "gameId": 2021101711,
+      "tracking_rows": 56235,
+      "tracking_plays": 62,
+      "exclusions": {
+        "non_pass_outcome": 5,
+        "never_two_yards_downfield": 50,
+        "alternate_observation_shorter_than_1.8_seconds": 8,
+        "observation_shorter_than_1.8_seconds": 15,
+        "alternate_never_two_yards_downfield": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 180
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 53790,
+      "joined_rows": 53790,
+      "eligible_pass_segments": 57,
+      "eligible_routes": 203
+    },
+    {
+      "gameId": 2021101800,
+      "tracking_rows": 73278,
+      "tracking_plays": 71,
+      "exclusions": {
+        "non_pass_outcome": 7,
+        "never_two_yards_downfield": 62,
+        "receiver_outside_field": 2,
+        "alternate_observation_shorter_than_1.8_seconds": 13,
+        "alternate_never_two_yards_downfield": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 239
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 70092,
+      "joined_rows": 70092,
+      "eligible_pass_segments": 64,
+      "eligible_routes": 221
+    },
+    {
+      "gameId": 2021102100,
+      "tracking_rows": 57431,
+      "tracking_plays": 60,
+      "exclusions": {
+        "non_pass_outcome": 5,
+        "never_two_yards_downfield": 51,
+        "observation_shorter_than_1.8_seconds": 19,
+        "alternate_observation_shorter_than_1.8_seconds": 4,
+        "alternate_never_two_yards_downfield": 3
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 177
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 54934,
+      "joined_rows": 54934,
+      "eligible_pass_segments": 55,
+      "eligible_routes": 175
+    },
+    {
+      "gameId": 2021102400,
+      "tracking_rows": 90735,
+      "tracking_plays": 88,
+      "exclusions": {
+        "non_pass_outcome": 13,
+        "never_two_yards_downfield": 61,
+        "observation_shorter_than_1.8_seconds": 9,
+        "alternate_never_two_yards_downfield": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 298
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 86790,
+      "joined_rows": 86790,
+      "eligible_pass_segments": 75,
+      "eligible_routes": 258
+    },
+    {
+      "gameId": 2021102401,
+      "tracking_rows": 77970,
+      "tracking_plays": 75,
+      "exclusions": {
+        "non_pass_outcome": 14,
+        "never_two_yards_downfield": 49,
+        "observation_shorter_than_1.8_seconds": 14,
+        "alternate_observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 261
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 74580,
+      "joined_rows": 74580,
+      "eligible_pass_segments": 61,
+      "eligible_routes": 225
+    },
+    {
+      "gameId": 2021102402,
+      "tracking_rows": 71047,
+      "tracking_plays": 74,
+      "exclusions": {
+        "non_pass_outcome": 6,
+        "never_two_yards_downfield": 72,
+        "observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 223
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 67958,
+      "joined_rows": 67958,
+      "eligible_pass_segments": 68,
+      "eligible_routes": 234
+    },
+    {
+      "gameId": 2021102403,
+      "tracking_rows": 71277,
+      "tracking_plays": 78,
+      "exclusions": {
+        "non_pass_outcome": 5,
+        "never_two_yards_downfield": 76,
+        "receiver_outside_field": 1,
+        "observation_shorter_than_1.8_seconds": 5,
+        "alternate_never_two_yards_downfield": 2
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 223
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 68178,
+      "joined_rows": 68178,
+      "eligible_pass_segments": 73,
+      "eligible_routes": 251
+    },
+    {
+      "gameId": 2021102404,
+      "tracking_rows": 73163,
+      "tracking_plays": 74,
+      "exclusions": {
+        "non_pass_outcome": 9,
+        "receiver_outside_field": 1,
+        "never_two_yards_downfield": 51,
+        "observation_shorter_than_1.8_seconds": 14,
+        "alternate_never_two_yards_downfield": 1,
+        "alternate_observation_shorter_than_1.8_seconds": 8
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 228
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 69982,
+      "joined_rows": 69982,
+      "eligible_pass_segments": 65,
+      "eligible_routes": 217
+    },
+    {
+      "gameId": 2021102405,
+      "tracking_rows": 80178,
+      "tracking_plays": 86,
+      "exclusions": {
+        "non_pass_outcome": 13,
+        "inconsistent_timestamp_cadence": 1,
+        "missing_ambiguous_or_unordered_events": 1,
+        "never_two_yards_downfield": 60,
+        "observation_shorter_than_1.8_seconds": 52,
+        "alternate_never_two_yards_downfield": 2,
+        "receiver_outside_field": 1,
+        "alternate_observation_shorter_than_1.8_seconds": 4
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [
+        2580
+      ],
+      "cadence_transition_spacings": {
+        "10": 252,
+        "6": 1
+      },
+      "invalid_timing_plays": [
+        2580
+      ],
+      "player_rows": 76692,
+      "joined_rows": 76692,
+      "eligible_pass_segments": 71,
+      "eligible_routes": 217
+    },
+    {
+      "gameId": 2021102406,
+      "tracking_rows": 66516,
+      "tracking_plays": 72,
+      "exclusions": {
+        "non_pass_outcome": 4,
+        "never_two_yards_downfield": 68,
+        "alternate_observation_shorter_than_1.8_seconds": 7,
+        "observation_shorter_than_1.8_seconds": 9,
+        "alternate_never_two_yards_downfield": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 210
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 63624,
+      "joined_rows": 63624,
+      "eligible_pass_segments": 68,
+      "eligible_routes": 245
+    },
+    {
+      "gameId": 2021102407,
+      "tracking_rows": 64492,
+      "tracking_plays": 65,
+      "exclusions": {
+        "non_pass_outcome": 7,
+        "never_two_yards_downfield": 57,
+        "observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 208
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 61688,
+      "joined_rows": 61688,
+      "eligible_pass_segments": 58,
+      "eligible_routes": 214
+    },
+    {
+      "gameId": 2021102408,
+      "tracking_rows": 63250,
+      "tracking_plays": 59,
+      "exclusions": {
+        "non_pass_outcome": 11,
+        "missing_ambiguous_or_unordered_events": 1,
+        "never_two_yards_downfield": 48,
+        "alternate_observation_shorter_than_1.8_seconds": 4,
+        "observation_shorter_than_1.8_seconds": 20,
+        "alternate_never_two_yards_downfield": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 208
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 60500,
+      "joined_rows": 60500,
+      "eligible_pass_segments": 47,
+      "eligible_routes": 141
+    },
+    {
+      "gameId": 2021102409,
+      "tracking_rows": 64354,
+      "tracking_plays": 69,
+      "exclusions": {
+        "non_pass_outcome": 10,
+        "alternate_never_two_yards_downfield": 1,
+        "never_two_yards_downfield": 56,
+        "observation_shorter_than_1.8_seconds": 13,
+        "receiver_outside_field": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 207
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 61556,
+      "joined_rows": 61556,
+      "eligible_pass_segments": 59,
+      "eligible_routes": 209
+    },
+    {
+      "gameId": 2021102410,
+      "tracking_rows": 54556,
+      "tracking_plays": 52,
+      "exclusions": {
+        "non_pass_outcome": 4,
+        "missing_ambiguous_or_unordered_events": 1,
+        "never_two_yards_downfield": 43,
+        "receiver_outside_field": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 183
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 52184,
+      "joined_rows": 52184,
+      "eligible_pass_segments": 47,
+      "eligible_routes": 155
+    },
+    {
+      "gameId": 2021102500,
+      "tracking_rows": 71323,
+      "tracking_plays": 65,
+      "exclusions": {
+        "non_pass_outcome": 12,
+        "never_two_yards_downfield": 42,
+        "observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 237
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 68222,
+      "joined_rows": 68222,
+      "eligible_pass_segments": 53,
+      "eligible_routes": 197
+    },
+    {
+      "gameId": 2021102800,
+      "tracking_rows": 51060,
+      "tracking_plays": 54,
+      "exclusions": {
+        "non_pass_outcome": 5,
+        "never_two_yards_downfield": 47,
+        "alternate_never_two_yards_downfield": 2,
+        "observation_shorter_than_1.8_seconds": 24,
+        "alternate_observation_shorter_than_1.8_seconds": 4
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 166
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 48840,
+      "joined_rows": 48840,
+      "eligible_pass_segments": 49,
+      "eligible_routes": 162
+    },
+    {
+      "gameId": 2021103100,
+      "tracking_rows": 50462,
+      "tracking_plays": 55,
+      "exclusions": {
+        "non_pass_outcome": 8,
+        "never_two_yards_downfield": 37,
+        "alternate_never_two_yards_downfield": 1,
+        "observation_shorter_than_1.8_seconds": 10
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 162
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 48268,
+      "joined_rows": 48268,
+      "eligible_pass_segments": 47,
+      "eligible_routes": 158
+    },
+    {
+      "gameId": 2021103101,
+      "tracking_rows": 64285,
+      "tracking_plays": 71,
+      "exclusions": {
+        "non_pass_outcome": 6,
+        "missing_ambiguous_or_unordered_events": 1,
+        "never_two_yards_downfield": 56,
+        "observation_shorter_than_1.8_seconds": 19,
+        "alternate_never_two_yards_downfield": 1,
+        "alternate_observation_shorter_than_1.8_seconds": 3,
+        "receiver_outside_field": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 197
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 61490,
+      "joined_rows": 61490,
+      "eligible_pass_segments": 64,
+      "eligible_routes": 214
+    },
+    {
+      "gameId": 2021103102,
+      "tracking_rows": 58075,
+      "tracking_plays": 63,
+      "exclusions": {
+        "non_pass_outcome": 12,
+        "never_two_yards_downfield": 53,
+        "alternate_observation_shorter_than_1.8_seconds": 7,
+        "observation_shorter_than_1.8_seconds": 10
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 177
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 55550,
+      "joined_rows": 55550,
+      "eligible_pass_segments": 51,
+      "eligible_routes": 169
+    },
+    {
+      "gameId": 2021103103,
+      "tracking_rows": 54901,
+      "tracking_plays": 60,
+      "exclusions": {
+        "non_pass_outcome": 7,
+        "alternate_never_two_yards_downfield": 1,
+        "never_two_yards_downfield": 41,
+        "observation_shorter_than_1.8_seconds": 25
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 174
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 52514,
+      "joined_rows": 52514,
+      "eligible_pass_segments": 53,
+      "eligible_routes": 168
+    },
+    {
+      "gameId": 2021103104,
+      "tracking_rows": 55683,
+      "tracking_plays": 55,
+      "exclusions": {
+        "non_pass_outcome": 10,
+        "never_two_yards_downfield": 41,
+        "observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 179
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 53262,
+      "joined_rows": 53262,
+      "eligible_pass_segments": 45,
+      "eligible_routes": 169
+    },
+    {
+      "gameId": 2021103105,
+      "tracking_rows": 61088,
+      "tracking_plays": 66,
+      "exclusions": {
+        "non_pass_outcome": 5,
+        "never_two_yards_downfield": 55,
+        "observation_shorter_than_1.8_seconds": 10,
+        "alternate_never_two_yards_downfield": 1
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 197
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 58432,
+      "joined_rows": 58432,
+      "eligible_pass_segments": 61,
+      "eligible_routes": 216
+    },
+    {
+      "gameId": 2021103106,
+      "tracking_rows": 82363,
+      "tracking_plays": 84,
+      "exclusions": {
+        "non_pass_outcome": 6,
+        "never_two_yards_downfield": 73,
+        "alternate_never_two_yards_downfield": 1,
+        "alternate_observation_shorter_than_1.8_seconds": 3,
+        "observation_shorter_than_1.8_seconds": 10
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 264
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 78782,
+      "joined_rows": 78782,
+      "eligible_pass_segments": 78,
+      "eligible_routes": 284
+    },
+    {
+      "gameId": 2021103107,
+      "tracking_rows": 69483,
+      "tracking_plays": 78,
+      "exclusions": {
+        "non_pass_outcome": 5,
+        "never_two_yards_downfield": 64,
+        "alternate_never_two_yards_downfield": 5,
+        "observation_shorter_than_1.8_seconds": 15,
+        "alternate_observation_shorter_than_1.8_seconds": 5
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 214
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 66462,
+      "joined_rows": 66462,
+      "eligible_pass_segments": 73,
+      "eligible_routes": 259
+    },
+    {
+      "gameId": 2021103108,
+      "tracking_rows": 72013,
+      "tracking_plays": 75,
+      "exclusions": {
+        "non_pass_outcome": 7,
+        "never_two_yards_downfield": 64,
+        "observation_shorter_than_1.8_seconds": 8
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 232
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 68882,
+      "joined_rows": 68882,
+      "eligible_pass_segments": 68,
+      "eligible_routes": 232
+    },
+    {
+      "gameId": 2021103109,
+      "tracking_rows": 72197,
+      "tracking_plays": 74,
+      "exclusions": {
+        "non_pass_outcome": 7,
+        "never_two_yards_downfield": 61,
+        "alternate_never_two_yards_downfield": 2,
+        "alternate_observation_shorter_than_1.8_seconds": 8
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 237
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 69058,
+      "joined_rows": 69058,
+      "eligible_pass_segments": 67,
+      "eligible_routes": 254
+    },
+    {
+      "gameId": 2021103110,
+      "tracking_rows": 61502,
+      "tracking_plays": 65,
+      "exclusions": {
+        "non_pass_outcome": 9,
+        "observation_shorter_than_1.8_seconds": 10,
+        "never_two_yards_downfield": 68,
+        "alternate_observation_shorter_than_1.8_seconds": 8
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 195
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 58828,
+      "joined_rows": 58828,
+      "eligible_pass_segments": 56,
+      "eligible_routes": 184
+    },
+    {
+      "gameId": 2021103111,
+      "tracking_rows": 70771,
+      "tracking_plays": 76,
+      "exclusions": {
+        "non_pass_outcome": 9,
+        "never_two_yards_downfield": 57,
+        "observation_shorter_than_1.8_seconds": 19
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 219
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 67694,
+      "joined_rows": 67694,
+      "eligible_pass_segments": 67,
+      "eligible_routes": 226
+    },
+    {
+      "gameId": 2021103112,
+      "tracking_rows": 78752,
+      "tracking_plays": 82,
+      "exclusions": {
+        "non_pass_outcome": 7,
+        "never_two_yards_downfield": 69,
+        "observation_shorter_than_1.8_seconds": 4,
+        "alternate_observation_shorter_than_1.8_seconds": 4
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 250
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 75328,
+      "joined_rows": 75328,
+      "eligible_pass_segments": 75,
+      "eligible_routes": 261
+    },
+    {
+      "gameId": 2021110100,
+      "tracking_rows": 76314,
+      "tracking_plays": 74,
+      "exclusions": {
+        "non_pass_outcome": 9,
+        "never_two_yards_downfield": 56,
+        "observation_shorter_than_1.8_seconds": 15,
+        "alternate_never_two_yards_downfield": 2,
+        "alternate_observation_shorter_than_1.8_seconds": 4
+      },
+      "duplicate_tracking_keys": 0,
+      "conflicting_frame_time_plays": [],
+      "cadence_transition_spacings": {
+        "10": 245
+      },
+      "invalid_timing_plays": [],
+      "player_rows": 72996,
+      "joined_rows": 72996,
+      "eligible_pass_segments": 65,
+      "eligible_routes": 225
+    }
+  ]
+}

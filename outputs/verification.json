@@ -1,0 +1,13 @@
+{
+  "metric_tests_passed": 8,
+  "ruff": "passed",
+  "fresh_locked_rebuild_identical_files": [
+    "audit.json",
+    "receiver_separation.csv",
+    "manual_distance_checks.csv",
+    "separation.png"
+  ],
+  "html_external_asset_tags": 0,
+  "browser_render": "verified field and timeline in in-app browser",
+  "offline_scope": "Embedded Plotly and no external asset tags; network-disabled browser mode was not tested"
+}

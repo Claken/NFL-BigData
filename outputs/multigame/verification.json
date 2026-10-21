@@ -1,0 +1,66 @@
+{
+  "tests_passed": 19,
+  "ruff": "passed",
+  "javascript_syntax": "passed",
+  "analysis_outputs_unchanged": true,
+  "prior_locked_full_analysis_build": "passed; unchanged analysis files checked against that build",
+  "fresh_locked_report_rebuild": "passed; all generated report/data files match byte for byte",
+  "queue_routes": 50,
+  "unique_packaged_replays": 52,
+  "manual_nearest_defender_checks": 156,
+  "manual_distance_tolerance_yards": 1e-12,
+  "external_html_asset_tags": 0,
+  "browser_checks": [
+    "receiver filter returns expected two DeVonta Smith routes",
+    "three filters combine to one route",
+    "empty results shown",
+    "clearing filters restores 50 routes without changing replay",
+    "queued route loads name, windows and metrics",
+    "scrub reaches queued release endpoint",
+    "two receivers on same play retain distinct tracks and distances",
+    "play advances newly selected route",
+    "matched example still works",
+    "queue selection highlighted and back link works"
+  ],
+  "browser_preview": "review_queue_preview.png",
+  "offline_limit": "All replay data and assets embedded; network-disabled browser mode not tested.",
+  "event_dataset_year": "user reports organiser accepts 2021 data",
+  "mentor_review": "pending",
+  "publication_and_submission": "not performed",
+  "ui_polish": {
+    "layout": "clear finding summary, section navigation, responsive queue cards beside replay on wide screens, readable numeric evidence tables",
+    "preserved": "52 replays, 50 queue routes, 8 comparison groups, 9 sensitivity rows, complete play/frame/method/exclusion information",
+    "controls": "playback above field, current nearest-defender readout, fit-play/full-field views with all 22 players, keyboard controls and reduced-motion support",
+    "responsive_viewports_tested": [
+      [
+        1440,
+        900
+      ],
+      [
+        1440,
+        720
+      ],
+      [
+        390,
+        844
+      ]
+    ],
+    "viewport_override": "reset to normal browser size after testing",
+    "overflow_check": "no document-level horizontal overflow at tested widths; long evidence tables scroll within their regions",
+    "functional_checks": [
+      "receiver/coverage filters and empty results",
+      "queue route selection",
+      "playback",
+      "keyboard scrub to release",
+      "fit-play and full-field switches",
+      "section navigation",
+      "expanded release-event policy and exclusions"
+    ],
+    "pre_polish_analysis_replay_exports": "byte-identical",
+    "fresh_locked_report_rebuild": "byte-identical",
+    "preview_files": [
+      "report_ui_overview.png",
+      "report_ui_review.png"
+    ]
+  }
+}

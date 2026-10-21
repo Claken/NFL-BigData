@@ -1,0 +1,1723 @@
+{
+  "source_commit": "85da22eeff2f1d5be106faa9dfe06a1205f2defd",
+  "gameId": 2021090900,
+  "scope": "One game only. This is a feasibility audit, not a receiver evaluation.",
+  "input_inventory": {
+    "README.md": 12158,
+    "data/games.csv": 6737,
+    "data/plays.csv": 2347966,
+    "data/players.csv": 103891,
+    "data/pffScoutingData.csv": 13014038,
+    "data/tracking/tracking_2021090900.csv": 9461760
+  },
+  "tracking_schema": {
+    "gameId": "Int64",
+    "playId": "Int64",
+    "nflId": "Int64",
+    "frameId": "Int64",
+    "time": "String",
+    "jerseyNumber": "Int64",
+    "team": "String",
+    "playDirection": "String",
+    "x": "Float64",
+    "y": "Float64",
+    "s": "Float64",
+    "a": "Float64",
+    "dis": "Float64",
+    "o": "Float64",
+    "dir": "Float64",
+    "event": "String"
+  },
+  "metadata_rows": {
+    "games": 122,
+    "plays": 8557,
+    "players": 1679,
+    "scouting": 188254
+  },
+  "rows": 92644,
+  "player_rows": 88616,
+  "ball_rows": 4028,
+  "plays": 97,
+  "unique_frames": 4028,
+  "metadata_duplicate_keys": {
+    "games": 0,
+    "plays": 0,
+    "players": 0,
+    "scouting": 0
+  },
+  "tracking_duplicate_keys": 0,
+  "player_missing_coordinates": 0,
+  "player_nonfinite_coordinates": 0,
+  "coordinates_outside_field": 11,
+  "coordinate_bounds": {
+    "x": [
+      4.61,
+      117.36
+    ],
+    "y": [
+      -0.67,
+      53.01
+    ]
+  },
+  "entity_frame_gaps": 0,
+  "frame_timestamp_conflicts": 0,
+  "joined_rows": 88616,
+  "unmatched_metadata": {
+    "displayName": 0,
+    "possessionTeam": 0,
+    "pff_role": 0,
+    "week": 0
+  },
+  "role_values": [
+    "Coverage",
+    "Pass",
+    "Pass Block",
+    "Pass Route",
+    "Pass Rush"
+  ],
+  "observed_cadence": {
+    "inferred_hz": 10,
+    "timestamp_precision": "whole seconds",
+    "timestamp_transition_deltas_ms": [
+      1000
+    ],
+    "interior_transition_frame_spacings": {
+      "10": 297
+    },
+    "interpretation": "10 frames between each consecutive second boundary; inferred cadence"
+  },
+  "usable_primary_snap_to_throw_plays": 92,
+  "segments": [
+    {
+      "playId": 97,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        40
+      ],
+      "usable": true,
+      "frames": 35,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        38
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 137,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        32
+      ],
+      "usable": true,
+      "frames": 26,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 187,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        28
+      ],
+      "usable": true,
+      "frames": 23,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        26
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 282,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        38
+      ],
+      "usable": true,
+      "frames": 33,
+      "route_runners": 3,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 349,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        33
+      ],
+      "usable": true,
+      "frames": 27,
+      "route_runners": 4,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        32
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 410,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        22
+      ],
+      "usable": true,
+      "frames": 17,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 434,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        23
+      ],
+      "usable": true,
+      "frames": 18,
+      "route_runners": 4,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 456,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        31
+      ],
+      "usable": true,
+      "frames": 26,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 480,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        40
+      ],
+      "usable": true,
+      "frames": 35,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        41
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 509,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        33
+      ],
+      "usable": true,
+      "frames": 28,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        34
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 559,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        30
+      ],
+      "usable": true,
+      "frames": 25,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 583,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        26
+      ],
+      "usable": true,
+      "frames": 21,
+      "route_runners": 3,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 687,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        28
+      ],
+      "usable": true,
+      "frames": 23,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 735,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        45
+      ],
+      "usable": true,
+      "frames": 40,
+      "route_runners": 4,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        44
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 764,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        32
+      ],
+      "usable": true,
+      "frames": 26,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        31
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 788,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [],
+      "usable": false,
+      "reason": "Missing, ambiguous or unordered primary snap/throw"
+    },
+    {
+      "playId": 869,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        32
+      ],
+      "usable": true,
+      "frames": 27,
+      "route_runners": 4,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        31
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 925,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [],
+      "usable": false,
+      "reason": "Missing, ambiguous or unordered primary snap/throw"
+    },
+    {
+      "playId": 947,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        44
+      ],
+      "usable": true,
+      "frames": 39,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 1078,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        34
+      ],
+      "usable": true,
+      "frames": 29,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        33
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 1203,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        30
+      ],
+      "usable": true,
+      "frames": 25,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 1227,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        23
+      ],
+      "usable": true,
+      "frames": 17,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        22
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 1267,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        37
+      ],
+      "usable": true,
+      "frames": 32,
+      "route_runners": 4,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 1312,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        35
+      ],
+      "usable": true,
+      "frames": 30,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 1368,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        30
+      ],
+      "usable": true,
+      "frames": 25,
+      "route_runners": 4,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 1392,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        34
+      ],
+      "usable": true,
+      "frames": 29,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 1425,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        63
+      ],
+      "usable": true,
+      "frames": 57,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 1506,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        58
+      ],
+      "usable": true,
+      "frames": 52,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 1563,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        33
+      ],
+      "usable": true,
+      "frames": 27,
+      "route_runners": 4,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 1587,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        31
+      ],
+      "usable": true,
+      "frames": 26,
+      "route_runners": 4,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 1687,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        38
+      ],
+      "usable": true,
+      "frames": 33,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 1726,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        28
+      ],
+      "usable": true,
+      "frames": 23,
+      "route_runners": 4,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 1776,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        35
+      ],
+      "usable": true,
+      "frames": 29,
+      "route_runners": 3,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        34
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 1918,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        28
+      ],
+      "usable": true,
+      "frames": 23,
+      "route_runners": 4,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 1940,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        33
+      ],
+      "usable": true,
+      "frames": 27,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 2008,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        24
+      ],
+      "usable": true,
+      "frames": 19,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 2032,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        41
+      ],
+      "usable": true,
+      "frames": 36,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        40
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 2088,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        26
+      ],
+      "usable": true,
+      "frames": 21,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        25
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 2129,
+      "snap_frames": [
+        107
+      ],
+      "throw_frames": [
+        138
+      ],
+      "usable": true,
+      "frames": 32,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 2169,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        27
+      ],
+      "usable": true,
+      "frames": 22,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 2211,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        38
+      ],
+      "usable": true,
+      "frames": 33,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        37
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 2233,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        32
+      ],
+      "usable": true,
+      "frames": 27,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        31
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 2257,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        32
+      ],
+      "usable": true,
+      "frames": 27,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 2279,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [],
+      "usable": false,
+      "reason": "Missing, ambiguous or unordered primary snap/throw"
+    },
+    {
+      "playId": 2298,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [],
+      "usable": false,
+      "reason": "Missing, ambiguous or unordered primary snap/throw"
+    },
+    {
+      "playId": 2330,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [],
+      "usable": false,
+      "reason": "Missing, ambiguous or unordered primary snap/throw"
+    },
+    {
+      "playId": 2397,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        48
+      ],
+      "usable": true,
+      "frames": 42,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 2419,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        26
+      ],
+      "usable": true,
+      "frames": 21,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        25
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 2441,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        54
+      ],
+      "usable": true,
+      "frames": 49,
+      "route_runners": 4,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        53
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 2530,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        30
+      ],
+      "usable": true,
+      "frames": 25,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        29
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 2554,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        28
+      ],
+      "usable": true,
+      "frames": 23,
+      "route_runners": 4,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        27
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 2632,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        35
+      ],
+      "usable": true,
+      "frames": 30,
+      "route_runners": 4,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 2656,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        24
+      ],
+      "usable": true,
+      "frames": 19,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 2678,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        37
+      ],
+      "usable": true,
+      "frames": 31,
+      "route_runners": 4,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        36
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 2735,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        27
+      ],
+      "usable": true,
+      "frames": 21,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 2780,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        42
+      ],
+      "usable": true,
+      "frames": 36,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 2871,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        34
+      ],
+      "usable": true,
+      "frames": 28,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 2893,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        24
+      ],
+      "usable": true,
+      "frames": 19,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 2915,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        37
+      ],
+      "usable": true,
+      "frames": 32,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 3014,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        41
+      ],
+      "usable": true,
+      "frames": 36,
+      "route_runners": 4,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        40
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 3062,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        32
+      ],
+      "usable": true,
+      "frames": 27,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 3110,
+      "snap_frames": [
+        62
+      ],
+      "throw_frames": [
+        84
+      ],
+      "usable": true,
+      "frames": 23,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        83
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 3134,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        27
+      ],
+      "usable": true,
+      "frames": 21,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 3216,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        29
+      ],
+      "usable": true,
+      "frames": 23,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        28
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 3261,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        25
+      ],
+      "usable": true,
+      "frames": 20,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        24
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 3306,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        25
+      ],
+      "usable": true,
+      "frames": 20,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        24
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 3330,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        43
+      ],
+      "usable": true,
+      "frames": 38,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        42
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 3364,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        32
+      ],
+      "usable": true,
+      "frames": 26,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 3406,
+      "snap_frames": [
+        146
+      ],
+      "throw_frames": [
+        173
+      ],
+      "usable": true,
+      "frames": 28,
+      "route_runners": 4,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        172
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 3462,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        21
+      ],
+      "usable": true,
+      "frames": 16,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 3588,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        26
+      ],
+      "usable": true,
+      "frames": 21,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        25
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 3633,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        36
+      ],
+      "usable": true,
+      "frames": 30,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        35
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 3655,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        31
+      ],
+      "usable": true,
+      "frames": 26,
+      "route_runners": 4,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 3724,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        36
+      ],
+      "usable": true,
+      "frames": 31,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 3746,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        37
+      ],
+      "usable": true,
+      "frames": 32,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        36
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 3793,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        39
+      ],
+      "usable": true,
+      "frames": 34,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        38
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 3862,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        43
+      ],
+      "usable": true,
+      "frames": 37,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 3909,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        28
+      ],
+      "usable": true,
+      "frames": 23,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 3933,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        28
+      ],
+      "usable": true,
+      "frames": 23,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        27
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 3962,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        40
+      ],
+      "usable": true,
+      "frames": 35,
+      "route_runners": 4,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 4094,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        27
+      ],
+      "usable": true,
+      "frames": 22,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 4141,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        28
+      ],
+      "usable": true,
+      "frames": 23,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 4189,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        38
+      ],
+      "usable": true,
+      "frames": 33,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 4211,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        39
+      ],
+      "usable": true,
+      "frames": 33,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 4246,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        32
+      ],
+      "usable": true,
+      "frames": 26,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 4287,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        31
+      ],
+      "usable": true,
+      "frames": 26,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 4393,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        40
+      ],
+      "usable": true,
+      "frames": 35,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 4428,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        33
+      ],
+      "usable": true,
+      "frames": 27,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        32
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 4538,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        37
+      ],
+      "usable": true,
+      "frames": 31,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        36
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 4560,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        32
+      ],
+      "usable": true,
+      "frames": 27,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 4624,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        35
+      ],
+      "usable": true,
+      "frames": 30,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 4653,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        29
+      ],
+      "usable": true,
+      "frames": 24,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 4677,
+      "snap_frames": [
+        7
+      ],
+      "throw_frames": [
+        35
+      ],
+      "usable": true,
+      "frames": 29,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 4699,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        33
+      ],
+      "usable": true,
+      "frames": 28,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 4728,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        26
+      ],
+      "usable": true,
+      "frames": 21,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [
+        25
+      ],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 4750,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        30
+      ],
+      "usable": true,
+      "frames": 25,
+      "route_runners": 5,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    },
+    {
+      "playId": 4772,
+      "snap_frames": [
+        6
+      ],
+      "throw_frames": [
+        24
+      ],
+      "usable": true,
+      "frames": 19,
+      "route_runners": 4,
+      "min_defenders": 11,
+      "max_defenders": 11,
+      "auto_throw_frames": [],
+      "reason": "Complete primary snap-to-throw segment"
+    }
+  ],
+  "selected": {
+    "playId": 97,
+    "receiverId": 35634,
+    "receiver": "Antonio Brown",
+    "rule": "Lowest playId with complete primary events/players; lowest NFL ID WR route runner",
+    "snap_frame": 6,
+    "throw_frame": 40,
+    "samples": 35,
+    "observed_seconds": 3.4,
+    "play_description": "(13:33) (Shotgun) T.Brady pass incomplete deep right to C.Godwin.",
+    "direction": "right",
+    "coverage": "Cover-1",
+    "alignment": "LWR",
+    "threshold_yards": 2.0,
+    "threshold_comparison": "strictly greater than",
+    "duration_convention": "observed endpoint span (n-1)/10, singleton zero",
+    "opening_windows": [
+      {
+        "start_frame": 6,
+        "end_frame": 11,
+        "samples": 6,
+        "duration_seconds": 0.5
+      }
+    ],
+    "separation_at_throw_yards": 1.7439323381370087,
+    "manual_check_frames": [
+      6,
+      23,
+      40
+    ],
+    "manual_check_absolute_tolerance_yards": 1e-12,
+    "event_markers": {
+      "ball_snap": [
+        6
+      ],
+      "autoevent_passforward": [
+        38
+      ],
+      "pass_forward": [
+        40
+      ]
+    }
+  },
+  "decision": "Proceed to multi-game validation; exploratory receiver spacing is feasible"
+}
