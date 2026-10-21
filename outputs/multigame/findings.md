@@ -1,28 +1,43 @@
 # Failed-third-down film review
 
-The report now opens on failed third-down passes: show the yards needed, the recorded
-outcome and an exact earlier moment to inspect on film. Of 923
-eligible non-penalized, non-goal-to-go failed third-down pass plays (3510
-eligible receiver routes), 177 routes had a sustained gap
-at or beyond the first-down line and were within 2 yards of a defender at release.
-The report packages the 50 longest such windows, with deterministic
-game/play/player tie breaks. Several routes may come from one play. This is a selected
-review list, not a conversion rate, missed-read count or player ranking.
+The report opens on failed third-down passes, showing yards needed, recorded outcome,
+quarter, game clock, score, recorded dropback type and a specific timestamp to inspect.
+Among 923 eligible non-penalized, non-goal-to-go failed pass
+plays (3510 receiver routes), 299
+plays have at least one sustained beyond-line spacing interval (588 routes).
+These counts do not estimate missed passes or explain why the plays failed.
 
-For this queue, the receiver must be at least the yards-to-go downfield (and at least
-2 yards), with nearest separation strictly above 2 yards for six consecutive 10 Hz
-samples, spanning at least 0.5 s. The interval starts at snap+1 s and ends at release−0.3 s.
-Missing, short-of-line or below-threshold samples break the window. The review opens
-at the first frame of the longest window, rather than the largest gap anywhere on the route.
-Pass outcomes and yardage come from plays.csv, not from animating a hypothetical catch.
-Completed passes short of the required distance, incompletions and interceptions are
-eligible; penalties, no-plays, fumbles and ambiguous scoring outcomes are excluded.
-The animation stops at release because complete ball flight is not provided.
+The offline report includes 50 distinct plays with all
+92 qualifying receiver cues on those plays: a deliberately selected
+Anthony Schwartz illustration (2021092601 / 3345) plus a seed-20261021
+sample of other qualifying plays. Cards are chronological, not ranked by window length
+or presumed coaching value. Receivers still separated at the throw are now included.
 
-Use third_down_review_queue.csv for this focused queue. Check the passing lane,
-pressure and intended read on film; the selected receiver is not necessarily the target.
-The original study and its film_review_queue.csv export remain below and use a different
-cohort and downfield rule. Their 33.1% result is not a failed-third-down success estimate.
+A qualifying interval requires separation strictly above 2 yards for six consecutive
+10 Hz samples (at least 0.5 s), at/beyond yards-to-go and at least 2 yards downfield,
+from snap+1 s through release−0.3 s. The FIRST qualifying interval supplies the cue.
+Missing/ineligible/below-threshold samples break the interval. These thresholds are
+screening choices, not validated boundaries for a safe pass. Useful catches short of
+the line followed by running gains are outside the screen.
+
+The pass result and yardage come from plays.csv; no hypothetical catch or ball flight
+is reconstructed. Only C/I/IN failures are eligible; sacks, rushing outcomes, penalties,
+fumbles, no-plays, scoring ambiguities and goal-to-go plays are excluded.
+Recorded PFF hurry/hit flags are aggregated over the 11 defensive-role records only;
+offensive nulls are inapplicable, while missing defensive labels remain unknown.
+These are play-level flags, not pressure timing. A traditional dropback or absence of
+flags does not establish a clean pocket. Review focus (pressure, movement or timing)
+is a conditional investigation prompt, not a diagnosis of failure.
+
+Use third_down_review_queue.csv for the current sample and context. The browser lets
+reviewers save a follow-up disposition and note per selected receiver/play on their
+device, and export saved notes as CSV. Notes retain the exact timestamp, situation,
+recorded outcome and measured observation. Saving a note does not validate a missed pass.
+
+An AI coaching-style reviewer challenged this workflow and recommended removing the
+old Part 03 from the primary UI. That review is not independent validation by a practicing
+coach. The original research is retained below and through clearly labeled downloads;
+its 33.1% result concerns a different cohort and does not validate this review screen.
 
 # Original study: similar release spacing can hide different earlier histories
 

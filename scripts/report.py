@@ -14,7 +14,7 @@ import polars as pl
 from analyze import KEY, history_metrics
 from audit import normalize, read_csv
 from plotly.offline import get_plotlyjs
-from third_down import third_down_candidates
+from third_down import FEATURED_PLAY, pressure_flags, review_context, third_down_candidates
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -174,7 +174,9 @@ def main():
     stats = json.loads((args.output / "analysis.json").read_text())
     routes = pl.read_parquet(args.output / "routes.parquet")
     names = {r["nflId"]: r["displayName"] for r in read_csv(args.raw, "players.csv").iter_rows(named=True)}
-    scouting = read_csv(args.raw, "pffScoutingData.csv").select(*KEY, "pff_role")
+    scouting = read_csv(args.raw, "pffScoutingData.csv").select(*KEY, "pff_role", "pff_hurry", "pff_hit")
+    flags = pressure_flags(scouting)
+    games = {g["gameId"]: g for g in read_csv(args.raw, "games.csv").to_dicts()}
     plays = {(p["gameId"], p["playId"]): p for p in read_csv(args.raw, "plays.csv").to_dicts()}
     queue = review_candidates(routes)
     third_queue, third_counts = third_down_candidates(routes, plays, args.processed)
@@ -223,23 +225,24 @@ def main():
         route_id = replay_id(entry)
         replay = replays[route_id]
         replay["third_down_review"] = entry
-        replay["review_cue"] = review_cue(replay["frames"], entry["conversion_windows"])
-        # Open at the first sustained beyond-line moment, the same instant named in the question.
-        replay["review_cue"]["earlier_frame_index"] = replay["review_cue"]["review_frame_index"]
+        start = next(i for i, f in enumerate(replay["frames"]) if f["frame"] == entry["conversion_window"]["start_frame"])
+        replay["review_cue"] = {"has_window": True, "earlier_frame_index": start,
+                                "review_frame_index": start, "throw_frame_index": len(replay["frames"]) - 1}
+        entry["context"] = review_context(plays[(entry["gameId"], entry["playId"])],
+                                           flags.get((entry["gameId"], entry["playId"]), {}), games[entry["gameId"]])
         focused_entries.append({**entry, "replay_id": route_id, "queue_rank": rank})
     reference = examples[0]["route"]
-    cohort = routes.filter((pl.col("alignment") == reference["alignment"])
-                           & (pl.col("pff_passCoverage") == reference["pff_passCoverage"]))
-    # All cohort points are shown; only packaged examples have a full replay.
-    scatter = cohort.select(*KEY, "displayName", "release_separation", "longest_2_0",
-                             "observed_seconds").to_dicts()
     main_stat = stats["main"]
     lo, hi = main_stat["game_bootstrap_95_percent_interval"]
     headline = (f"{pct(main_stat['fraction'])} of routes close at release had sustained earlier spacing")
     groups = [g for g in stats["alignment_coverage_groups"] if g["closed_at_release_routes"] >= 100][:8]
-    model = {"stats": stats, "replays": list(replays.values()), "exampleIds": example_ids,
+    featured_id = next((r["replay_id"] for r in focused_entries if
+                        (r["gameId"], r["playId"]) == FEATURED_PLAY and r["nflId"] == 53520),
+                       focused_entries[0]["replay_id"])
+    model = {"sourceCommit": stats["source_commit"],
+             "replays": [replays[r["replay_id"]] for r in focused_entries],
              "queue": focused_entries, "thirdDownCounts": third_counts,
-             "featuredId": focused_entries[0]["replay_id"], "scatter": scatter, "groups": groups}
+             "featuredId": featured_id}
     encoded = json.dumps(model, separators=(",", ":")).replace("<", "\\u003c")
     template = (ROOT / "scripts/report_template.html").read_text()
     mascot = base64.b64encode((ROOT / "assets/nfl-player-mascot.png").read_bytes()).decode("ascii")
@@ -257,7 +260,9 @@ def main():
         "__THIRD_QUEUE_COUNT__": str(len(focused_entries)),
         "__THIRD_QUALIFYING_COUNT__": str(third_counts["qualifying_routes"]),
         "__THIRD_FAILED_PLAYS__": str(third_counts["eligible_failed_plays"]),
-        "__REPLAY_COUNT__": str(len(replays)),
+        "__THIRD_QUEUE_PLAYS__": str(third_counts["packaged_plays"]),
+        "__THIRD_QUALIFYING_PLAYS__": str(third_counts["qualifying_plays"]),
+        "__REPLAY_COUNT__": str(len(focused_entries)),
     }
     for placeholder, value in display_values.items():
         body = body.replace(placeholder, value)
@@ -305,29 +310,44 @@ def main():
                            f"({item['earlier_sustained_routes']:,}/{item['closed_at_release_routes']:,}).")
     findings = f"""# Failed-third-down film review
 
-The report now opens on failed third-down passes: show the yards needed, the recorded
-outcome and an exact earlier moment to inspect on film. Of {third_counts['eligible_failed_plays']}
-eligible non-penalized, non-goal-to-go failed third-down pass plays ({third_counts['eligible_failed_routes']}
-eligible receiver routes), {third_counts['qualifying_routes']} routes had a sustained gap
-at or beyond the first-down line and were within 2 yards of a defender at release.
-The report packages the {len(focused_entries)} longest such windows, with deterministic
-game/play/player tie breaks. Several routes may come from one play. This is a selected
-review list, not a conversion rate, missed-read count or player ranking.
+The report opens on failed third-down passes, showing yards needed, recorded outcome,
+quarter, game clock, score, recorded dropback type and a specific timestamp to inspect.
+Among {third_counts['eligible_failed_plays']} eligible non-penalized, non-goal-to-go failed pass
+plays ({third_counts['eligible_failed_routes']} receiver routes), {third_counts['qualifying_plays']}
+plays have at least one sustained beyond-line spacing interval ({third_counts['qualifying_routes']} routes).
+These counts do not estimate missed passes or explain why the plays failed.
 
-For this queue, the receiver must be at least the yards-to-go downfield (and at least
-2 yards), with nearest separation strictly above 2 yards for six consecutive 10 Hz
-samples, spanning at least 0.5 s. The interval starts at snap+1 s and ends at release−0.3 s.
-Missing, short-of-line or below-threshold samples break the window. The review opens
-at the first frame of the longest window, rather than the largest gap anywhere on the route.
-Pass outcomes and yardage come from plays.csv, not from animating a hypothetical catch.
-Completed passes short of the required distance, incompletions and interceptions are
-eligible; penalties, no-plays, fumbles and ambiguous scoring outcomes are excluded.
-The animation stops at release because complete ball flight is not provided.
+The offline report includes {third_counts['packaged_plays']} distinct plays with all
+{len(focused_entries)} qualifying receiver cues on those plays: a deliberately selected
+Anthony Schwartz illustration (2021092601 / 3345) plus a seed-{third_counts['sample_seed']}
+sample of other qualifying plays. Cards are chronological, not ranked by window length
+or presumed coaching value. Receivers still separated at the throw are now included.
 
-Use third_down_review_queue.csv for this focused queue. Check the passing lane,
-pressure and intended read on film; the selected receiver is not necessarily the target.
-The original study and its film_review_queue.csv export remain below and use a different
-cohort and downfield rule. Their 33.1% result is not a failed-third-down success estimate.
+A qualifying interval requires separation strictly above 2 yards for six consecutive
+10 Hz samples (at least 0.5 s), at/beyond yards-to-go and at least 2 yards downfield,
+from snap+1 s through release−0.3 s. The FIRST qualifying interval supplies the cue.
+Missing/ineligible/below-threshold samples break the interval. These thresholds are
+screening choices, not validated boundaries for a safe pass. Useful catches short of
+the line followed by running gains are outside the screen.
+
+The pass result and yardage come from plays.csv; no hypothetical catch or ball flight
+is reconstructed. Only C/I/IN failures are eligible; sacks, rushing outcomes, penalties,
+fumbles, no-plays, scoring ambiguities and goal-to-go plays are excluded.
+Recorded PFF hurry/hit flags are aggregated over the 11 defensive-role records only;
+offensive nulls are inapplicable, while missing defensive labels remain unknown.
+These are play-level flags, not pressure timing. A traditional dropback or absence of
+flags does not establish a clean pocket. Review focus (pressure, movement or timing)
+is a conditional investigation prompt, not a diagnosis of failure.
+
+Use third_down_review_queue.csv for the current sample and context. The browser lets
+reviewers save a follow-up disposition and note per selected receiver/play on their
+device, and export saved notes as CSV. Notes retain the exact timestamp, situation,
+recorded outcome and measured observation. Saving a note does not validate a missed pass.
+
+An AI coaching-style reviewer challenged this workflow and recommended removing the
+old Part 03 from the primary UI. That review is not independent validation by a practicing
+coach. The original research is retained below and through clearly labeled downloads;
+its 33.1% result concerns a different cohort and does not validate this review screen.
 
 # Original study: similar release spacing can hide different earlier histories
 
@@ -413,8 +433,15 @@ the spacing result to a football recommendation. Mentor review remains outstandi
                                          "observed_seconds", "release_separation", "playDescription"]},
                    "outcome": r["outcome"]["label"], "outcome_detail": r["outcome"]["detail"],
                    "yards_gained": r["outcome"]["yards_gained"],
+                   "quarter": r["context"]["quarter"], "game_clock": r["context"]["game_clock"],
+                   "down": 3, "home_team": r["context"]["home_team"], "away_team": r["context"]["away_team"],
+                   "home_score": r["context"]["home_score"], "away_score": r["context"]["away_score"],
+                   "dataset_commit": stats["source_commit"],
+                   "recorded_dropback_type": r["context"]["dropback_type"],
+                   "recorded_pressure_context": r["context"]["pressure_note"],
+                   "pressure_timing": "Unavailable: play-level flags only",
                    "window_duration_seconds": r["conversion_window"]["duration_seconds"]}
-                  for r in focused_entries]).write_csv(args.output / "third_down_review_queue.csv")
+                  for r in focused_entries]).rename({"queue_rank": "sample_order"}).write_csv(args.output / "third_down_review_queue.csv")
     (args.output / "replay_data.json").write_text(json.dumps(
         {"example_ids": example_ids, "replays": list(replays.values()), "queue": queue_entries,
          "third_down_queue": focused_entries, "third_down_counts": third_counts,

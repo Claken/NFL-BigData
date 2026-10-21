@@ -10,12 +10,12 @@
 <a class="skip-link" href="#replaySection">Skip to the field</a>
 <header class="topbar"><div class="topbar-inner">
   <a class="brand" href="#overview"><img class="brand-mark" src="__MASCOT__" alt="" width="48" height="32">NFL BUDDY<span class="brand-divider">/</span><span class="brand-sub">THE TIMING ROOM</span></a>
-  <nav class="section-nav" aria-label="Report sections"><a href="#replaySection">The play</a><a href="#reviewQueue">Review queue</a><a href="#comparison">Evidence &amp; method</a></nav>
+  <nav class="section-nav" aria-label="Report sections"><a href="#replaySection">The play</a><a href="#reviewQueue">Review queue</a><a href="#methodNote">Method &amp; limits</a></nav>
 </div></header>
 <main>
 <header id="overview" class="hero">
-  <div><p class="eyebrow">For coaches &amp; analysts · a film-review starting point</p><h1>Needed yards. <em>Missed chance?</em></h1></div>
-  <p class="hero-intro">Failed third downs, ready for film review. <br>Check an earlier option beyond the first-down line.</p>
+  <div><p class="eyebrow">For coaches &amp; analysts · a film-review starting point</p><h1>A failed play. <em>A focused review.</em></h1></div>
+  <p class="hero-intro">Failed third downs, ready for film review. <br>Find a moment to inspect. Save a precise review question.</p>
 </header>
 <section id="replaySection" class="replay-panel" tabindex="-1" aria-labelledby="selectedName">
   <div class="replay-header">
@@ -33,6 +33,7 @@
           <span class="result-arrow" aria-hidden="true">→</span>
           <div class="pitch-result"><span>Recorded play result · after the throw</span><b id="pitchOutcome"></b><small id="pitchOutcomeDetail"></small></div>
         </div>
+        <div id="playConditions" class="play-conditions" aria-label="Recorded play context"></div>
         <div class="pitch-question"><span class="eyebrow">Film-review question</span><p id="pitchQuestion"></p></div>
         <canvas id="field" width="1120" height="600" role="img" aria-label="Football field with the selected receiver highlighted"></canvas>
         <div class="field-status"><span id="nearestReadout"></span><span class="gate-badge" id="gateStatus"></span></div>
@@ -42,19 +43,28 @@
       <p id="playbackStatus" class="replay-boundary" role="status" aria-live="polite">Replay ends at the throw. Ball flight is not shown.</p>
     </div>
     <aside class="story-rail" aria-labelledby="storyHeading">
-      <p class="eyebrow">Compare before reviewing film</p><h3 id="storyHeading">Beyond the line.<br>Space to inspect.</h3>
+      <p class="eyebrow">What to check first</p><h3 id="storyHeading">Beyond the line.<br>Space to inspect.</h3>
       <div class="story-beats">
-        <button id="storyEarlier" class="story-beat" aria-pressed="true"><span class="beat-number">01</span><span><span id="earlierLabel" class="beat-label">Earlier · beyond the line</span><b id="earlierGap"></b><span id="earlierTime" class="beat-time"></span></span><span class="beat-arrow">↗</span></button>
+        <button id="storyEarlier" class="story-beat" aria-pressed="true"><span class="beat-number">01</span><span><span id="earlierLabel" class="beat-label">Earlier · beyond the line</span><b id="earlierGap"></b><span id="earlierTime" class="beat-time"></span></span><span class="beat-arrow" aria-hidden="true">→</span></button>
         <div class="beat-connector" aria-hidden="true"></div>
-        <button id="storyThrow" class="story-beat" aria-pressed="false"><span class="beat-number">02</span><span><span class="beat-label">At the throw</span><b id="releaseMetric"></b><span id="throwTime" class="beat-time"></span></span><span class="beat-arrow">↘</span></button>
+        <button id="storyThrow" class="story-beat" aria-pressed="false"><span class="beat-number">02</span><span><span class="beat-label">At the throw</span><b id="releaseMetric"></b><span id="throwTime" class="beat-time"></span></span><span class="beat-arrow" aria-hidden="true">→</span></button>
       </div>
-      <div class="review-action"><p class="eyebrow">Next action</p><h4 id="reviewActionTitle"></h4><p id="reviewQuestion"></p><button id="reviewMoment" class="primary"></button><button id="copyCue" class="text-button">Copy film-review cue ↗</button><p id="cueStatus" role="status" aria-live="polite"></p></div>
+      <div class="review-action"><p class="eyebrow">Next action</p><h4 id="reviewActionTitle"></h4><p id="reviewQuestion"></p><p id="reviewReason" class="review-reason"></p><button id="reviewMoment" class="primary"></button><button id="copyCue" class="text-button">Copy film-review cue ↗</button><p id="cueStatus" role="status" aria-live="polite"></p></div>
       <p class="story-limit">The selected receiver may not be the pass target. Check the passing lane on film.</p>
       <details class="cue-details"><summary>Game, play &amp; review note</summary><textarea id="reviewCueText" readonly aria-label="Film-review cue" rows="6"></textarea></details>
     </aside>
   </div>
   <div class="timeline-heading"><h3>Gap to the nearest defender</h3><span><i class="window-key"></i> <span id="timelineWindowLabel">Beyond-line window</span> <span id="historyMetric"></span> <i class="excluded-key"></i> Excluded time</span></div>
   <div id="timeline" class="chart timeline-chart" aria-label="Nearest-defender separation timeline"></div>
+  <section class="review-note-panel" aria-labelledby="reviewNoteHeading">
+    <div><p class="eyebrow">Leave with a question, not a verdict</p><h3 id="reviewNoteHeading">Save your review note</h3><p class="sub">A follow-up question for this receiver on this play. Saving it does not label a quarterback mistake.</p></div>
+    <form id="reviewNoteForm">
+      <label for="reviewDisposition">Follow-up</label><select id="reviewDisposition"><option value="needs_film">Needs game video</option><option value="timing_to_check">Timing worth checking</option><option value="insufficient_evidence">Insufficient evidence</option></select>
+      <label for="reviewNote">What should be checked?</label><textarea id="reviewNote" rows="2" maxlength="1200" placeholder="For example: check whether the thrower could deliver a pass at the marked moment."></textarea>
+      <div class="note-actions"><button id="saveReviewNote" class="primary" type="submit">Save note on this device</button><button id="deleteReviewNote" type="button" disabled>Remove saved note</button><button id="exportReviewNotes" type="button">Export saved notes · CSV</button><span id="savedNoteCount"></span></div>
+      <p id="reviewNoteStatus" role="status" aria-live="polite"></p>
+    </form>
+  </section>
   <p class="third-down-basics"><b>Why third down?</b> A team gets four attempts to gain the required yards. After failing on the third, it often kicks the ball away or risks its last attempt. This review asks whether an earlier pass could have kept the drive going.</p>
   <details class="replay-context"><summary>Source play &amp; tracking details</summary>
     <div class="detail-body">
@@ -109,96 +119,29 @@
   </details>
 
 </section>
-<details class="section-drawer" id="queueDrawer" open><summary><span class="drawer-index">02</span><span>Choose your next film review</span><span class="drawer-meta">__THIRD_QUEUE_COUNT__ routes · failed third downs</span><span class="drawer-plus" aria-hidden="true">+</span></summary><div class="drawer-body">
+<details class="section-drawer" id="queueDrawer" open><summary><span class="drawer-index">02</span><span>Choose your next film review</span><span class="drawer-meta">__THIRD_QUEUE_PLAYS__ plays · __THIRD_QUEUE_COUNT__ receiver cues</span><span class="drawer-plus" aria-hidden="true">+</span></summary><div class="drawer-body">
 <section class="card queue-panel" id="reviewQueue" aria-labelledby="queueHeading">
   <h2 id="queueHeading">Choose another failed third down</h2>
-  <p class="sub">__THIRD_QUEUE_COUNT__ longest windows from __THIRD_QUALIFYING_COUNT__ qualifying routes across __THIRD_FAILED_PLAYS__ eligible failed third-down plays. Multiple receivers can share a play; this is a review list, not a success rate.</p>
+  <p class="sub">One worked example plus a reproducible sample of other plays, ordered by week and game. Each card groups the receivers on that play; this is browsing, not a priority ranking.</p>
   <div class="filters">
     <label class="receiver-filter" for="receiverFilter"><span>Receiver</span><select id="receiverFilter"></select></label>
-    <label for="alignmentFilter"><span>Starting position (alignment)</span><select id="alignmentFilter"></select></label>
+    <label for="dropbackFilter"><span>Recorded play type</span><select id="dropbackFilter"></select></label>
     <label for="coverageFilter"><span>Defensive plan (coverage)</span><select id="coverageFilter"></select></label>
   </div>
   <div class="queue-tools"><p id="queueCount" role="status" aria-live="polite"></p><button id="clearFilters">Clear filters</button></div>
   <div class="queue-list" role="list" aria-label="Film-review routes" tabindex="0" id="queueRows"></div>
   <p id="queueEmpty" class="empty" hidden>No queued routes match these filters. Clear filters to see the full review list.</p>
-  <p class="queue-footnote">Selection: no penalties or goal-to-go; &gt;2 yd gap for ≥0.5 s at/beyond the first-down line, after 1 s and before the final 0.3 s; ≤2 yd gap at the throw. Longer plays have more time to qualify.</p>
+  <p class="queue-footnote">Every qualifying receiver is included on each sampled play. We use the first sustained beyond-line spacing, including receivers who remain separated at the throw. No missed-pass score is assigned.</p>
 </section>
 </div></details>
-<details class="section-drawer" id="evidenceDrawer"><summary><span class="drawer-index">03</span><span>Why look earlier?</span><span class="drawer-meta">__RATE__ · __GAME_COUNT__ games · evidence &amp; method</span><span class="drawer-plus" aria-hidden="true">+</span></summary><div class="drawer-body">
-  <div class="finding" aria-label="Main finding">
-    <p class="eyebrow">Original study · all downs, a different cohort</p>
-    <div class="finding-value">__RATE__</div>
-    <p class="finding-label">of studied runs close at the throw had a lasting gap earlier.</p>
-    <div class="finding-detail"><p><b>__HIDDEN_COUNT__ / __CLOSE_COUNT__ runs</b> · 95% interval: __INTERVAL__</p><p class="sub">Close: ≤2 yards. Earlier gap: &gt;2 yards for ≥0.5 s, with timing and position rules below.</p></div>
-    <p class="finding-limit">Spacing guides video review; it does not prove a pass was available.</p>
-  </div>
-<div class="quick-help">
-  <details id="footballBasics"><summary>Football terms &amp; units</summary><p>Snap = the play starts. Release = the ball is thrown. A route = one receiver’s run. yd = yards; 2 yards ≈ 1.83 metres. s = seconds.</p><dl class="glossary">
-    <div><dt>Play / route</dt><dd>A play is one action by the teams. A route is one receiver’s run within that play; several receivers can run routes at once.</dd></div>
-    <div><dt>Separation / spacing</dt><dd>The distance from the receiver to the closest defender. The closest defender can change as players move.</dd></div>
-    <div><dt>Window</dt><dd>Here, a stretch of time with a gap above our distance threshold. It does not mean a clear path for throwing the ball.</dd></div>
-    <div><dt>Line of scrimmage / downfield</dt><dd>The line of scrimmage is where the ball starts the play. Downfield means beyond that line, toward the end the offense is attacking.</dd></div>
-    <div><dt>Down &amp; distance</dt><dd>The offense normally has four attempts (downs) to gain 10 yards for a new set. “3rd &amp; 8” means third attempt, with 8 yards still needed. Goal to go means the goal line is the target.</dd></div>
-    <div><dt>Alignment</dt><dd>Where the receiver starts. Wide means near the sideline; Slot means farther inside. HB means halfback and TE means tight end, two player roles.</dd></div>
-    <div><dt>Coverage</dt><dd>The defense’s plan for guarding receivers or areas of the field. Labels such as Cover-1 and Cover-2 identify different plans; you can leave this filter on All.</dd></div>
-    <div><dt>Film review / dropback</dt><dd>Film review means watching game video. A dropback is the quarterback’s movement back to prepare a pass; longer plays allow more time for gaps to appear.</dd></div>
-  </dl></details>
-  <details id="windowRules"><summary>What counts as an earlier gap?</summary><p>All five rules must hold:</p>  <div class="definition-grid">
-    <div><b>More than 2 yards</b><span>from the closest defender (about 1.83 metres)</span></div>
-    <div><b>At least 0.5 seconds</b><span>with that gap continuously</span></div>
-    <div><b>After 1.0 second</b><span>from the start of the play (snap)</span></div>
-    <div><b>At least 2 yards forward</b><span>beyond where the ball started (downfield)</span></div>
-    <div><b>Until 0.3 seconds</b><span>before the ball is thrown (release)</span></div>
-  </div>
-</details>
-</div>
-<section class="card evidence" id="comparison" aria-labelledby="comparisonHeading">
-  <div class="section-heading"><div><p class="eyebrow">Supporting evidence</p><h2 id="comparisonHeading">Does the pattern hold beyond these examples?</h2><p>Each dot is one receiver run. Right = more space at the throw. Up = a longer gap earlier. Diamonds = A and B; click to replay.</p></div></div>
-  <p class="sub">Original matched illustration · Scott Miller, first and second down. Separate from the failed-third-down queue.</p>
-  <div class="example-switch" aria-label="Original matched examples"><button id="example0" aria-pressed="false">Play 3195 · Earlier gap</button><button id="example1" aria-pressed="false">Play 2885 · No lasting gap</button></div>
-      <section class="detail-section" aria-labelledby="matchingHeading"><h4 id="matchingHeading">About the A/B comparison</h4><p id="pairContext" class="matching-reference"></p>
-        <ul class="matching-list"><li>Same player, game, starting position and defensive plan</li><li>Gap at throw: within <b>0.15 yd</b></li><li>Gap at play start: within <b>0.5 yd</b></li><li>Time to throw: within <b>0.3 s</b></li></ul>
-        <p class="detail-caption">Chosen for the largest history contrast; not typical plays. Down, distance and speed are not matched.</p>
-      </section>
-  <p id="cohortContext" class="comparison-intro"></p>
-  <div id="scatter" class="chart widechart" aria-label="Comparison of release separation and earlier window duration"></div>
-  <details><summary>Group results &amp; comparison details</summary>
-  <p>All eligible runs with this starting position and defensive plan are shown. Hover for IDs; other points are available in routes.csv. Queue filters do not change this chart. Longer plays allow more time for gaps; these comparisons do not rank players.</p>
-  <p>Groups below have ≥100 runs close at the throw, ordered by sample size. Intervals resample whole games; differences do not establish coverage effects.</p>
-  <div id="groups" class="tablewrap" role="region" aria-label="Alignment and coverage comparison table" tabindex="0"></div>
-  <p class="table-hint">Scroll the table sideways to see every column.</p>
-  </details>
-</section>
-<section class="card evidence" id="sensitivitySection" aria-labelledby="sensitivityHeading">
-  <p class="eyebrow">Sensitivity checks</p><h2 id="sensitivityHeading">How much do the choices matter?</h2>
-  <p class="sub" style="margin-top:10px">Stricter rules reduce the rate. The finding depends on what we count.</p>
-  <div class="sensitivity-cards">
-    <div class="sensitivity-card"><b>__RATE__</b><span>Main definition<br>start at 1 second, ≥2 yards downfield</span></div>
-    <div class="sensitivity-card"><b>__LATE_RATE__</b><span>Start later<br>history begins 1.5 seconds after snap</span></div>
-    <div class="sensitivity-card"><b>__DEEP_RATE__</b><span>Require greater depth<br>receiver must be ≥5 yards downfield</span></div>
-  </div>
-  <details><summary>All sensitivity results &amp; denominators</summary><div id="sensitivity" class="tablewrap" role="region" aria-label="Sensitivity results table" tabindex="0"></div>
-  <p class="table-hint">Scroll the table sideways to see every column.</p>
-  <p class="sub" style="margin-top:16px">Each threshold changes both the earlier-window definition and the close-at-release denominator. The alternative-event comparison uses a common route cohort, but release classification can still change.</p>
-  </details>
-</section>
-<section class="card evidence" id="methodology" aria-labelledby="methodHeading">
-  <p class="eyebrow">Read the method</p><h2 id="methodHeading">Definitions, exclusions and limits</h2>
-  <p class="sub" style="margin:10px 0 24px">__ROUTE_COUNT__ eligible runs · __PLAY_COUNT__ pass plays. Reproducible analysis; football mentor review pending.</p>
-  <div class="method-grid">
-    <details><summary>Which routes are included?</summary><p>Routes must have complete snap-to-release tracking, all 11 defenders, validated 10 Hz timing, finite coordinates, a known line of scrimmage, an in-bounds receiver track, a WR/TE/RB pass-route role, at least 1.8 seconds observed and a receiver reaching at least 2 yards downfield. Only completed, incomplete and intercepted pass outcomes are included. All route runners are evaluated; no target label or route-type label is assumed.</p></details>
-    <details><summary>How are windows measured?</summary><p>Separation is the distance to the nearest of all 11 defenders at the same frame, including pass rushers. The nearest player can change. Spacing must be strictly greater than 2 yards, from 1 second after the snap through 0.3 seconds before release, while at least 2 yards downfield. Six consecutive 10 Hz samples span 0.5 seconds. Durations use observed endpoints; missing, ineligible or below-threshold frames break windows. No interpolation is used.</p></details>
-    <details><summary>What does spacing leave out?</summary><p>Nearest-defender distance omits passing lanes, leverage, coverage responsibility, route intent and quarterback vision. Alignment and coverage strata do not remove those limitations. The result does not identify missed reads, receiver quality or causal effects. Use the queue to prioritise film review, then assess whether the space was usable.</p></details>
-    <details><summary>How are uncertainty and reproduction handled?</summary><p>Intervals use 2,000 whole-game bootstrap resamples with seed 20261021. They describe game-cluster variability in this selected sample, not tracking accuracy or future-season generalisation. Source, exclusions, definitions and exact IDs are recorded in analysis.json, event_audit.json and routes.csv. Inputs are pinned and checksum-verified. Rebuild using the locked Python environment and the project reproduction instructions.</p></details>
-  </div>
-  <details><summary>Release-event policy and recorded exclusions</summary><div id="eventDetails"></div></details>
-</section>
-<footer id="downloads" class="downloads">
-  <h2>Take the evidence with you</h2><p class="sub" style="margin-top:8px">The report and its __REPLAY_COUNT__ replays work offline. Keep the output folder together to retain these companion links.</p>
-  <div class="download-links"><a href="findings.md">Detailed findings</a><a href="third_down_review_queue.csv" download>Failed-third-down review queue</a><a href="film_review_queue.csv">50-route review queue · CSV</a><a href="routes.csv">All eligible routes · CSV</a><a href="matched_pair.png">Static matched comparison · PNG</a><a href="analysis.json">Analysis and exclusions · JSON</a></div>
-  <p class="provenance">2021 NFL data · Weeks 1–8 · no remote assets required<br>Source commit: <span id="commit"></span></p>
+<footer id="methodNote" class="method-note">
+  <h3>What this review tool can tell you</h3>
+  <p>Across __THIRD_FAILED_PLAYS__ eligible failed third-down plays, __THIRD_QUALIFYING_PLAYS__ have at least one qualifying receiver. This offline report includes __THIRD_QUEUE_PLAYS__ sampled plays and __REPLAY_COUNT__ receiver cues. The featured Schwartz play is a deliberately selected illustration; the other plays use a fixed random seed.</p>
+  <p><b>Screening rule:</b> nearest defender &gt;2 yards away for ≥0.5 seconds while at/beyond the first-down line and ≥2 yards downfield, from 1 second after the snap through 0.3 seconds before the throw. The first qualifying interval supplies the review timestamp; these are screening choices, not a definition of a safe pass.</p>
+  <p><b>Limits:</b> completed, incomplete and intercepted passes only; sacks and rushing plays are outside this review. The selected receiver may not be the target. Positions do not establish a clear throwing lane, intended read, catch or conversion. Recorded hurry/hit flags apply to the whole play; their timing is unavailable. No flag does not prove a clean pocket. Catches short of the line followed by running gains are outside this screen. Penalties, fumbles and goal-to-go plays are excluded. No practicing-coach validation has been performed.</p>
+  <div class="download-links"><a href="third_down_review_queue.csv">Current review sample · CSV</a><a href="findings.md">Current method &amp; archived research</a><a href="analysis.json">Original all-downs study · JSON</a><a href="film_review_queue.csv">Original study queue · CSV</a><a href="matched_pair.png">Original study illustration · PNG</a><a href="routes.csv">All eligible route metrics · CSV</a></div>
+  <p class="provenance">2021 NFL data · Weeks 1–8 · offline replay · review notes stay on this device<br>Dataset source: <span id="commit"></span></p>
 </footer>
-</div></details>
 <p class="page-signoff">NFL BUDDY / Find the moment. Review the football.</p>
 </main>
 <script>__PLOTLY__</script>

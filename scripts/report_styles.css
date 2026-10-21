@@ -28,7 +28,7 @@ button:hover { background: var(--raised); border-color: #8aab91; }
 button[aria-pressed="true"] { border-color: var(--green); color: var(--green); }
 button.primary { background: var(--green); color: #172118; border-color: var(--green); }
 button.primary:hover { background: #d8ffa1; }
-button:disabled { cursor: wait; opacity: .5; }
+button:disabled { cursor: default; opacity: .5; }
 button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible, a:focus-visible, summary:focus-visible, [tabindex="0"]:focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
 section[id], header[id], footer[id], details[id] { scroll-margin-top: var(--anchor-offset); }
 h1, h2, h3, h4, p { margin: 0; }
@@ -77,6 +77,19 @@ main { max-width: 1480px; margin: auto; padding: 30px 32px 32px; }
 .pitch-question { padding: 12px 18px; background: #102c1d; border-top: 1px solid #466449; }
 .pitch-question .eyebrow { color: var(--green); font-size: 9px; }
 .pitch-question p { font-size: 16px; line-height: 1.4; margin-top: 5px; }
+.play-conditions { display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 8px 16px; background: #143422; color: #ceddcf; font-size: 11px; }
+.review-action .review-reason { border-left: 2px solid var(--gold); padding-left: 10px; font-size: 11px; margin-top: 10px; }
+.review-note-panel { display: grid; grid-template-columns: 1fr 1.5fr; gap: 28px; border-top: 1px solid var(--line); margin-top: 16px; padding: 24px 0; }
+.review-note-panel h3 { margin: 7px 0; }
+.review-note-panel form { display: grid; gap: 8px; min-width: 0; }
+.review-note-panel label { font-size: 12px; color: var(--muted); }
+.review-note-panel select { background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 5px; padding: 8px; width: 100%; }
+.note-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.note-actions button { font-size: 12px; }
+#savedNoteCount, #reviewNoteStatus { font-size: 11px; color: var(--muted); }
+.method-note { border-top: 1px solid var(--line); padding: 24px 0; }
+.method-note > p { font-size: 12px; color: var(--muted); line-height: 1.6; margin-top: 12px; max-width: 1000px; }
+.route-choice { margin-top: 7px; }
 .third-down-basics { color: var(--muted); font-size: 12px; line-height: 1.6; max-width: 850px; margin: 10px 0 22px; }
 .third-down-basics b { color: var(--ink); }
 .field-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 9px 16px; background: #143422; color: #b7d1b9; font-size: 11px; }
@@ -208,31 +221,6 @@ details p { font-size: 13px; color: var(--muted); line-height: 1.7; max-width: 1
 .keyboard-guide > div { background: var(--surface); padding: 12px; }
 .keyboard-guide dd { margin: 8px 0 0; font-size: 12px; color: var(--muted); }
 kbd { padding: 3px 6px; border: 1px solid var(--line); border-radius: 4px; font-size: 12px; }
-.finding { border-left: 3px solid var(--green); padding: 8px 24px; margin: 12px 0 30px; }
-.finding-value { font-size: 64px; line-height: 1.1; color: var(--green); font-weight: 800; letter-spacing: -.05em; }
-.finding-label { font-size: 20px; max-width: 650px; color: var(--ink); margin: 8px 0 16px; }
-.finding-detail, .finding-limit { font-size: 12px; color: var(--muted); }
-.finding-detail p { font-size: 12px; }
-.quick-help { margin: 20px 0; }
-.quick-help > details { background: var(--surface); padding: 0 18px 14px; border-radius: 6px; }
-.glossary dt { font-weight: 650; font-size: 13px; }
-.glossary dd { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
-.definition-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 16px; }
-.definition-grid b, .definition-grid span { display: block; font-size: 13px; }
-.definition-grid span { color: var(--muted); font-size: 12px; }
-.evidence { border-top: 1px solid var(--line); padding-top: 26px; margin-top: 26px; }
-.evidence h2 { margin: 8px 0 12px; }
-.comparison-intro { margin: 16px 0; }
-.sensitivity-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
-.sensitivity-card { background: var(--surface); padding: 18px; }
-.sensitivity-card b { display: block; font-size: 30px; color: var(--green); }
-.sensitivity-card span { font-size: 12px; color: var(--muted); }
-.tablewrap { overflow: auto; margin: 16px 0; border: 1px solid var(--line); border-radius: 6px; }
-table { width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; }
-th, td { text-align: right; padding: 14px; border-bottom: 1px solid var(--line); white-space: nowrap; }
-th:first-child, td:first-child { text-align: left; }
-th { background: var(--surface); }
-.table-hint { color: var(--muted); font-size: 11px; }
 .downloads { margin-top: 32px; border-top: 1px solid var(--line); padding-top: 24px; }
 .download-links { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }
 .download-links a { background: var(--surface); border: 1px solid var(--line); border-radius: 5px; padding: 12px; font-size: 12px; text-decoration: none; }
@@ -267,6 +255,7 @@ th { background: var(--surface); }
   #reviewMoment { margin-top: 10px; }
 }
 @media (max-width: 720px) {
+  .review-note-panel { grid-template-columns: 1fr; gap: 12px; }
   .pitch-scoreboard { gap: 12px; padding: 12px; }
   .pitch-scoreboard b { font-size: 18px; }
   .pitch-scoreboard span, .pitch-scoreboard small { font-size: 10px; }

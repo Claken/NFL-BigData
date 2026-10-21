@@ -1,27 +1,28 @@
 {
-  "tests_passed": 64,
+  "tests_passed": 71,
   "ruff": "passed",
   "javascript_syntax": "passed",
   "analysis_outputs_unchanged": true,
   "prior_locked_full_analysis_build": "passed; unchanged analysis files checked against that build",
-  "fresh_locked_report_rebuild": "Passed in the pinned project environment; full eligible cohort scanned for failed-third-down windows. Original statistical exports verified byte-identical.",
-  "queue_routes": 50,
-  "unique_packaged_replays": 91,
-  "manual_nearest_defender_checks": 273,
+  "fresh_locked_report_rebuild": "Passed in pinned environment; current report embeds only 92 cues on 50 sampled plays. Original study artifacts verified unchanged.",
+  "queue_routes": 92,
+  "unique_packaged_replays": 140,
+  "manual_nearest_defender_checks": 420,
   "manual_distance_tolerance_yards": 1e-12,
   "external_html_asset_tags": 0,
   "browser_checks": [
-    "Incomplete, completed short and intercepted outcomes match the play log",
-    "Recorded result remains visible and unchanged while scrubbing",
-    "Default cue opens at the first beyond-line window frame named in the on-pitch question",
-    "Earlier/throw/jump controls synchronize pitch and timeline",
-    "Play advances; Home and End reach snap and throw",
-    "Copy cue contains situation, recorded result, game/play IDs and film-review time",
-    "Receiver and coverage filters combine; empty state and clear restore the 50-route list",
-    "Full-field view retains target line and all 22 players",
-    "Original matched examples are explicitly separate from the failed-third-down queue",
-    "1280x720 laptop: situation, outcome, question and review action visible without scrolling",
-    "390x844 phone: no horizontal overflow; situation, outcome and question precede the field; moment controls work",
+    "Part 03, original-study scatter and statistic removed from main DOM",
+    "Default Schwartz example displays quarter/clock/score and actual incomplete result",
+    "PFF no-flag and positive hurry/hit contexts render correctly; pressure timing explicitly unknown",
+    "First interval and throw buttons synchronize pitch/timeline; outcome stays fixed",
+    "Play advances; Home/End and phone moment buttons work",
+    "50 distinct play cards group 92 qualifying receivers",
+    "Receiver/type filters combine, empty state works, clear restores 50 cards",
+    "Review note saves, reloads, copies and removes successfully on device",
+    "Actual browser CSV download parsed and verified for disposition, note, score, source commit, timestamp and measured values",
+    "Example/QA notes removed after verification; no test notes left saved",
+    "1280x720: primary inspect/copy actions and pitch question visible without scrolling",
+    "390x844: no horizontal overflow; replay buttons work",
     "No browser console errors"
   ],
   "browser_preview": "review_queue_preview.png",
@@ -165,7 +166,7 @@
   "image_freshness": {
     "checked_date": "2026-10-21",
     "capture_url": "http://127.0.0.1:8776/report.html (reviewed production candidate)",
-    "report_sha256": "4ac0b4905b379db9348c6240f31546ae9b77b8d4f81da5a1b0f146fdb8fe6f63",
+    "report_sha256": "53904ac562deda9def70d66dd90dc0676db69a539eaf07b26c9c3d377e358063",
     "refreshed_previews": [
       "report_ui_overview.png",
       "report_ui_review.png",
@@ -173,19 +174,21 @@
       "report_ui_frame.png",
       "report_ui_live.png",
       "report_ui_mobile.png",
+      "report_ui_notes.png",
       "review_queue_preview.png"
     ],
-    "detail_previews": "Current failed-third-down play, source/frame details and focused queue. Phone preview includes situation, actual outcome and review question. Obsolete speed UI previews retired.",
+    "detail_previews": "Current Schwartz illustration, grouped play queue, source/frame records, phone view and example saved review note. No old Part 03 screen remains.",
     "matched_pair_png": "Fresh report build in the existing project environment produced a byte-identical chart (SHA-256 403a62f1b8223c308676fb9a1d8f6c9aed75db4a2d55189c33ec76a457ce4a95).",
     "legacy_chart": "outputs/separation.png is the separately documented original one-game audit, not a multigame report screenshot.",
     "screenshots": {
-      "report_ui_overview.png": "80cd34f40f83de43a925c95c020a3aec152d26a971676d246b53d58be3bdb216",
-      "report_ui_review.png": "433178f819b4034f417a86667e63bb05c069a2e28acdfeb00757ff1723db6387",
-      "report_ui_context.png": "c1eb74d6156bdb28c9cc308d0caed9388077262f3de2599ded4b5ec3a935666c",
-      "report_ui_frame.png": "3cdf5f50d87199bf4b7268876977876f4fdd00ad46ad0d35897dcb2aedd74dd1",
-      "report_ui_live.png": "80cd34f40f83de43a925c95c020a3aec152d26a971676d246b53d58be3bdb216",
-      "report_ui_mobile.png": "bd0b9f92d61ea01dbcfe8ff0a1cedf788fa9abf574340ba64e04b62b36c3e594",
-      "review_queue_preview.png": "ddffc0b4d5cfd03dee568a0fa942786f1584cf53aea41226460ecd0a0259a095"
+      "report_ui_overview.png": "4aa65f19dc1d9802f80b1a4163a2d0bdc753840b60e958385d96a9d56b2333af",
+      "report_ui_review.png": "10ad0c04ca7529f41b65e63ac6a59353076fc4fb6e4de59b43e82bce527eca1f",
+      "report_ui_context.png": "be67ce0e9910cfcf1631408d5c702c078bc3d98bb77f963374e411e9bd2aca6e",
+      "report_ui_frame.png": "b5a9d8fba58991135fc1c3c59b1658a93acb14eadeeda29d235f7294d2bca8c2",
+      "report_ui_live.png": "4aa65f19dc1d9802f80b1a4163a2d0bdc753840b60e958385d96a9d56b2333af",
+      "report_ui_mobile.png": "d8302fb26164b87a2c87b1c580b5e01fe3c7a9fb61d4deb17576b488e4c635ec",
+      "report_ui_notes.png": "49b8d4336158e1d631830dedeb10a1a61a8f361230d0305313f10ab522a82ff5",
+      "review_queue_preview.png": "f1d60d8249eeafc4157f298fde3c200a9f7db5537924e8ce12e44dc9bcf0f57d"
     }
   },
   "receiver_movement_and_situation": {
@@ -255,25 +258,37 @@
     ],
     "limitations": "Descriptive tracking cue; no proof of an available or missed pass, no ball-flight model and no football mentor validation."
   },
-  "verification_scope": "Top-level checks, failed_third_down_review and image_freshness describe the current report. Other named UI blocks are historical release records.",
+  "verification_scope": "Top-level checks, coaching_review_workflow, failed_third_down_review and image_freshness describe the current build. Other named UI blocks are historical release records.",
   "failed_third_down_review": {
-    "definition": "Third-down C/I/IN failures; penalties, fumbles, ambiguous scoring, no-plays and goal-to-go excluded. >2 yd nearest gap for >=0.5 s at/beyond yards-to-go and >=2 yd downfield between snap+1 s and release-0.3 s; <=2 yd gap at throw.",
     "counts": {
       "eligible_failed_routes": 3510,
       "eligible_failed_plays": 923,
-      "qualifying_routes": 177,
-      "packaged_routes": 50
+      "qualifying_routes": 588,
+      "qualifying_plays": 299,
+      "packaged_routes": 92,
+      "packaged_plays": 50,
+      "sample_seed": 20261021
     },
-    "selection": "50 longest qualifying windows, deterministic game/play/player tie breaks; multiple receivers can share a play. Not a representative sample or conversion rate.",
-    "featured_id": "2021101001:345:43808",
-    "outcome_source": "plays.csv: passResult and playResult; no simulated ball flight",
-    "featured_review_seconds": 2.3,
-    "speed_ui": "Removed; recorded speed and trailing gap trend retained in replay exports.",
+    "featured_id": "2021092601:3345:53520",
+    "selection": "First sustained beyond-line interval, no spacing-at-release gate. Schwartz illustration plus seeded sample of other distinct plays; all qualifying receivers on selected plays, chronological order.",
+    "definition": "Third-down C/I/IN failures; excludes sacks/runs, penalties, fumbles, ambiguous scoring, no-plays, goal-to-go. >2 yd spacing >=0.5 s, at/beyond yards-to-go and >=2 yd downfield between snap+1s and release-0.3s.",
     "original_statistical_exports": {
       "analysis.json": "ef3f2fcc6bb0f31b99d07b482266cd5c3376a211cf75045469eb13e9e3de1cbb",
       "routes.csv": "02d086a4fde69dc334345659799eb3938cfa605d8ef6de415d339b992a902b70",
       "film_review_queue.csv": "f2a51c4fd14ca51914740c66fb470d4c93e03a3a441c9bd058380d66c9fbdabb",
       "matched_pair.png": "403a62f1b8223c308676fb9a1d8f6c9aed75db4a2d55189c33ec76a457ce4a95"
     }
+  },
+  "queue_plays": 50,
+  "legacy_queue_routes": 50,
+  "embedded_report_replays": 92,
+  "coaching_review_workflow": {
+    "ai_review": "AI coaching-style domain review and follow-up completed; not validation by a practicing coach.",
+    "part_03": "Removed from primary UI. Original research remains clearly labeled in downloads.",
+    "recorded_context": "PFF hurry/hit flags use 11 defensive-role records; offensive nulls ignored, missing defensive flags unknown. No pressure time inferred.",
+    "review_focus": "Conditional questions about recorded pressure, thrower movement or receiver timing; not a causal diagnosis.",
+    "notes": "Versioned dataset-specific browser localStorage per receiver/play; follow-up and free text; removal/copy/CSV export verified.",
+    "csv_qa": "Actual browser downloads validated with Python csv.DictReader, including source commit, quarter/clock/score, result, spacing and follow-up.",
+    "remaining_limit": "No human coach validation, utility benchmark, passing-lane/catch model or evidence of improved conversions."
   }
 }

@@ -22,11 +22,11 @@
 
 ## TL;DR
 
-NFL Buddy helps coaches and analysts review failed third-down passes: how many yards were needed, what actually happened, and whether an earlier receiver position deserves a closer look on film.
+NFL Buddy helps coaches and analysts prepare a focused review of failed third-down passes: see the yards needed and actual result, inspect a specific receiver-spacing moment, and save a question to check on game video.
 
-The pitch shows the target line, recorded result and a timestamped review question together. The 50-route queue selects the longest sustained gaps beyond that line from 177 qualifying routes across 923 eligible failed third-down pass plays.
+The report groups **50 distinct plays** with **92 receiver cues**. It shows quarter, clock, score, recorded play type and play-level hurry/hit context, then suggests whether to inspect pressure, thrower movement or receiver timing first.
 
-It answers **“where should I start reviewing this failure?”** Spacing alone cannot tell us a pass was available; check the passing lane, pressure and intended read on game film.
+The output is a review note with the exact play, timestamp, observation and follow-up, saved on your device and exportable as CSV. It does not establish a missed pass or prescribe a coaching correction; the AI coaching-style review is not validation by a practicing coach.
 
 ![Football field with earlier-space and throw snapshots, plus an exact film-review cue](outputs/multigame/report_ui_overview.png)
 
@@ -49,53 +49,46 @@ Open [`outputs/multigame/report.html`](outputs/multigame/report.html) in your br
 
 ### 3. Review a route
 
-1. Read **Need 10 yards → Incomplete → no first down** directly above the field.
-2. Compare the **Earlier · beyond the line** and **At the throw** moments.
-3. Use **Go to the review moment**, then **Copy film-review cue** for the game, play and timestamp.
-4. Check the passing lane, pressure and intended read on game film. The selected receiver may not be the pass target.
-5. Filter the visible **Review queue** for another failed third down. The original all-downs study remains in **Evidence & method**.
+1. Read the yards needed, actual outcome, quarter, clock and score above the pitch.
+2. Inspect the **first sustained spacing** moment, then compare positions at the throw.
+3. Read **What to check first**: a recorded hurry/hit, thrower movement or receiver timing. Pressure flags apply to the whole play; their timing is unknown.
+4. Save **Needs game video**, **Timing worth checking** or **Insufficient evidence**, with your question. Export the saved notes as CSV; they stay on your device until exported.
+5. Choose another play in the chronological queue, then switch between its qualifying receivers. Filter by receiver, recorded play type or coverage.
 
-![Field-led replay with two selectable moments and a film-review action](outputs/multigame/report_ui_review.png)
+The old Part 03, all-downs statistics and Scott Miller comparison have been removed from the interface. Their original research artifacts remain available through labeled downloads.
+
+![Example review note marked insufficient evidence, with local save and CSV export](outputs/multigame/report_ui_notes.png)
 
 ## Questions it answers
 
-| Football question | What the report provides |
+| Question | What the report provides |
 | --- | --- |
-| **How did the selected play end?** | The recorded pass result and yardage, shown throughout playback; ball flight is not reconstructed |
-| **What should I check after a failed third down?** | A sustained earlier moment at/beyond the first-down line, with an exact film-review cue |
-| **Can a close-at-release route hide earlier spacing?** | The frequency of sustained earlier windows among eligible routes at ≤2 yards from the nearest defender at release |
-| **Can similar release snapshots tell different stories?** | A matched Scott Miller pair from the same game, alignment and coverage, with contrasting spacing histories |
-| **Where does this pattern appear?** | Descriptive alignment and coverage comparisons, with route counts |
-| **Which plays should I review first?** | A filterable queue of 50 failed-third-down routes selected for long gaps at/beyond the first-down line |
-| **Does the finding depend on the definition?** | Checks using different distance thresholds, later start times, greater downfield depth and alternative release markers |
+| What was the team trying to achieve, and what happened? | Down, yards needed, actual result, quarter, clock and score |
+| Where should I begin inspecting receiver spacing? | The first sustained interval at/beyond the required line, with all 22 players shown |
+| What should I check first? | A conditional review prompt using recorded dropback type and play-level hurry/hit flags |
+| How do I take this into review? | A saved disposition and note with the exact play, receiver, timestamp, measured spacing and recorded result |
 
-Whether a window was a usable throw still requires film review of leverage, passing lanes, quarterback timing and the play's design.
+It cannot determine a safe passing lane, intended progression, hypothetical catch or why a play failed. A missing hurry flag does not prove a clean pocket. Catches short of the line followed by running gains are outside this screen.
 
-## How it works
+## How plays are selected
 
-For each eligible receiver, the analysis recalculates the distance to the nearest of all 11 defenders at every tracking frame. It then compares the spacing history with the spacing at release.
+From 923 eligible failed third-down pass plays (3,510 receiver routes), **299 plays / 588 routes** meet the spacing screen. The offline report includes a deliberately chosen Anthony Schwartz illustration plus **49 other plays sampled with seed 20261021**, retaining every qualifying receiver on each selected play. Cards are ordered by week/game/play, not coaching value. Multiple receivers on a play share one card.
 
-| Rule | Failed-third-down queue |
-| --- | --- |
-| **Close at release** | Nearest defender at ≤2 yards |
-| **Earlier spacing** | Nearest defender strictly more than 2 yards away |
-| **Sustained window** | At least 0.5 seconds: six consecutive samples at 10 Hz |
-| **History starts** | 1.0 second after the snap |
-| **History ends** | 0.3 seconds before release |
-| **Downfield gate** | Receiver at or beyond the first-down line, and at least 2 yards beyond the starting line |
-| **Recorded failure** | Third down; incomplete, intercepted or completed short of the yards needed; no penalties, fumbles, ambiguous scoring or goal-to-go |
+The screen requires a nearest-defender gap strictly above 2 yards for at least 0.5 seconds (six consecutive 10 Hz samples), while at/beyond the yards-to-go and at least 2 yards downfield. It runs from snap+1 second through release−0.3 seconds. The **first** qualifying interval supplies the timestamp; missing/ineligible/below-threshold samples break it. Receivers still separated at the throw are included. These are transparent screening choices, not validated safe-pass thresholds.
 
-Missing, ineligible or below-threshold samples break a window. The nearest defender can change from frame to frame.
+Only incomplete passes, interceptions and completed passes short of the distance are eligible. Penalties, fumbles, scoring ambiguities, no-plays and goal-to-go situations are excluded; sacks and rushing plays are outside this pass review.
 
-The original all-downs study uses a different gate (≥2 yards downfield) and its result is **3,598 / 10,870 = 33.1%**. This is not a failed-third-down rate. Starting the history later, at 1.5 seconds, gives **28.4%**; requiring at least 5 yards downfield gives **17.0%**. These checks show that the chosen timing and depth rules matter. See the [full findings](outputs/multigame/findings.md) for every comparison and denominator.
+### Worked example
 
-### A concrete example
+**Anthony Schwartz · CHI at CLE · game 2021092601, play 3345.** Cleveland needed 2 yards on third down, with 10:50 left in the fourth quarter and a 20–6 lead. The recorded short-right pass to H. Bryant was incomplete; Schwartz is the selected route, not the recorded target.
 
-**Robby Anderson · CAR vs PHI · Week 5 · game 2021101001, play 345.** Carolina needed 10 yards on third down; the pass was incomplete, gaining zero yards. At 2.3 seconds after the snap, Anderson was 10.55 yards downfield with a 4.59-yard gap to the nearest defender. The sustained beyond-line window spans 2.3–6.4 seconds; the gap falls to 1.75 yards at the throw (6.7 seconds).
+At **1.4 seconds**, Schwartz was **2.21 yards downfield** with **5.10 yards** to the nearest defender. The first qualifying interval spans 1.4–2.7 seconds; the throw is at 3.3 seconds. The play is recorded as a traditional dropback, with no hurry/hit flag recorded. That does not establish a clean pocket or an available throw.
 
-**Film question:** At 2.3 seconds, could Anderson receive a pass beyond the first-down line? Check the passing lane, pressure and intended read; the data does not establish the answer.
+**Review question:** Was Schwartz's spacing usable from the thrower's position at 1.4 seconds? Check the throwing lane and intended read on game video, then record the follow-up or insufficient evidence.
 
-The original matched Scott Miller illustration is retained separately under Evidence & method and in `matched_pair.png`. It concerns first and second downs and does not explain a failed third down.
+### Archived original research
+
+The all-downs spacing-history study has a different question and cohort: 3,598 / 10,870 routes close at release had sustained earlier spacing (33.1%). Its original analysis, sensitivity results and Scott Miller pair remain in the [findings](outputs/multigame/findings.md), [analysis JSON](outputs/multigame/analysis.json) and [static illustration](outputs/multigame/matched_pair.png). That result does not validate the failed-third-down screen.
 
 ## Features
 
@@ -106,8 +99,8 @@ The original matched Scott Miller illustration is retained separately under Evid
 | **Recorded outcome** | See incomplete, completed short or intercepted, independently of the pre-throw animation |
 | **Playback controls** | Play, pause and scrub from play start to the throw; a clear end label explains that ball flight is not shown |
 | **Field views** | Switch between Fit play and Full field with equal yard scales |
-| **Review queue** | Filter 50 selected routes by receiver, alignment and coverage |
-| **Context and evidence** | Inspect play descriptions, window times, release spacing and group results |
+| **Play-based queue** | Browse 50 sampled plays, switch between qualifying receivers, and filter recorded play type |
+| **Review notes** | Save, remove and export a follow-up per receiver/play on your device |
 | **Offline use and exports** | Explore embedded charts and replays, or use the companion CSV and PNG files |
 
 ## Data and scope
@@ -132,11 +125,11 @@ Input checksums and source URLs are recorded in the [dataset manifest](data/mult
 > This is an exploratory spacing-history tool. Nearest-defender distance does not capture passing lanes, leverage, coverage responsibility, quarterback reads or whether the receiver was a viable target.
 
 - **The 33.1% result applies to the eligible close-at-release routes**, not all routes or all dropbacks.
-- **The queue is selected for long windows.** It is not representative, and extended dropbacks have more time to create windows.
+- **The offline queue is a reproducible sample plus one deliberate illustration.** It is not a priority ranking; extended plays still have more time to meet the screen.
 - **Coverage and alignment comparisons are descriptive.** They do not establish coverage effects or rank receiver quality.
 - **Queue filters affect browsing only.** They do not recalculate the aggregate result.
 - **The interval describes variation across sampled games.** It does not measure tracking accuracy or guarantee results in another season.
-- **Football mentor review remains outstanding.** Use the examples to guide film discussion before turning the metric into a recommendation.
+- **An AI coaching-style review challenged the workflow.** No independent validation by a practicing coach, utility study or demonstration of improved conversions has been performed.
 
 ## Reproduce the analysis
 
@@ -158,7 +151,7 @@ uv run --locked pytest -q
 uv run --locked ruff check scripts tests
 ```
 
-The tests cover failed-third-down outcomes and exclusions, sustained beyond-line windows, metric rules, recorded thrower identity and replay geometry. The selected receiver is the route being studied, not necessarily the intended target. The packaged replays also have [273 independent distance checks](outputs/multigame/replay_independent_checks.csv), recomputed from the original defender coordinates. These checks validate the calculations, not whether a spacing window was a usable football opportunity.
+The tests cover failed-third-down outcomes and exclusions, sustained beyond-line windows, metric rules, recorded thrower identity and replay geometry. The selected receiver is the route being studied, not necessarily the intended target. The packaged replays also have [420 independent distance checks](outputs/multigame/replay_independent_checks.csv), recomputed from the original defender coordinates. These checks validate the calculations, not whether a spacing window was a usable football opportunity.
 
 ## Documentation
 

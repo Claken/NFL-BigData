@@ -17,7 +17,13 @@ from report import (
     speed_value,
     thrower_data,
 )
-from third_down import failed_third_down, third_down_candidates
+from third_down import (
+    FEATURED_PLAY,
+    failed_third_down,
+    pressure_flags,
+    review_context,
+    third_down_candidates,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -151,7 +157,7 @@ def test_packaged_queue_replays_match_endpoints_windows_and_field_geometry():
         assert cue["has_window"] == bool(qualified)
         assert cue["throw_frame_index"] == len(frames) - 1
         if qualified:
-            window = max(qualified, key=lambda w: w["duration_seconds"])
+            window = qualified[0] if "third_down_review" in replay else max(qualified, key=lambda w: w["duration_seconds"])
             assert frames[cue["review_frame_index"]]["frame"] == window["start_frame"]
             assert window["start_frame"] <= frames[cue["earlier_frame_index"]]["frame"] <= window["end_frame"]
         else:
@@ -243,17 +249,19 @@ def test_focused_queue_has_sustained_space_beyond_first_down_line_and_real_faile
     replays = {r["id"]: r for r in data["replays"]}
     plays = {(p["gameId"], p["playId"]): p for p in read_csv(ROOT / "data/raw", "plays.csv").to_dicts()}
     queue = data["third_down_queue"]
-    assert len(queue) == data["third_down_counts"]["packaged_routes"] == 50
+    assert len(queue) == data["third_down_counts"]["packaged_routes"]
+    assert len({(r["gameId"], r["playId"]) for r in queue}) == data["third_down_counts"]["packaged_plays"] == 50
     assert data["third_down_counts"]["qualifying_routes"] >= len(queue)
-    assert queue[0]["replay_id"] == data["featured_id"]
-    durations = [q["conversion_window"]["duration_seconds"] for q in queue]
-    assert durations == sorted(durations, reverse=True)
+    assert data["featured_id"] in {r["replay_id"] for r in queue}
+    assert tuple(replays[data["featured_id"]]["route"][k] for k in ["gameId", "playId"]) == FEATURED_PLAY
+    order = [(r["week"], r["gameId"], r["playId"], r["window_start_seconds"], r["nflId"]) for r in queue]
+    assert order == sorted(order)
+    assert any(r["release_separation"] > 2 for r in queue)
     for q in queue:
         replay = replays[q["replay_id"]]
         assert q["outcome"] == failed_third_down(plays[(q["gameId"], q["playId"])])
         assert replay["situation"]["down"] == 3
         assert replay["situation"]["goal_to_go"] is False
-        assert replay["frames"][-1]["separation"] <= 2
         window = q["conversion_window"]
         frames = [f for f in replay["frames"] if window["start_frame"] <= f["frame"] <= window["end_frame"]]
         assert len(frames) >= 6
@@ -265,3 +273,48 @@ def test_focused_queue_has_sustained_space_beyond_first_down_line_and_real_faile
             assert 1 <= f["t"] <= replay["route"]["observed_seconds"] - .3 + 1e-9
         cue = replay["review_cue"]
         assert replay["frames"][cue["earlier_frame_index"]]["frame"] == window["start_frame"]
+
+
+@pytest.mark.parametrize("kind, flags, group, focus, note", [
+    ("TRADITIONAL", {"pff_hurry": 0, "pff_hit": 0}, "traditional", "timing", "No hurry / hit flag recorded"),
+    ("TRADITIONAL", {"pff_hurry": 1, "pff_hit": 0}, "traditional", "pressure", "Hurry / hit recorded"),
+    ("SCRAMBLE", {"pff_hurry": 0, "pff_hit": 0}, "scramble", "movement", "No hurry / hit flag recorded"),
+    ("DESIGNED_ROLLOUT_RIGHT", {"pff_hit": 1}, "rollout", "pressure", "Hurry / hit recorded"),
+    (None, {}, "other", "timing", "Hurry / hit information unavailable"),
+])
+def test_recorded_context_does_not_turn_missing_flags_into_a_clean_pocket(kind, flags, group, focus, note):
+    context = review_context({"dropBackType": kind, "quarter": 2, "gameClock": "00:07"}, flags, {})
+    assert context["dropback_group"] == group
+    assert context["review_focus"] == focus
+    assert context["pressure_note"] == note
+    assert context["game_clock"] == "00:07"
+    assert "pressure_time" not in context
+
+
+def test_first_window_is_retained_and_receivers_still_separated_at_throw_are_included(tmp_path):
+    routes = [{"gameId": 1, "playId": 2, "nflId": n, "snap": 0, "release": 31,
+               "absoluteYardlineNumber": 40, "release_separation": 3, "week": 1} for n in [3, 4]]
+    rows = [{"gameId": 1, "playId": 2, "nflId": n, "frameId": i, "playDirection": "right",
+             "downfield_yards": 10, "separation_yards": 3 if 10 <= i <= 15 or i >= 18 else 1}
+            for n in [3, 4] for i in range(32)]
+    pl.DataFrame(rows).write_parquet(tmp_path / "separation_1.parquet")
+    play = {"down": 3, "yardsToGo": 10, "passResult": "I", "playResult": 0}
+    queue, counts = third_down_candidates(pl.DataFrame(routes), {(1, 2): play}, tmp_path, limit=1)
+    assert counts["packaged_plays"] == 1
+    assert counts["packaged_routes"] == len(queue) == 2
+    assert all(r["conversion_window"]["start_frame"] == 10 for r in queue)
+    assert all(r["conversion_window"]["duration_seconds"] == .5 for r in queue)
+    assert queue == third_down_candidates(pl.DataFrame(routes).reverse(), {(1, 2): play}, tmp_path, limit=1)[0]
+
+
+def test_pressure_flags_ignore_inapplicable_offensive_nulls_but_preserve_unknown_defensive_flags():
+    rows = [{"gameId": 1, "playId": 2, "nflId": n, "pff_role": "Coverage",
+             "pff_hurry": 0, "pff_hit": 0} for n in range(11)]
+    rows += [{"gameId": 1, "playId": 2, "nflId": 12, "pff_role": "Pass",
+              "pff_hurry": None, "pff_hit": None}]
+    assert pressure_flags(pl.DataFrame(rows))[(1, 2)]["pff_hurry"] == 0
+    rows[0]["pff_hurry"] = None
+    assert pressure_flags(pl.DataFrame(rows))[(1, 2)]["pff_hurry"] is None
+    rows[1]["pff_hurry"] = 1
+    assert pressure_flags(pl.DataFrame(rows))[(1, 2)]["pff_hurry"] == 1
+    assert pressure_flags(pl.DataFrame(rows[1:]))[(1, 2)]["pff_hit"] is None

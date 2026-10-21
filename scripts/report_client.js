@@ -1,11 +1,7 @@
 /* Embedded into the standalone report by report.py; no network requests. */
 const model = __MODEL__;
 const el = id => document.getElementById(id);
-const percent = x => x == null ? 'n/a' : (100 * x).toFixed(1) + '%';
-const fmt = x => Number(x).toLocaleString('en-US');
 const replays = new Map(model.replays.map(replay => [replay.id, replay]));
-const examples = model.exampleIds.map(id => replays.get(id));
-const queueById = new Map(model.queue.map(route => [route.replay_id, route]));
 const plotConfig = {
   responsive: true, displaylogo: false,
   modeBarButtonsToRemove: ['sendDataToCloud', 'select2d', 'lasso2d']
@@ -15,35 +11,125 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let index = 0, timer = null, current = null, loadVersion = 0, loading = false, fieldView = 'fit';
 const fieldBounds = new Map();
 
+const contextLabels = { traditional: 'Traditional dropback', scramble: 'Scramble-related', rollout: 'Designed rollout', other: 'Other / unknown type' };
+const followUpLabels = { needs_film: 'Needs game video', timing_to_check: 'Timing worth checking', insufficient_evidence: 'Insufficient evidence' };
+const notesKey = 'nflbuddy-review-v3:' + model.sourceCommit;
+let reviewNotes = {};
+try {
+  const saved = JSON.parse(localStorage.getItem(notesKey) || '{}');
+  if (saved && typeof saved === 'object' && !Array.isArray(saved)) reviewNotes = saved;
+} catch { /* Notes remain usable in memory if browser storage is unavailable. */ }
+
+function validSavedNotes() {
+  return Object.entries(reviewNotes).filter(([id, n]) => replays.has(id) && n &&
+    typeof n.note === 'string' && Object.hasOwn(followUpLabels, n.disposition));
+}
+function updateNoteCount() {
+  const count = validSavedNotes().length;
+  el('savedNoteCount').textContent = count + ' saved';
+  el('exportReviewNotes').disabled = count === 0;
+  el('deleteReviewNote').disabled = !current || !validSavedNotes().some(([id]) => id === current.id);
+}
+function appendNoteToCue() {
+  if (!current) return;
+  el('reviewCueText').value = el('reviewCueText').dataset.baseCue +
+    '\nFollow-up: ' + followUpLabels[el('reviewDisposition').value] +
+    (el('reviewNote').value.trim() ? '\nReviewer note: ' + el('reviewNote').value.trim() : '');
+}
+function loadReviewNote() {
+  const saved = reviewNotes[current.id];
+  el('reviewDisposition').value = Object.hasOwn(followUpLabels, saved?.disposition) ? saved.disposition : 'needs_film';
+  el('reviewNote').value = typeof saved?.note === 'string' ? saved.note.slice(0, 1200) : '';
+  el('reviewNoteStatus').textContent = saved ? 'Saved note loaded for this receiver and play.' : 'Choose a follow-up and save it with the play and timestamp.';
+  appendNoteToCue(); updateNoteCount();
+}
+el('reviewNoteForm').onsubmit = event => {
+  event.preventDefault();
+  if (!current) return;
+  reviewNotes[current.id] = { disposition: el('reviewDisposition').value, note: el('reviewNote').value.trim(), savedAt: new Date().toISOString() };
+  let persistent = true;
+  try { localStorage.setItem(notesKey, JSON.stringify(reviewNotes)); } catch { persistent = false; }
+  updateNoteCount(); appendNoteToCue();
+  el('reviewNoteStatus').textContent = persistent ? 'Saved on this device. Export CSV to take it into review.' :
+    'Kept for this session only; browser storage is unavailable. Export CSV before closing.';
+};
+el('deleteReviewNote').onclick = () => {
+  if (!current) return;
+  delete reviewNotes[current.id];
+  let persistent = true;
+  try { localStorage.setItem(notesKey, JSON.stringify(reviewNotes)); } catch { persistent = false; }
+  loadReviewNote();
+  el('reviewNoteStatus').textContent = persistent ? 'Saved note removed from this device.' :
+    'Note removed for this session; browser storage is unavailable.';
+};
+for (const id of ['reviewDisposition', 'reviewNote']) el(id).oninput = () => {
+  appendNoteToCue(); el('reviewNoteStatus').textContent = 'Unsaved changes.';
+};
+function csvCell(value) {
+  let text = String(value ?? '');
+  if (/^[=+@-]/.test(text)) text = "'" + text;
+  return '"' + text.replaceAll('"', '""') + '"';
+}
+el('exportReviewNotes').onclick = () => {
+  const rows = [['dataset_commit', 'game_id', 'play_id', 'receiver_id', 'receiver', 'quarter', 'game_clock',
+    'away_team', 'away_score', 'home_team', 'home_score', 'down', 'yards_needed',
+    'recorded_result', 'review_seconds', 'nearest_gap_yards', 'receiver_downfield_yards', 'dropback_type',
+    'recorded_pressure_context', 'follow_up', 'reviewer_note']];
+  for (const [id, note] of validSavedNotes()) {
+    const replay = replays.get(id), r = replay.route, focus = replay.third_down_review;
+    const f = replay.frames[replay.review_cue.review_frame_index], c = focus.context;
+    rows.push([model.sourceCommit, r.gameId, r.playId, r.nflId, r.displayName, c.quarter, c.game_clock,
+      c.away_team, c.away_score, c.home_team, c.home_score, 3, focus.yards_to_go,
+      focus.outcome.label + ' / ' + focus.outcome.detail, f.t, f.separation, f.downfield, c.dropback_type,
+      c.pressure_note + ' (play-level; timing unavailable)', followUpLabels[note.disposition], note.note]);
+  }
+  const url = URL.createObjectURL(new Blob(['\ufeff' + rows.map(row => row.map(csvCell).join(',')).join('\r\n')], { type: 'text/csv;charset=utf-8' }));
+  const link = document.createElement('a'); link.href = url; link.download = 'NFL-Buddy-review-notes.csv'; link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  el('reviewNoteStatus').textContent = 'Exported ' + (rows.length - 1) + ' saved review notes.';
+};
+
 function setStory(replay) {
-  const cue = replay.review_cue, r = replay.route, focus = replay.third_down_review;
+  const cue = replay.review_cue, r = replay.route, focus = replay.third_down_review, c = focus.context;
   const earlier = replay.frames[cue.earlier_frame_index], thrown = replay.frames[cue.throw_frame_index];
   const review = replay.frames[cue.review_frame_index];
-  const outcome = focus?.outcome || replay.recorded_outcome;
-  el('pitchDown').textContent = el('downDistance').textContent + ' · ' + (focus ? 'third attempt of four' : 'original study example');
-  el('pitchObjective').textContent = replay.situation.yards_to_go == null ? 'Distance unavailable' : replay.situation.goal_to_go ? 'Reach the goal line' : 'Need ' + replay.situation.yards_to_go + ' yards';
-  el('pitchObjectiveHelp').textContent = replay.situation.yards_to_go == null ? 'See the source play record' : replay.situation.goal_to_go ? 'to score a touchdown' : 'to earn a new set of four attempts';
-  el('timelineWindowLabel').textContent = focus ? 'Beyond-line window' : 'Original spacing window';
-  el('pitchOutcome').textContent = outcome.label;
-  el('pitchOutcomeDetail').textContent = outcome.detail;
+  el('pitchDown').textContent = el('downDistance').textContent + ' · third attempt of four';
+  el('pitchObjective').textContent = 'Need ' + replay.situation.yards_to_go + ' yards';
+  el('pitchObjectiveHelp').textContent = 'to earn a new set of four attempts';
+  el('timelineWindowLabel').textContent = 'First beyond-line interval';
+  el('pitchOutcome').textContent = focus.outcome.label;
+  el('pitchOutcomeDetail').textContent = focus.outcome.detail;
   const surname = r.displayName.split(' ').slice(-1)[0];
-  const question = focus ? 'At ' + review.t.toFixed(1) + ' s, could ' + surname + ' receive a pass beyond the blue line?' :
-    'Was the earlier space usable? Check this original illustration on film.';
+  const question = 'At ' + review.t.toFixed(1) + ' s, was a throw toward ' + surname + ' realistic?';
   el('pitchQuestion').textContent = question;
-  el('storyHeading').innerText = focus ? 'The team fell short.\nReview an earlier option.' : 'Original study.\nSpacing comparison.';
-  el('earlierLabel').textContent = focus ? 'Earlier · beyond the line' : 'Earlier spacing';
+  el('playConditions').replaceChildren();
+  for (const label of [contextLabels[c.dropback_group], c.pressure_note + (c.pressure_recorded ? ' · time unknown' : '')]) {
+    const tag = document.createElement('span'); tag.textContent = label; el('playConditions').append(tag);
+  }
+  const instructions = {
+    pressure: ['Check recorded pressure.', 'Locate the hurry / hit on video, then check whether this spacing preceded it.', 'Play-level flag; pressure timing is unknown.'],
+    movement: ["Check thrower movement.", "Trace the thrower's movement around this point. Check whether the play had extended beyond its original timing.", 'This play is recorded as ' + contextLabels[c.dropback_group].toLowerCase() + '; that does not establish why it extended.'],
+    timing: ['Check receiver timing.', "Check the throwing lane and intended read on video, using the marked positions.", 'No flag does not prove a clean pocket.']
+  };
+  const [heading, instruction, reason] = instructions[c.review_focus];
+  el('storyHeading').innerText = heading;
+  el('earlierLabel').textContent = 'First sustained spacing';
   el('earlierGap').textContent = earlier.separation.toFixed(1) + ' yd gap';
   el('earlierTime').textContent = earlier.t.toFixed(1) + ' s · ' + earlier.downfield.toFixed(1) + ' yd downfield';
-  el('throwTime').textContent = thrown.t.toFixed(1) + ' s · ' + thrown.downfield.toFixed(1) + ' yd downfield';
-  el('reviewActionTitle').textContent = 'Review from ' + review.t.toFixed(1) + ' s';
-  el('reviewQuestion').textContent = 'Check the passing lane, pressure on the thrower, and which receiver he was reading.';
-  el('reviewMoment').textContent = '↶ Go to the review moment';
-  el('reviewCueText').value = r.displayName + ' · ' + r.possessionTeam + ' · Week ' + r.week +
+  el('throwTime').textContent = thrown.t.toFixed(1) + ' s · ' + (thrown.t - earlier.t).toFixed(1) + ' s after this cue';
+  el('reviewActionTitle').textContent = 'Inspect ' + review.t.toFixed(1) + ' s after snap';
+  el('reviewQuestion').textContent = instruction;
+  el('reviewReason').textContent = reason;
+  el('reviewMoment').textContent = '↶ Inspect the marked moment';
+  el('reviewCueText').dataset.baseCue = r.displayName + ' · ' + r.possessionTeam + ' · Week ' + r.week +
     '\nGame ' + r.gameId + ' · Play ' + r.playId + '\n' + el('downDistance').textContent +
-    '\nRecorded result: ' + outcome.label + '. ' + outcome.detail + '.' +
-    '\nReview from ' + review.t.toFixed(1) + ' s after snap. Throw at ' + thrown.t.toFixed(1) + ' s.' +
-    '\n' + question + ' Check the passing lane, pressure and intended read.' +
+    ' · Q' + c.quarter + ' ' + c.game_clock + ' · ' + c.away_team + ' ' + c.away_score + '–' + c.home_score + ' ' + c.home_team +
+    '\nRecorded result: ' + focus.outcome.label + '. ' + focus.outcome.detail + '.' +
+    '\nRecorded context: ' + c.dropback_type + '; ' + c.pressure_note + ' (play-level, timing unavailable).' +
+    '\nInspect ' + review.t.toFixed(1) + ' s after snap: ' + review.downfield.toFixed(2) + ' yd downfield, nearest gap ' + review.separation.toFixed(2) + ' yd. Throw at ' + thrown.t.toFixed(1) + ' s.' +
+    '\n' + question + ' ' + instruction +
     '\nSelected receiver is not necessarily the target. Tracking alone cannot prove an available or missed pass.';
+  loadReviewNote();
   el('cueStatus').textContent = '';
 }
 
@@ -75,24 +161,9 @@ function revealSection(hash) {
 }
 document.querySelectorAll('a[href^="#"]').forEach(link => link.addEventListener('click', () => revealSection(link.hash)));
 window.addEventListener('hashchange', () => revealSection(location.hash));
-for (const id of ['queueDrawer', 'evidenceDrawer']) el(id).addEventListener('toggle', () => {
-  if (el(id).open) requestAnimationFrame(() => {
-    for (const chart of ['timeline', 'scatter']) if (el(chart).data) Plotly.Plots.resize(el(chart));
-  });
+el('queueDrawer').addEventListener('toggle', () => {
+  if (el('timeline').data) requestAnimationFrame(() => Plotly.Plots.resize(el('timeline')));
 });
-
-function table(headers, rows) {
-  const t = document.createElement('table'), head = document.createElement('tr');
-  const thead = document.createElement('thead'), tbody = document.createElement('tbody');
-  headers.forEach(h => { const c = document.createElement('th'); c.scope = 'col'; c.textContent = h; head.append(c); });
-  thead.append(head); t.append(thead, tbody);
-  rows.forEach(row => {
-    const tr = document.createElement('tr');
-    row.forEach(value => { const c = document.createElement('td'); c.textContent = value; tr.append(c); });
-    tbody.append(tr);
-  });
-  return t;
-}
 
 function options(id, values, allLabel) {
   const select = el(id), all = document.createElement('option');
@@ -104,58 +175,51 @@ function options(id, values, allLabel) {
 }
 
 function renderQueue() {
-  const filters = [el('receiverFilter').value, el('alignmentFilter').value, el('coverageFilter').value];
-  const routes = model.queue.filter(r =>
-    (!filters[0] || String(r.nflId) === filters[0]) &&
-    (!filters[1] || r.alignment === filters[1]) &&
+  const filters = [el('receiverFilter').value, el('dropbackFilter').value, el('coverageFilter').value];
+  const routes = model.queue.filter(r => (!filters[0] || String(r.nflId) === filters[0]) &&
+    (!filters[1] || r.context.dropback_group === filters[1]) &&
     (!filters[2] || (r.pff_passCoverage || 'Unknown') === filters[2]));
+  const plays = new Map();
+  for (const r of routes) {
+    const key = r.gameId + ':' + r.playId;
+    if (!plays.has(key)) plays.set(key, []);
+    plays.get(key).push(r);
+  }
   el('queueRows').replaceChildren();
-  routes.forEach(r => {
+  for (const [key, receivers] of plays) {
+    const r = receivers[0], c = r.context;
     const card = document.createElement('article'); card.className = 'route-card';
-    card.setAttribute('role', 'listitem'); card.dataset.replayId = r.replay_id;
-    card.setAttribute('aria-current', String(current?.id === r.replay_id));
-    const header = document.createElement('div'); header.className = 'route-card-header';
-    const name = document.createElement('p'); name.className = 'route-name'; name.textContent = r.displayName;
-    const rank = document.createElement('span'); rank.className = 'route-rank'; rank.textContent = 'Queue #' + r.queue_rank;
-    header.append(name, rank);
+    card.setAttribute('role', 'listitem'); card.dataset.playId = key;
+    card.setAttribute('aria-current', String(receivers.some(r => r.replay_id === current?.id)));
+    const name = document.createElement('h3'); name.className = 'route-name';
+    name.textContent = r.possessionTeam + ' · 3rd & ' + r.yards_to_go + ' → ' + r.outcome.label;
     const meta = document.createElement('p'); meta.className = 'route-meta';
-    meta.textContent = r.possessionTeam + ' · Week ' + r.week + ' · Play ' + r.playId;
-    const tags = document.createElement('div'); tags.className = 'route-tags';
-    for (const label of ['3rd & ' + r.yards_to_go, r.outcome.label]) {
-      const tag = document.createElement('span'); tag.textContent = label; tags.append(tag);
-    }
-    const metrics = document.createElement('div'); metrics.className = 'route-numbers';
-    for (const [value, label] of [[r.conversion_window.duration_seconds.toFixed(1) + ' s', 'space beyond first-down line'], [r.release_separation.toFixed(1) + ' yd', 'gap at the throw']]) {
-      const metric = document.createElement('div'), b = document.createElement('b'), caption = document.createElement('span');
-      b.textContent = value; caption.textContent = label; metric.append(b, caption); metrics.append(metric);
-    }
+    meta.textContent = 'Week ' + r.week + ' · Q' + c.quarter + ' ' + c.game_clock + ' · ' + c.away_team + ' ' + c.away_score + '–' + c.home_score + ' ' + c.home_team;
+    const context = document.createElement('p'); context.className = 'route-window';
+    context.textContent = contextLabels[c.dropback_group] + ' · ' + c.pressure_note;
     const window = document.createElement('p'); window.className = 'route-window';
-    window.textContent = 'Review ' + r.window_start_seconds.toFixed(1) + '–' + r.window_end_seconds.toFixed(1) +
-      ' s after play starts · throw at ' + r.observed_seconds.toFixed(1) + ' s\nGame ' + r.gameId;
-    window.style.whiteSpace = 'pre-line';
-    const button = document.createElement('button');
-    button.textContent = current?.id === r.replay_id ? 'Viewing this route ✓' : 'Review failed third down →';
-    button.setAttribute('aria-label', 'Replay ' + r.displayName + ', game ' + r.gameId + ', play ' + r.playId);
-    button.setAttribute('aria-pressed', String(current?.id === r.replay_id));
-    button.onclick = () => loadReplay(r.replay_id, true);
-    card.append(header, meta, tags, metrics, window, button); el('queueRows').append(card);
-  });
-  el('queueCount').textContent = routes.length + ' of ' + model.queue.length + ' queued routes';
+    window.textContent = 'Throw ' + r.observed_seconds.toFixed(1) + ' s · game ' + r.gameId + ' / play ' + r.playId;
+    card.append(name, meta, context, window);
+    for (const receiver of receivers) {
+      const button = document.createElement('button'); button.className = 'route-choice';
+      button.textContent = receiver.displayName + ' · inspect ' + receiver.window_start_seconds.toFixed(1) + ' s';
+      button.setAttribute('aria-label', 'Inspect ' + receiver.displayName + ', game ' + receiver.gameId + ', play ' + receiver.playId);
+      button.setAttribute('aria-pressed', String(current?.id === receiver.replay_id));
+      button.onclick = () => loadReplay(receiver.replay_id, true); card.append(button);
+    }
+    el('queueRows').append(card);
+  }
+  el('queueCount').textContent = plays.size + ' of ' + model.thirdDownCounts.packaged_plays + ' plays · ' + routes.length + ' receiver cues';
   el('queueEmpty').hidden = routes.length !== 0;
   el('clearFilters').disabled = !filters.some(Boolean);
 }
-
-const receivers = [...new Map(model.queue.map(r => [String(r.nflId), r.displayName])).entries()]
-  .sort((a, b) => a[1].localeCompare(b[1]));
+const receivers = [...new Map(model.queue.map(r => [String(r.nflId), r.displayName])).entries()].sort((a, b) => a[1].localeCompare(b[1]));
 options('receiverFilter', receivers, 'All receivers');
-for (const [id, field, label] of [
-  ['alignmentFilter', 'alignment', 'All'], ['coverageFilter', 'pff_passCoverage', 'All']
-]) {
-  options(id, [...new Set(model.queue.map(r => r[field] || 'Unknown'))].sort().map(v => [v, v]), label);
-}
-for (const id of ['receiverFilter', 'alignmentFilter', 'coverageFilter']) el(id).onchange = renderQueue;
+options('dropbackFilter', [...new Set(model.queue.map(r => r.context.dropback_group))].sort().map(v => [v, contextLabels[v]]), 'All play types');
+options('coverageFilter', [...new Set(model.queue.map(r => r.pff_passCoverage || 'Unknown'))].sort().map(v => [v, v]), 'All coverages');
+for (const id of ['receiverFilter', 'dropbackFilter', 'coverageFilter']) el(id).onchange = renderQueue;
 el('clearFilters').onclick = () => {
-  for (const id of ['receiverFilter', 'alignmentFilter', 'coverageFilter']) el(id).value = '';
+  for (const id of ['receiverFilter', 'dropbackFilter', 'coverageFilter']) el(id).value = '';
   renderQueue();
 };
 
@@ -353,16 +417,16 @@ async function loadReplay(id, scroll = false) {
   stop(); loading = true;
   for (const control of ['play', 'reset', 'scrub']) el(control).disabled = true;
   current = replays.get(id); index = current.review_cue.earlier_frame_index;
-  const r = current.route, queued = queueById.get(id);
+  const r = current.route;
   const situation = current.situation, downName = { 1: '1st', 2: '2nd', 3: '3rd', 4: '4th' }[situation.down];
   const distance = situation.yards_to_go;
   el('downDistance').textContent = (downName || 'Down unknown') + (distance == null ? '' : ' & ' +
     (situation.goal_to_go ? 'Goal' : String(distance)));
   el('lineToGainLabel').textContent = situation.goal_to_go ? 'Goal line' : 'First-down line';
   el('lineToGainKey').hidden = situation.line_to_gain == null;
-  el('storyPlayMeta').textContent = r.possessionTeam + ' · Week ' + r.week + ' · Play ' + r.playId;
+  const c = current.third_down_review.context;
+  el('storyPlayMeta').textContent = 'Week ' + r.week + ' · Q' + c.quarter + ' ' + c.game_clock + ' · ' + c.away_team + ' ' + c.away_score + '–' + c.home_score + ' ' + c.home_team;
   setStory(current);
-  for (let i = 0; i < 2; i++) el('example' + i).setAttribute('aria-pressed', String(id === model.exampleIds[i]));
   const receiver = current.frames[0].players.find(p => p.id === r.nflId);
   el('selectedName').textContent = r.displayName + (receiver?.label ? ' #' + receiver.label : '');
   el('throwerName').textContent = current.thrower ? current.thrower.name +
@@ -373,8 +437,7 @@ async function loadReplay(id, scroll = false) {
   for (const [id, value] of Object.entries({ contextTeam: r.possessionTeam, contextWeek: r.week,
     contextGame: r.gameId, contextPlay: r.playId, contextAlignment: r.alignment,
     contextCoverage: r.pff_passCoverage || 'Unknown' })) el(id).textContent = value;
-  el('routeOrigin').textContent = queued ? 'Queue #' + queued.queue_rank + ' of ' + model.queue.length +
-    ': failed third down with a sustained gap beyond the first-down line, then ≤2 yd gap at the throw. Longest windows first; not a player ranking.' : 'Matched illustration: selected for contrast, not as a typical route.';
+  el('routeOrigin').textContent = id === model.featuredId ? 'Deliberately selected traditional-dropback illustration, not a typical play or a verified missed read.' : 'Reproducibly sampled failed play. Plays are ordered chronologically, not by opportunity or receiver quality.';
   el('releaseMetric').textContent = r.release_separation.toFixed(1) + ' yd gap';
   el('historyMetric').textContent = (current.third_down_review?.conversion_window.duration_seconds ?? r.longest_2_0).toFixed(1) + ' s';
   el('routeExplanation').textContent = current.third_down_review ?
@@ -383,8 +446,8 @@ async function loadReplay(id, scroll = false) {
   el('description').textContent = r.playDescription;
   el('releaseSource').textContent = r.release_source;
   el('scrub').max = current.frames.length - 1;
-  const sustained = (current.third_down_review?.conversion_windows || current.windows).filter(w => w.duration_seconds >= .5);
-  el('windowSummary').textContent = sustained.length ? 'Lasting earlier gaps: ' + sustained.map(w =>
+  const sustained = [current.third_down_review.conversion_window];
+  el('windowSummary').textContent = sustained.length ? 'First sustained spacing: ' + sustained.map(w =>
     ((w.start_frame - r.snap) / 10).toFixed(1) + '–' + ((w.end_frame - r.snap) / 10).toFixed(1) +
     ' s (' + w.duration_seconds.toFixed(1) + ' s)').join('; ') + ' after the play starts.' : 'No lasting earlier gap meets all five rules.';
   renderQueue();
@@ -423,8 +486,6 @@ async function loadReplay(id, scroll = false) {
   }
 }
 
-el('example0').onclick = () => loadReplay(model.featuredId);
-el('example1').onclick = () => loadReplay(model.exampleIds[1]);
 el('scrub').oninput = e => { stop(); index = Number(e.target.value); draw(); };
 el('reset').onclick = () => { stop(); index = 0; draw(); };
 for (const [id, view] of [['fitView', 'fit'], ['fullView', 'full']]) {
@@ -450,50 +511,6 @@ el('play').onclick = () => {
   draw();
 };
 
-const ref = examples[0].route;
-el('pairContext').textContent = ref.displayName + ' · game ' + ref.gameId + ' · ' + ref.alignment + ' · ' +
-  ref.pff_passCoverage;
-el('cohortContext').textContent = fmt(model.scatter.length) + ' eligible routes in ' + ref.alignment +
-  ' against ' + ref.pff_passCoverage + '. The matched pair remains highlighted independently of queue filters.';
-const traces = [{ x: model.scatter.map(r => r.release_separation), y: model.scatter.map(r => r.longest_2_0),
-  text: model.scatter.map(r => r.displayName + ' · game ' + r.gameId + ' · play ' + r.playId + ' · throw ' + r.observed_seconds.toFixed(1) + ' s'),
-  mode: 'markers', marker: { color: '#6d8fa6', size: 6, opacity: .35 }, type: 'scattergl',
-  name: 'Same alignment / coverage', hovertemplate: '%{text}<br>Release %{x:.2f} yd · Earlier window %{y:.1f} s<extra></extra>' }];
-examples.forEach((e, i) => traces.push({ x: [e.route.release_separation], y: [e.route.longest_2_0],
-  mode: 'markers', marker: { size: 15, color: i ? '#c65332' : '#177449', symbol: 'diamond' },
-  name: 'Replay: play ' + e.route.playId, customdata: [e.id],
-  hovertemplate: 'Play ' + e.route.playId + '<br>Release %{x:.2f} yd · Earlier window %{y:.1f} s<extra></extra>' }));
-Plotly.newPlot('scatter', traces, { margin: { l: 70, r: 22, t: 25, b: 105 },
-  xaxis: { title: { text: 'Spacing at release (yd)', font: { size: 15 } },
-    tickfont: { size: 10 }, gridcolor: '#304239', automargin: true },
-  yaxis: { title: { text: 'Earlier window (s)', font: { size: 15 } }, rangemode: 'tozero',
-    tickfont: { size: 10 }, gridcolor: '#304239', automargin: true },
-  legend: { orientation: 'h', y: -.25, font: { size: 13 } },
-  shapes: [{ type: 'line', x0: 2, x1: 2, y0: 0, y1: 1, yref: 'paper', line: { color: '#999', dash: 'dot' } }],
-  font: chartFont, paper_bgcolor: '#0c1512', plot_bgcolor: '#0c1512',
-}, plotConfig).then(() => el('scatter').on('plotly_click', e => {
-  const p = e.points[0]; if (p.data.customdata) loadReplay(p.data.customdata[p.pointIndex], true);
-}));
-el('groups').append(table(['Alignment / coverage', 'Close-at-release routes', 'Earlier sustained spacing', '95% interval'],
-  model.groups.map(g => [g.alignment + ' / ' + g.coverage, fmt(g.closed_at_release_routes),
-    percent(g.fraction), g.game_bootstrap_95_percent_interval.map(percent).join('–')])));
-const st = model.stats, es = st.event_sensitivity;
-const sensitivity = [['Main definition', st.main], ['Start history at 1.5 s', st.late_start_sensitivity],
-  ['Require ≥5 yd downfield', st.deeper_sensitivity], ['Initially ≤2 yd separation', st.initially_close_sensitivity],
-  ['Primary events: common cohort', es.common_cohort_primary], ['Alternative events: common cohort', es.common_cohort_alternate],
-  ...st.threshold_sensitivity.filter(s => s.threshold_yards !== 2).map(s => ['Threshold ' + s.threshold_yards + ' yd', s])];
-el('sensitivity').append(table(['Definition', 'Earlier sustained / close at release', 'Rate'],
-  sensitivity.map(([label, s]) => [label, fmt(s.earlier_sustained_routes) + ' / ' + fmt(s.closed_at_release_routes), percent(s.fraction)])));
-const eventText = document.createElement('p');
-eventText.textContent = 'Use a unique primary snap/release marker; use a unique automatic fallback only when the primary is absent and the outcome is C/I/IN. ' +
-  fmt(es.automatic_fallback_plays) + ' pass plays have an automatic release fallback before route exclusions. ' +
-  fmt(es.both_markers_plays) + ' plays have both release markers; the sustained flag changes for ' +
-  fmt(es.sustained_status_changed_routes) + ' common-cohort routes under alternate timing. Marker choice is operational, not verified ground truth.';
-el('eventDetails').append(eventText);
-el('eventDetails').append(table(['Recorded exclusion category', 'Count'], Object.entries(st.exclusion_counts).map(([k, v]) => [k.replaceAll('_', ' '), fmt(v)])));
-const note = document.createElement('p'); note.className = 'sub';
-note.textContent = 'Non-pass outcomes and invalid segments are counted per play; receiver/observation exclusions per route. These mixed-unit counts must not be added into a single attrition percentage.';
-el('eventDetails').append(note); el('commit').textContent = st.source_commit;
+el('commit').textContent = model.sourceCommit;
 loadReplay(model.featuredId);
-
 if (location.hash) revealSection(location.hash);

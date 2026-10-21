@@ -14,44 +14,55 @@ Python 3.12 and dependencies are pinned by `.python-version` and `uv.lock`.
 verifies every input's SHA-256 before analysis. Source URLs use an immutable Git commit.
 The full download totals 865,324,685 bytes (approximately 865 MB). Raw files are ignored
 by Git; no redistribution permission is inferred from public access. Generated outputs
-include 91 unique replays: the original 50-route queue and matched pair, plus 50 focused
-failed-third-down routes (some overlap). Review the event/data terms before publishing them.
+include 140 unique replay records in replay_data.json: the original queue/pair plus the
+new selected plays, with overlap. Only the current 92 receiver cues are embedded in the
+public report; archived replays and research are not part of its main interface.
 
 Optional `--raw /path/to/raw --output /path/to/outputs --processed /path/to/cache`
-arguments control paths. Open `outputs/multigame/report.html` directly in a browser:
-its Plotly JavaScript and replay data are embedded. The report shows all 22 players,
-rotated with the offense moving right, using equal yard scales. The thrower is identified
-by a unique recorded PFF `Pass` role with matching offensive tracking. The selected
-receiver is not necessarily the intended target.
+arguments control paths. The report is offline and embeds Plotly plus all 22 players on
+every replay frame, with equal yard scales and offense moving right. The thrower comes
+from a unique PFF `Pass` role verified against offensive tracking; the selected receiver
+is not necessarily the target. Only the already-traversed receiver path is drawn.
 
-The primary queue is derived by `scripts/third_down.py` from **all eligible routes**,
-not by filtering the original 50-route sample. It joins `plays.csv` down, yards-to-go,
-pass result and play result. Third-down incompletions, interceptions and completions
-short of the distance qualify as failures. Penalties (including declined penalties in
-descriptions), no-plays, fumbles, scoring ambiguities and goal-to-go plays are excluded.
-923 plays contribute 3,510 eligible receiver routes under this conservative policy.
-177 routes have >2-yard separation sustained for ≥0.5 seconds at/beyond the first-down
-line (and ≥2 yards downfield), between snap+1 s and release−0.3 s, and ≤2-yard separation
-at release. Missing or ineligible samples break windows. The 50 longest windows are
-packaged with deterministic game/play/player tie breaks; multiple routes may share a
-play, and extended dropbacks have more time to qualify. These are review cues, not
-missed-read labels, conversion rates or player rankings.
+`scripts/third_down.py` scans all eligible routes and joins actual `plays.csv` outcomes.
+923 non-penalized, non-goal-to-go failed third-down pass plays contribute 3,510 eligible
+receiver routes. Of those, 299 plays / 588 routes satisfy the current beyond-line screen.
+A window requires >2-yard nearest-defender spacing continuously for at least 0.5 seconds
+(six 10 Hz samples), at/beyond yards-to-go and at least 2 yards downfield, between snap+1 s
+and release−0.3 s. Missing or ineligible samples break windows. The FIRST qualifying
+interval supplies the timestamp; spacing at the throw is unrestricted.
 
-The report opens at the first frame of the longest beyond-line window, the same instant
-named in the on-pitch question. Need, recorded outcome and review question remain
-visible while scrubbing. The blue dashed target is the normalized starting line plus
-yards to go. The earlier and throw buttons compare the gap; the copy action includes
-IDs, situation, outcome and timestamp. Check passing lanes, pressure and intended read
-on game film. Speed and trailing gap trend remain in the exported replay data but have
-been removed from the UI to concentrate on the conversion question.
+The offline sample contains 50 distinct plays: the deliberate Anthony Schwartz example
+(game 2021092601, play 3345) plus 49 other plays sampled without replacement using Python
+Random seed 20261021 from sorted game/play keys. All qualifying receivers on selected
+plays are included (92 cues). Cards are ordered by week/game/play; receivers by first
+cue time then player ID. This is navigation, not a football-priority ranking.
 
-The original all-downs study remains separate in Evidence & method, with its unchanged
-2-yard downfield gate, aggregate results, matched examples and original CSV export.
-The queue is visible by default. Filters change the queue only; navigation anchors open
-containing evidence sections. Source descriptions and detailed frame measurements are
-available for audit. Fit play and Full field retain all 22 players; only the already-traversed
-receiver path is drawn. The playback ends at the recorded throw, before ball flight.
-The final play outcome is sourced from the play log; no catch or flight is fabricated.
+Quarter, game clock, score and recorded dropBackType are visible. PFF hurry/hit flags
+are aggregated over exactly 11 defensive-role records (Coverage/Pass Rush); offensive
+nulls are inapplicable. Any positive flag is retained; incomplete defensive labels stay
+unknown rather than becoming zero. Flags apply somewhere during the play; pressure
+timing is unavailable. Traditional dropbacks and missing flags do not prove a clean pocket.
+Review focus (pressure / movement / timing) is a conditional inspection prompt.
+
+Review notes use browser localStorage under a versioned dataset-specific key, keyed by
+selected receiver/play. Saving retains a follow-up and free text, not a validated mistake.
+Notes can be removed or exported as CSV with situation, outcome, timestamp and measured
+observation. A storage failure retains notes in memory with an explicit session-only
+notice. Notes are not sent to a server. CSV text is quoted and formula-prefixed input is
+neutralized. Copying a cue includes the current disposition and note.
+
+Part 03 has been removed from the primary UI, including its all-downs statistic, scatter,
+sensitivity tables and unrelated matched examples. Original research remains in labeled
+downloads and findings.md; the original aggregate analysis and metrics are unchanged.
+The small current method/limitations note states the actual screening and sampling rules.
+Only C/I/IN failures are included; sacks, rushing outcomes, penalties, no-plays, fumbles,
+scoring ambiguities and goal-to-go situations are excluded. Useful short catches with
+running gains are outside the screen. An AI coaching-style review is not practicing-coach
+validation. The tool does not establish passing lanes, reads, catches or causality.
+
+Playback stops at the recorded throw; the final outcome is sourced separately from the
+play log, with no fabricated ball flight. Buttons, slider, field and timeline synchronize.
 
 It has no external asset tags. Linked findings, CSV and PNG
 are sibling files; keep the output folder together if distributing those links.
@@ -69,7 +80,7 @@ Main outputs under `outputs/multigame/`:
 - `event_audit.json`: every play's snap/release markers and differences.
 - `routes.csv` / `routes.parquet`: route metrics with player, play, alignment and coverage.
 - `alternate_event_routes.parquet`: common-cohort event sensitivity data.
-- `third_down_review_queue.csv`: 50 failed-third-down routes with actual outcome, yards needed and beyond-line windows.
+- `third_down_review_queue.csv`: 92 receiver cues on 50 sampled failed-third-down plays, with first intervals, actual outcomes and recorded context.
 - `film_review_queue.csv`: original 50 routes selected for long earlier windows despite close release spacing.
 - `replay_data.json`: embedded tracking for every queued route and the matched pair.
 - `example_independent_checks.csv`: distances recomputed from original defender coordinates.
