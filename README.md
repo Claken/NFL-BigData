@@ -97,11 +97,21 @@ The all-downs spacing-history study has a different question and cohort: 3,598 /
 | **Synchronized replay** | Follow all 22 players, with the named thrower in purple and selected receiver in green |
 | **Game situation** | See down-and-distance, a blue first-down or goal line, and the receiver's distance to it |
 | **Recorded outcome** | See incomplete, completed short or intercepted, independently of the pre-throw animation |
-| **Playback controls** | Play, pause and scrub from play start to the throw; a clear end label explains that ball flight is not shown |
+| **Playback controls** | Play, pause and scrub through the last recorded post-release sample; then continue into the labeled projection on the same timeline; use At the throw to return to release |
+| **Early ball flight** | See the recorded 0.2–0.5 seconds after release, with solid ball and receiver paths |
+| **Motion scenarios** | Explore dotted ball-position envelopes and a straight receiver continuation as the shared replay timeline advances |
 | **Field views** | Switch between Zoom to players and Show whole field with equal yard scales |
 | **Play-based queue** | Browse 50 sampled plays, switch between qualifying receivers, and filter recorded play type |
 | **Copy play details** | Copy the selected play, receiver, timestamp, measured spacing and recorded result |
 | **Offline use and exports** | Explore embedded charts and replays, or use the companion CSV and PNG files |
+
+### After the throw
+
+Choose **After the throw** to play the recorded start of ball flight and its conditional continuation on one timeline. Solid gold and green paths connect measured ball and selected-receiver samples; animation interpolates between samples. Once tracking ends, a full dotted cone grows from the last measured ball position while a dotted green path continues the receiver's recent velocity. Other players remain dimmed at their last measured positions; the camera keeps the same scale throughout.
+
+**This is a sensitivity scenario, not a predicted landing zone or catch probability.** The timeline continues up to 2 seconds after release; that horizon is chosen for exploration, not estimated from the throw: ball height and vertical velocity are missing. Motion is fitted from the last three consecutive post-release samples; one of the 50 plays has only two samples, so its three receiver cues show recorded motion without a projection. Both central projected positions refer to the same time; the gap does not establish a usable pass, and the selected receiver may not be the target.
+
+![Recorded ball flight and dotted ball/receiver continuation scenarios](outputs/multigame/report_ui_flight.png)
 
 ## Data and scope
 
@@ -149,6 +159,8 @@ See [REPRODUCE.md](REPRODUCE.md) for custom paths, caching, event policies, outp
 ```bash
 uv run --locked pytest -q
 uv run --locked ruff check scripts tests
+# Optional Node.js checks for the browser projection geometry:
+node --test tests/test_flight_projection.cjs
 ```
 
 The tests cover failed-third-down outcomes and exclusions, sustained beyond-line windows, metric rules, recorded thrower identity and replay geometry. The selected receiver is the route being studied, not necessarily the intended target. The packaged replays also have [420 independent distance checks](outputs/multigame/replay_independent_checks.csv), recomputed from the original defender coordinates. These checks validate the calculations, not whether a spacing window was a usable football opportunity.

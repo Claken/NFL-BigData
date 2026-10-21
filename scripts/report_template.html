@@ -27,18 +27,25 @@
     <div class="pitch-column">
       <div class="mobile-moments" aria-label="Compare moments"><button id="mobileEarlier" aria-pressed="true">01 · Earlier space</button><button id="mobileThrow" aria-pressed="false">02 · At the throw</button></div>
       <div class="field-surface">
-        <div class="field-toolbar"><span><i class="live-dot"></i>The dots replay recorded player positions, with the attacking team moving to the right.</span><div class="view-switch" aria-label="Field view"><button id="fitView" aria-pressed="true">Zoom to players</button><button id="fullView" aria-pressed="false">Show whole field</button></div></div>
+        <div class="field-toolbar"><span><i class="live-dot"></i>The dots replay recorded player positions, with the attacking team moving to the right.</span><div class="view-switch" aria-label="Field view"><button id="flightReview" aria-pressed="false">After the throw</button><button id="fitView" aria-pressed="true">Zoom to players</button><button id="fullView" aria-pressed="false">Show whole field</button></div></div>
         <div class="pitch-scoreboard" aria-label="What the team needed and what happened">
           <p id="playSummary" class="play-summary"></p>
         </div>
         <div id="playConditions" class="play-conditions" aria-label="Recorded play context"></div>
         <div class="pitch-question"><span class="eyebrow">Film-review question</span><p id="pitchQuestion"></p></div>
+        <p id="flightBanner" class="flight-banner">Solid paths: recorded motion · Dotted cone: assumed continuation</p>
         <canvas id="field" width="1120" height="600" role="img" aria-label="Football field with the selected receiver highlighted"></canvas>
         <div class="field-status"><span id="nearestReadout"></span><span class="gate-badge" id="gateStatus"></span></div>
       </div>
-      <div class="controls"><button id="play" class="primary" aria-label="Play replay" disabled>Play</button><button id="reset" aria-label="Restart replay" disabled>↺</button><input id="scrub" type="range" min="0" value="0" step="1" aria-label="Replay frame" aria-describedby="playbackStatus" disabled><output id="clock" aria-label="Replay time"></output></div>
+      <section id="flightControls" class="flight-controls" aria-label="Explore a possible continuation" hidden>
+        <p id="projectionTimeLabel" class="flight-time">Projection at <output id="flightTime"></output> after the throw · use the replay timeline</p>
+        <p id="flightComparison"></p>
+        <p id="flightLimit">The cone covers assumed ball paths up to this time (±20% speed, ±15° direction). Green: receiver continues straight. Other players stay at their last recorded positions. <b>Landing time is unknown; this is not a landing prediction.</b></p>
+      </section>
+      <div class="controls"><button id="play" class="primary" aria-label="Play replay" disabled>Play</button><button id="reset" aria-label="Restart replay" disabled>↺</button><input id="scrub" type="range" min="0" value="0" step="0.01" aria-label="Replay frame" aria-describedby="playbackStatus" disabled><output id="clock" aria-label="Replay time"></output></div>
       <div class="legend"><span><i class="dot receiver-dot"></i>Receiver</span><span><i class="dot thrower-dot"></i>Thrower</span><span><i class="dot teammate-dot"></i>Teammates</span><span><i class="dot opponent-dot"></i>Opponents</span><span><i class="dot ball-dot"></i>Ball</span><span id="lineToGainKey"><i class="gain-line-key"></i><span id="lineToGainLabel">First-down line</span></span></div>
-      <p id="playbackStatus" class="replay-boundary" role="status" aria-live="polite">Replay ends at the throw. Ball flight is not shown.</p>
+      <div class="flight-key"><span><i class="path-solid"></i>Solid paths: recorded</span><span><i class="path-dotted"></i>Dotted paths: assumed continuation</span></div>
+      <p id="playbackStatus" class="replay-boundary" role="status" aria-live="polite">Replay includes the brief recorded start of ball flight. The landing is not recorded.</p>
     </div>
     <aside class="story-rail" aria-labelledby="storyHeading">
       <p class="eyebrow">What to check first</p><h3 id="storyHeading">Beyond the line.<br>Space to inspect.</h3>
@@ -99,10 +106,10 @@
           <li><span class="key-symbol radius-symbol" aria-hidden="true"></span><div><b>Ring</b><span>2-yard radius around the receiver</span></div></li>
           <li><span class="key-symbol line-symbol" aria-hidden="true"></span><div><b>Grey dashed line</b><span>Where the ball started</span></div></li>
         </ul>
-        <p class="detail-caption">All 22 players · offense moves right → · recorded positions, not game video.</p>
+        <p class="detail-caption">All 22 players · offense moves right → · recorded samples interpolate during playback; dotted motion is projected.</p>
       </section>
       <section class="detail-section" aria-labelledby="keyboardHeading"><h4 id="keyboardHeading">Keyboard controls</h4><p class="detail-caption">Focus the time slider; the field and chart stay synchronized.</p>
-        <dl class="keyboard-guide"><div><dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>Step one frame</dd></div><div><dt><kbd>Home</kbd></dt><dd>Play start</dd></div><div><dt><kbd>End</kbd></dt><dd>Throw</dd></div></dl>
+        <dl class="keyboard-guide"><div><dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>Step one frame</dd></div><div><dt><kbd>Home</kbd></dt><dd>Play start</dd></div><div><dt><kbd>End</kbd></dt><dd>End of replay, including projection</dd></div></dl>
       </section>
     </div>
   </details>
@@ -127,7 +134,7 @@
   <h3>What this review tool can tell you</h3>
   <p>Across __THIRD_FAILED_PLAYS__ eligible failed third-down plays, __THIRD_QUALIFYING_PLAYS__ have at least one qualifying receiver. This offline report includes __THIRD_QUEUE_PLAYS__ sampled plays and __REPLAY_COUNT__ receiver cues. The featured Schwartz play is a deliberately selected illustration; the other plays use a fixed random seed.</p>
   <p><b>Screening rule:</b> nearest defender &gt;2 yards away for ≥0.5 seconds while at/beyond the first-down line and ≥2 yards downfield, from 1 second after the snap through 0.3 seconds before the throw. The first qualifying interval supplies the review timestamp; these are screening choices, not a definition of a safe pass.</p>
-  <p><b>Limits:</b> completed, incomplete and intercepted passes only; sacks and rushing plays are outside this review. The selected receiver may not be the target. Positions do not establish a clear throwing lane, intended read, catch or conversion. Recorded hurry/hit flags apply to the whole play; their timing is unavailable. No flag does not prove a clean pocket. Catches short of the line followed by running gains are outside this screen. Penalties, fumbles and goal-to-go plays are excluded. No practicing-coach validation has been performed.</p>
+  <p><b>Limits:</b> completed, incomplete and intercepted passes only; sacks and rushing plays are outside this review. The selected receiver may not be the target. Positions do not establish a clear throwing lane, intended read, catch or conversion. Post-release tracking lasts only 0.2–0.5 seconds in this sample. Dotted continuations use straight ground-plane motion; the assumed ±20% ball-speed and ±15° heading spread is a sensitivity scenario, not a calibrated confidence region. Ball height, landing time, drag and receiver turns are not modeled. Recorded hurry/hit flags apply to the whole play; their timing is unavailable. No flag does not prove a clean pocket. Catches short of the line followed by running gains are outside this screen. Penalties, fumbles and goal-to-go plays are excluded. No practicing-coach validation has been performed.</p>
   <div class="download-links"><a href="third_down_review_queue.csv">Current review sample · CSV</a><a href="findings.md">Current method &amp; archived research</a><a href="analysis.json">Original all-downs study · JSON</a><a href="film_review_queue.csv">Original study queue · CSV</a><a href="matched_pair.png">Original study illustration · PNG</a><a href="routes.csv">All eligible route metrics · CSV</a></div>
   <p class="provenance">2021 NFL data · Weeks 1–8 · offline replay<br>Dataset source: <span id="commit"></span></p>
 </footer>

@@ -45,7 +45,7 @@ Use a new release directory named after the source commit, for example `/var/www
    ```
 
 5. When changing Nginx configuration, install `nginx.conf`, run `sudo nginx -t`, and only reload after it passes: `sudo systemctl reload nginx`. A report-only update needs no reload or tunnel change.
-6. Verify HTTPS, HTTP redirection, the six companion downloads, failed-third-down review, playback, grouped-play filters, plain-language situation/outcome and copying play details at the public URL. Compare downloaded companion files with the local SHA-256 hashes. `/release.json` identifies the deployed build.
+6. Verify HTTPS, HTTP redirection, the six companion downloads, failed-third-down review, playback, grouped-play filters, plain-language situation/outcome, copying play details, measured post-release motion, the full conditional cone and continuous shared timeline and the insufficient-sample fallback at the public URL. Compare downloaded companion files with the local SHA-256 hashes. `/release.json` identifies the deployed build.
 
 Cloudflare may add script-loading and security scripts to public HTML. The origin report remains byte-identical to the reviewed file; use the repository copy for the fully self-contained offline artifact.
 

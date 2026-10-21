@@ -1,27 +1,25 @@
 {
-  "tests_passed": 71,
+  "tests_passed": 81,
   "ruff": "passed",
   "javascript_syntax": "passed",
   "analysis_outputs_unchanged": true,
   "prior_locked_full_analysis_build": "passed; unchanged analysis files checked against that build",
-  "fresh_locked_report_rebuild": "Passed in pinned environment; current report embeds only 92 cues on 50 sampled plays. Original study artifacts verified unchanged.",
+  "fresh_locked_report_rebuild": "Passed in the pinned environment. Current report embeds 92 receiver cues with separate recorded post-release frames; original pre-throw analysis data unchanged.",
   "queue_routes": 92,
   "unique_packaged_replays": 140,
   "manual_nearest_defender_checks": 420,
   "manual_distance_tolerance_yards": 1e-12,
   "external_html_asset_tags": 0,
   "browser_checks": [
-    "Plain-language situation and actual outcome visible above the pitch, with full team name",
-    "No review-note form, save/remove/export controls or application note-storage code remain",
-    "Incomplete, intercepted, positive short completion and zero-gain completion checked in browser; all 92 generated summaries checked for missing values",
-    "Copy play and timestamp succeeds with situation, outcome, receiver, timing and observation",
-    "First interval and throw buttons synchronize pitch/timeline; outcome stays fixed",
-    "Mobile moment buttons work and playback restarts at the endpoint",
-    "1280x720: primary inspect/copy actions visible without scrolling; no horizontal overflow",
-    "390x844: complete sentences readable, no horizontal overflow",
-    "No browser console errors",
-    "Blue goal, bold attempt and amber result verified on incomplete, intercepted and short-completion summaries",
-    "Queue headings use full team names with plain situation/result sentences; filtering and replay selection verified"
+    "Single replay slider progresses through recorded and modeled motion without resetting",
+    "Schwartz throw remains at 3.3 s; measured endpoint is 3.7 s; projection ends at 5.3 s",
+    "Post-release frames excluded from screening; projected frame facts say not measured",
+    "Full dotted cone includes its tip at the last measured ball sample; projected receiver uses the same clock",
+    "Camera stays fixed; animation uses interpolation rather than 10 Hz jumps",
+    "End reaches projection endpoint and the slider right edge; earlier/throw buttons restore correct measured frames",
+    "Insufficient-sample Albert Wilson play shows recorded motion without a projection",
+    "1280x720 and 390x844 have no horizontal overflow; phone uses the same single timeline",
+    "No browser console errors"
   ],
   "browser_preview": "review_queue_preview.png",
   "offline_limit": "All replay data and assets embedded; network-disabled browser mode not tested.",
@@ -164,7 +162,7 @@
   "image_freshness": {
     "checked_date": "2026-10-21",
     "capture_url": "http://127.0.0.1:8776/report.html (reviewed production candidate)",
-    "report_sha256": "85e5594aebfa0a3695624f207fce7d77ef49e194c09138c21730d7cfcd947610",
+    "report_sha256": "85ea774708c36b9229fa8dcb0922d425f1d75103ffb08a25e0eb6b7be857bfe1",
     "refreshed_previews": [
       "report_ui_overview.png",
       "report_ui_review.png",
@@ -172,19 +170,23 @@
       "report_ui_frame.png",
       "report_ui_live.png",
       "report_ui_mobile.png",
-      "review_queue_preview.png"
+      "review_queue_preview.png",
+      "report_ui_flight.png",
+      "report_ui_flight_mobile.png"
     ],
-    "detail_previews": "Current plain-sentence situation/outcome, Schwartz replay, source/frame records, grouped play queue and phone view. Obsolete review-note screenshot removed.",
+    "detail_previews": "Current measured/assumed motion, full swept cone and single timeline, updated source/frame details, compact queue and mobile view.",
     "matched_pair_png": "Fresh report build in the existing project environment produced a byte-identical chart (SHA-256 403a62f1b8223c308676fb9a1d8f6c9aed75db4a2d55189c33ec76a457ce4a95).",
     "legacy_chart": "outputs/separation.png is the separately documented original one-game audit, not a multigame report screenshot.",
     "screenshots": {
-      "report_ui_overview.png": "d56eb0a71e5c0c8abf6c26407b9b3bafd75ed0bcbaa283f4f9685e97d7637433",
-      "report_ui_review.png": "62872b005bd4b42fc208fda8e8236d01c0a66e620a29fdedf9977a40b84f3415",
-      "report_ui_context.png": "e16a74773de055e560084acacb975fd36fed8c69a35489ae74db9a0907e29aef",
-      "report_ui_frame.png": "6100235f4b20c91ea1d5d2994724c0049c7eeb47f5358208c2ebe86cf5a5b3c5",
-      "report_ui_live.png": "d56eb0a71e5c0c8abf6c26407b9b3bafd75ed0bcbaa283f4f9685e97d7637433",
-      "report_ui_mobile.png": "dd03899c05ddae3a8a3e4e013d495b617570becf2a4c9c753636d479e4015298",
-      "review_queue_preview.png": "19d51c29b88e9e8b86d613b2cfe97fc3c261ea93f6a07f53a7b54c1425b94d74"
+      "report_ui_overview.png": "cc1fec0041272a0d3c81dba4fd59b66d84ac9bef7cc06a4ae11da8ae15226873",
+      "report_ui_review.png": "e18edac99cbb3d842a9acc685b6764f5f9f2c79f0aef70e27f443fb7b2162f68",
+      "report_ui_context.png": "49c71b209c0697b3e93e36e3dd1924c2d629851727ab60cb4dfc96e37aa87b94",
+      "report_ui_frame.png": "93b5ce0af0d3018eda1ce55884d5f09a66c3fb9f7c57347f1daeabfae2a7039a",
+      "report_ui_live.png": "cc1fec0041272a0d3c81dba4fd59b66d84ac9bef7cc06a4ae11da8ae15226873",
+      "report_ui_mobile.png": "105c21896f68247f90632a976d20943c1e74339d2e0798563702f75b3241eebe",
+      "review_queue_preview.png": "596c32f808023effb71f2000e736ceb5589482438f2b44c041b100a0b834ffc4",
+      "report_ui_flight.png": "0e7a6cd5d97209db8430c73e70dfe5f35682787e11bfa997c81b74d68f12eb39",
+      "report_ui_flight_mobile.png": "ca336e27a6344d46eb0659f872a237d0367895da5606d568ab45071e8270d41d"
     },
     "emphasis_previews_refreshed": [
       "report_ui_overview.png",
@@ -261,7 +263,7 @@
     ],
     "limitations": "Descriptive tracking cue; no proof of an available or missed pass, no ball-flight model and no football mentor validation."
   },
-  "verification_scope": "Top-level checks, plain_queue_cards, plain_play_explanation, coaching_review_workflow, failed_third_down_review and image_freshness describe the current build. Other named UI blocks are historical release records.",
+  "verification_scope": "Top-level checks, post_release_projection, plain_queue_cards, plain_play_explanation, coaching_review_workflow, failed_third_down_review and image_freshness describe the current build. Other named UI blocks are historical release records.",
   "failed_third_down_review": {
     "counts": {
       "eligible_failed_routes": 3510,
@@ -310,7 +312,6 @@
       "film_review_queue.csv": "f2a51c4fd14ca51914740c66fb470d4c93e03a3a441c9bd058380d66c9fbdabb",
       "matched_pair.png": "403a62f1b8223c308676fb9a1d8f6c9aed75db4a2d55189c33ec76a457ce4a95",
       "third_down_review_queue.csv": "9f357f56e5fdb864cd624db73b3bf8a68f4f050da6b2e27cf2dde831938341b3",
-      "replay_data.json": "1e6606404b47e78400f5636a21a56585a1d90fc864871ea2267111eedfb6cffd",
       "replay_independent_checks.csv": "afee88fd3b6be1a5dba3583948a9c03fdc0ba7d6cf1ce3e5fa4d62ca97b60240"
     },
     "emphasis": {
@@ -336,5 +337,41 @@
     ],
     "data": "Queue selections, underlying metrics and replay data unchanged.",
     "removed_lines": "Dropback type and hurry/hit labels, plus throw time and game/play IDs removed from the visible queue cards."
+  },
+  "javascript_tests_passed": 9,
+  "post_release_projection": {
+    "prethrow_replays_unchanged": 140,
+    "new_recorded_frames_checked_against_raw": 630,
+    "player_and_ball_positions_checked": 14490,
+    "velocity_fits_crosschecked": 274,
+    "current_sample_plays": 50,
+    "post_release_duration_counts": {
+      "0.5": 28,
+      "0.3": 4,
+      "0.4": 17,
+      "0.2": 1
+    },
+    "projection_plays": 49,
+    "projection_receiver_cues": 89,
+    "no_projection_receiver_cues": 3,
+    "raw_positions_tolerance_yards": 0.000501,
+    "model": "OLS velocity from last 3 consecutive post-release ground-plane samples; anchor at last measured point. Receiver continues straight. Ball swept cone spans all assumed paths up to the displayed time, \u00b115 deg heading and up to +20 percent speed; slower -20 percent scenarios lie inside. Not a calibrated landing or catch model.",
+    "timeline": "One continuous timeline through measured frames, followed by projection to 2.0 s after release. No separate projection slider. requestAnimationFrame interpolates recorded samples and moves projections continuously. Fixed camera bounds include the full cone from the beginning.",
+    "interpolation": "Visual interpolation adds no evidence samples. Pausing/scrubbing snaps to a 0.1 s step. Other players freeze and dim during projection.",
+    "boundary": "3.3 throw, recorded 3.4/3.5/3.6/3.7, projected 3.8 through 5.3 s on the Schwartz play. Slider reaches its right end at 5.3 s.",
+    "fallback": "Albert Wilson play 3415 ends at the last measured sample; insufficient 2-sample data yields no cone.",
+    "html": "Unique IDs, valid anchors/companion links, one range input, no external assets, removed review notes remain absent.",
+    "replay_data_sha256": "ee00e830a5e3d4e6ca223dd481bf8ef4e9c4db8476eaee257d5342f22f3035f2",
+    "browser_viewports": [
+      [
+        1280,
+        720
+      ],
+      [
+        390,
+        844
+      ]
+    ],
+    "console_errors": 0
   }
 }

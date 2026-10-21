@@ -58,8 +58,30 @@ scoring ambiguities and goal-to-go situations are excluded. Useful short catches
 running gains are outside the screen. An AI coaching-style review is not practicing-coach
 validation. The tool does not establish passing lanes, reads, catches or causality.
 
-Playback stops at the recorded throw; the final outcome is sourced separately from the
-play log, with no fabricated ball flight. Buttons, slider, field and timeline synchronize.
+Playback continues through complete recorded post-release frames (0.2–0.5 s for the
+current 50 plays). The final outcome is sourced separately from the play log. Original
+`frames` and `review_cue.throw_frame_index` still stop at release; `post_release.frames`
+adds observed ball/all-player positions without changing screening or outcome metrics.
+Missing, duplicate or invalid tracking stops the extension; gaps are never bridged.
+The timeline shows post-release nearest-defender gaps separately, excluded from scoring.
+
+At the last recorded sample, `scripts/flight.py` fits x/y velocities by ordinary least
+squares over the last three consecutive post-release positions (0.2 s span), separately
+for ball and receiver. The projection is anchored at the last measured point. For a
+user-selected T seconds after release, dt = T - recorded_post_release_duration and
+position = last_position + fitted_velocity * dt. The receiver continues straight;
+the swept ball cone spans all times from the last sample through T, with up to +20% speed and field-plane direction ±15°. The slower (−20%) scenarios lie inside that swept region; it is not a band of endpoints at T. These are
+explicit sensitivity assumptions, not data-estimated errors or confidence coverage.
+One replay slider progresses through recorded motion and then projection, ending at 2.0 s after release when a fit is available. requestAnimationFrame interpolates recorded positions and advances the projection continuously; the camera bounds include the full cone from the start, so scale does not jump at the boundary. Other players freeze and dim at the last recorded sample. Pausing or manually scrubbing snaps to a 0.1 s step; interpolated animation does not create new evidence samples. Projected
+positions are allowed off the field and are never clamped to a sideline. Both projected
+central positions use the same future time; their Euclidean gap is descriptive only.
+
+The data's y coordinate is field width, not altitude. No ball height, vertical velocity,
+landing time, drag, wind, later deflection, receiver turn or catch is inferred. A landing
+calculation needs vertical-motion information; see [NASA's ballistic flight equations](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/ballistic-flight-equations/).
+With fewer than three valid consecutive post-release samples, no projection is offered.
+Buttons, slider, field and timeline synchronize; End jumps to the end of the projection (or the last measured sample if projection is unavailable), while At the throw jumps to release. There is no separate projection slider. Node.js geometry checks are optional:
+`node --test tests/test_flight_projection.cjs`.
 
 It has no external asset tags. Linked findings, CSV and PNG
 are sibling files; keep the output folder together if distributing those links.

@@ -9,7 +9,8 @@ const plotConfig = {
 const chartFont = { family: '-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif', size: 12, color: '#a3b1aa' };
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let index = 0, timer = null, current = null, loadVersion = 0, loading = false, fieldView = 'fit';
-const fieldBounds = new Map();
+const fieldBounds = new Map(), recordedCache = new Map();
+let flightHorizon = 0, lastTimelinePosition = null;
 
 const contextLabels = { traditional: 'Traditional dropback', scramble: 'Scramble-related', rollout: 'Designed rollout', other: 'Other / unknown type' };
 const teamNames = {
@@ -199,15 +200,96 @@ el('clearFilters').onclick = () => {
 };
 
 function stop() {
-  if (timer) clearInterval(timer);
+  if (timer) cancelAnimationFrame(timer);
+  index = Math.round(index);
   timer = null; el('play').textContent = 'Play'; el('play').setAttribute('aria-label', 'Play replay');
   el('play').dataset.playing = 'false';
+}
+
+function recordedFrames(replay) {
+  if (!recordedCache.has(replay.id)) recordedCache.set(replay.id, [...replay.frames, ...(replay.post_release?.frames || [])]);
+  return recordedCache.get(replay.id);
+}
+function flightScenario(replay, horizon) {
+  const data = replay.post_release;
+  if (!data || data.projection_unavailable || !data.frames.length) return null;
+  const last = data.frames[data.frames.length - 1];
+  const dt = horizon - (last.t - replay.route.observed_seconds);
+  if (dt <= 0 || horizon > data.assumptions.max_seconds_after_throw) return null;
+  const ball = last.players.find(p => p.side === 'ball');
+  const receiver = last.players.find(p => p.id === replay.route.nflId);
+  const vb = data.motion.ball, vr = data.motion.receiver;
+  const position = (p, v) => ({ x: p.x + v.vx * dt, y: p.y + v.vy * dt });
+  const projectedBall = position(ball, vb), projectedReceiver = position(receiver, vr);
+  const speed = Math.hypot(vb.vx, vb.vy), angle = Math.atan2(vb.vy, vb.vx);
+  const spread = data.assumptions.heading_degrees * Math.PI / 180;
+  // A swept cone includes every assumed path from the last measured point, not an end-cap band.
+  const sector = [{ x: ball.x, y: ball.y }];
+  for (let i = 0; i <= 32; i++) {
+    const theta = angle - spread + 2 * spread * i / 32;
+    const radius = speed * (1 + data.assumptions.speed_fraction) * dt;
+    sector.push({ x: ball.x + radius * Math.cos(theta), y: ball.y + radius * Math.sin(theta) });
+  }
+  sector.push({ x: ball.x, y: ball.y });
+  return { ball, receiver, projectedBall, projectedReceiver, sector,
+    outsideField: projectedBall.x < 0 || projectedBall.x > 120 || projectedBall.y < 0 || projectedBall.y > 160 / 3,
+    gap: Math.hypot(projectedBall.x - projectedReceiver.x, projectedBall.y - projectedReceiver.y) };
+}
+function playbackEndIndex(replay) {
+  const recorded = recordedFrames(replay), last = recorded[recorded.length - 1];
+  if (replay.post_release.projection_unavailable) return recorded.length - 1;
+  return recorded.length - 1 + Math.round((replay.route.observed_seconds + replay.post_release.assumptions.max_seconds_after_throw - last.t) * 10);
+}
+function playbackTime(replay, progress) {
+  const recorded = recordedFrames(replay), lastIndex = recorded.length - 1;
+  if (progress >= lastIndex) return recorded[lastIndex].t + (progress - lastIndex) / 10;
+  const lower = Math.floor(progress);
+  return recorded[lower].t + (progress - lower) / 10;
+}
+function animatedFrame(replay, progress) {
+  const recorded = recordedFrames(replay), lower = Math.min(Math.floor(progress), recorded.length - 1);
+  const first = recorded[lower], second = recorded[lower + 1], fraction = progress - lower;
+  if (!second || fraction < 1e-8) return first;
+  const next = new Map(second.players.map(p => [p.id, p]));
+  const players = first.players.map(p => ({ ...p, x: p.x + (next.get(p.id).x - p.x) * fraction,
+    y: p.y + (next.get(p.id).y - p.y) * fraction }));
+  const receiver = players.find(p => p.id === replay.route.nflId);
+  const nearest = players.filter(p => p.side === 'defense').map(p => ({ id: p.id, gap: Math.hypot(p.x - receiver.x, p.y - receiver.y) })).sort((a, b) => a.gap - b.gap)[0];
+  return { ...first, players, x: receiver.x, y: receiver.y, t: first.t + fraction / 10,
+    downfield: receiver.x - replay.line_of_scrimmage, nearest: nearest.id,
+    separation: nearest.gap, interpolated: true };
+}
+function drawFlight(ctx, xy, scenario, replay, frameIndex, displayedFrame) {
+  const recorded = recordedFrames(replay).slice(replay.review_cue.throw_frame_index, frameIndex + 1);
+  const path = (points, color, dash, width = 3) => {
+    ctx.strokeStyle = color; ctx.lineWidth = width; ctx.setLineDash(dash); ctx.beginPath();
+    points.forEach((p, i) => { const [x, y] = xy(p); if (!i) ctx.moveTo(x, y); else ctx.lineTo(x, y); }); ctx.stroke(); ctx.setLineDash([]);
+  };
+  const ballPath = recorded.map(f => f.players.find(p => p.side === 'ball')).filter(Boolean);
+  if (displayedFrame.interpolated) ballPath.push(displayedFrame.players.find(p => p.side === 'ball'));
+  path(ballPath, '#e6bc70', []);
+  if (!scenario) return;
+  ctx.beginPath(); scenario.sector.forEach((p, i) => { const [x, y] = xy(p); if (!i) ctx.moveTo(x, y); else ctx.lineTo(x, y); });
+  ctx.closePath(); ctx.fillStyle = '#e6bc7026'; ctx.fill(); ctx.strokeStyle = '#e6bc70'; ctx.lineWidth = 2; ctx.setLineDash([2, 5]); ctx.stroke(); ctx.setLineDash([]);
+  path([scenario.ball, scenario.projectedBall], '#e6bc70', [2, 5], 2);
+  path([scenario.receiver, scenario.projectedReceiver], '#c0ee79', [2, 5], 2);
+}
+function drawScenarioPoints(ctx, xy, scenario) {
+  if (!scenario) return;
+  for (const [point, color] of [[scenario.projectedBall, '#e6bc70'], [scenario.projectedReceiver, '#c0ee79']]) {
+    const [x, y] = xy(point); ctx.beginPath(); ctx.arc(x, y, 7, 0, 2 * Math.PI);
+    ctx.fillStyle = '#102719'; ctx.fill(); ctx.strokeStyle = color; ctx.setLineDash([2, 3]); ctx.stroke(); ctx.setLineDash([]);
+  }
 }
 
 function boundsFor(replay) {
   if (fieldBounds.has(replay.id)) return fieldBounds.get(replay.id);
   let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
-  for (const frame of replay.frames) for (const p of frame.players) {
+  for (const frame of recordedFrames(replay)) for (const p of frame.players) {
+    x0 = Math.min(x0, p.x); x1 = Math.max(x1, p.x); y0 = Math.min(y0, p.y); y1 = Math.max(y1, p.y);
+  }
+  const fullScenario = flightScenario(replay, replay.post_release.assumptions.max_seconds_after_throw);
+  if (fullScenario) for (const p of [...fullScenario.sector, fullScenario.projectedReceiver]) {
     x0 = Math.min(x0, p.x); x1 = Math.max(x1, p.x); y0 = Math.min(y0, p.y); y1 = Math.max(y1, p.y);
   }
   x0 = Math.min(x0, replay.line_of_scrimmage);
@@ -225,7 +307,12 @@ function boundsFor(replay) {
 
 function draw() {
   if (!current || loading) return;
-  const f = current.frames[index], canvas = el('field'), rect = canvas.getBoundingClientRect();
+  const allFrames = recordedFrames(current), f = animatedFrame(current, index);
+  const projected = index > allFrames.length - 1 + 1e-8, afterThrow = index > current.review_cue.throw_frame_index + 1e-8;
+  const atEnd = index >= playbackEndIndex(current), displayTime = playbackTime(current, index);
+  flightHorizon = Math.min(current.post_release.assumptions.max_seconds_after_throw, displayTime - current.route.observed_seconds);
+  const scenario = projected ? flightScenario(current, flightHorizon) : null;
+  const canvas = el('field'), rect = canvas.getBoundingClientRect();
   const W = Math.max(1, Math.round(rect.width)), H = Math.max(1, Math.round(rect.height));
   const ratio = Math.min(window.devicePixelRatio || 1, 3);
   if (canvas.width !== Math.round(W * ratio) || canvas.height !== Math.round(H * ratio)) {
@@ -274,16 +361,17 @@ function draw() {
     ctx.strokeStyle = '#78cfff'; ctx.lineWidth = 2; ctx.setLineDash([8, 5]); ctx.beginPath();
     ctx.moveTo(gainX, gainTop); ctx.lineTo(gainX, xy({ x: 0, y: 0 })[1]); ctx.stroke(); ctx.setLineDash([]);
   }
-  ctx.strokeStyle = '#c0ee7955'; ctx.lineWidth = 2; ctx.setLineDash([4, 4]); ctx.beginPath();
-  current.frames.slice(0, index + 1).forEach((p, i) => { const [x, y] = xy(p); if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); }); ctx.stroke(); ctx.setLineDash([]);
+  ctx.strokeStyle = '#c0ee7955'; ctx.lineWidth = 2; ctx.setLineDash([]); ctx.beginPath();
+  [...allFrames.slice(0, index + 1), ...(f.interpolated ? [f] : [])].forEach((p, i) => { const [x, y] = xy(p); if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); }); ctx.stroke(); ctx.setLineDash([]);
   ctx.strokeStyle = '#c0ee79'; ctx.lineWidth = 3; ctx.beginPath();
-  current.frames.slice(Math.max(0, index - 10), index + 1).forEach((p, i) => {
+  [...allFrames.slice(Math.max(0, index - 10), index + 1), ...(f.interpolated ? [f] : [])].forEach((p, i) => {
     const [x, y] = xy(p); if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
   }); ctx.stroke();
+  if (afterThrow) drawFlight(ctx, xy, scenario, current, index, f);
   const receiver = f.players.find(p => p.id === current.route.nflId);
   const thrower = current.thrower && f.players.find(p => p.id === current.thrower.id);
   const nearest = f.players.find(p => p.id === f.nearest);
-  if (receiver && nearest) {
+  if (receiver && nearest && !afterThrow) {
     const [x1, y1] = xy(receiver), [x2, y2] = xy(nearest);
     ctx.strokeStyle = '#e6bc70'; ctx.lineWidth = 3; ctx.beginPath();
     ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
@@ -294,15 +382,16 @@ function draw() {
   [...f.players].sort((a, b) => paintOrder(a) - paintOrder(b)).forEach(p => {
     const [x, y] = xy(p), active = p.id === current.route.nflId, passing = p.id === current.thrower?.id;
     const focused = active || passing || p.id === f.nearest || p.side === 'ball';
-    ctx.globalAlpha = focused ? 1 : .8;
+    ctx.globalAlpha = projected ? .3 : focused ? 1 : .8;
     ctx.beginPath(); ctx.arc(x, y, active ? 11 : passing ? 10 : p.side === 'ball' ? 4 : 7, 0, Math.PI * 2);
     ctx.fillStyle = active ? '#c0ee79' : passing ? '#ba9bec' : p.side === 'offense' ? '#8bb9d1' : p.side === 'defense' ? '#eb9d7d' : '#e6bc70';
     ctx.fill(); ctx.strokeStyle = '#eff2d8'; ctx.lineWidth = 1; ctx.stroke();
     if (active || passing) { ctx.strokeStyle = active ? '#c0ee79' : '#ba9bec'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 14, 0, Math.PI * 2); ctx.stroke(); }
-    if (p.id === f.nearest) { ctx.strokeStyle = '#e6bc70'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 10, 0, Math.PI * 2); ctx.stroke(); }
+    if (p.id === f.nearest && !afterThrow) { ctx.strokeStyle = '#e6bc70'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 10, 0, Math.PI * 2); ctx.stroke(); }
     if (p.side !== 'ball') { ctx.fillStyle = '#102117'; ctx.font = 'bold ' + (active || passing ? 11 : 9) + 'px system-ui'; ctx.textAlign = 'center'; ctx.fillText(p.label, x, y + 3); }
     ctx.globalAlpha = 1;
   });
+  drawScenarioPoints(ctx, xy, scenario);
   ctx.restore(); ctx.textAlign = 'center'; ctx.fillStyle = '#e5ebc9b0'; ctx.font = 'bold 16px system-ui';
   for (let x = 20; x <= 100; x += 10) {
     const [px] = xy({ x, y: 0 });
@@ -310,7 +399,10 @@ function draw() {
   }
   ctx.save(); ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
   const labels = [];
-  for (const [player, role, color, offset] of [[thrower, 'Thrower', '#ba9bec', 22], [receiver, 'Receiver', '#c0ee79', -40]]) {
+  const labeledPlayers = [[thrower, projected ? 'Last thrower' : 'Thrower', '#ba9bec', 22], [receiver, projected ? 'Last receiver' : 'Receiver', '#c0ee79', -40]];
+  if (scenario) labeledPlayers.push([scenario.projectedBall, 'Ball scenario', '#e6bc70', 22],
+    [scenario.projectedReceiver, 'Receiver scenario', '#c0ee79', -40]);
+  for (const [player, role, color, offset] of labeledPlayers) {
     if (!player) continue;
     const [px, py] = xy(player), label = role + (player.label ? ' #' + player.label : '');
     const width = Math.ceil(ctx.measureText(label).width) + 14;
@@ -338,52 +430,71 @@ function draw() {
     ctx.fillStyle = color; ctx.fillText(label, x, y + 15);
   }
   ctx.restore();
+  el('flightBanner').hidden = false;
+  el('flightBanner').textContent = scenario ? 'Projection +' + flightHorizon.toFixed(1) + ' s · dotted cone, not a landing' :
+    'Solid paths: recorded motion' + (atEnd ? ' · projection unavailable' : ' · dotted cone follows tracking');
   canvas.dataset.throwerId = current.thrower?.id ?? '';
   canvas.dataset.receiverId = current.route.nflId;
   el('scrub').value = index;
-  el('clock').value = f.t.toFixed(1) + ' / ' + current.route.observed_seconds.toFixed(1) + ' s';
-  const atThrow = index === current.frames.length - 1;
+  el('clock').value = displayTime.toFixed(1) + ' / ' + playbackTime(current, playbackEndIndex(current)).toFixed(1) + ' s';
+  const atThrow = index === current.review_cue.throw_frame_index;
   for (const id of ['storyEarlier', 'mobileEarlier']) el(id).setAttribute('aria-pressed', String(index === current.review_cue.earlier_frame_index));
   for (const id of ['storyThrow', 'mobileThrow']) el(id).setAttribute('aria-pressed', String(atThrow));
-  const playbackStatus = atThrow ? 'Throw — replay ends before ball flight.' :
-    'Replay stops at the throw, before ball flight.';
+  const extra = current.post_release?.seconds_recorded || 0;
+  const playbackStatus = projected ? 'Projection +' + flightHorizon.toFixed(1) + ' s after throw · tracking ended at +' + extra.toFixed(1) + ' s.' : afterThrow ? (atEnd ? 'Tracking ends +' + extra.toFixed(1) + ' s after the throw. Landing is not recorded.' :
+    'Recorded positions +' + (f.t - current.route.observed_seconds).toFixed(1) + ' s after the throw.') :
+    atThrow ? 'Throw — ' + extra.toFixed(1) + ' s of recorded tracking follows.' :
+    'Replay includes ' + extra.toFixed(1) + ' s of recorded tracking after the throw.';
   if (el('playbackStatus').textContent !== playbackStatus) el('playbackStatus').textContent = playbackStatus;
-  el('playbackStatus').dataset.phase = atThrow ? 'throw' : 'before';
-  el('scrub').setAttribute('aria-valuetext', f.t.toFixed(1) + ' seconds since play start; ' +
-    (atThrow ? 'throw, replay ends' : 'before the throw'));
+  el('playbackStatus').setAttribute('aria-live', timer ? 'off' : 'polite');
+  el('playbackStatus').dataset.phase = projected ? 'projected' : afterThrow ? 'after' : atThrow ? 'throw' : 'before';
+  el('scrub').setAttribute('aria-valuetext', displayTime.toFixed(1) + ' seconds since play start; ' +
+    (projected ? 'projected motion, not measured' : afterThrow ? 'recorded post-release positions' : atThrow ? 'throw' : 'before the throw'));
+  el('flightReview').setAttribute('aria-pressed', String(afterThrow));
+  el('flightControls').hidden = !(projected || (atEnd && afterThrow));
+  el('flightLimit').hidden = !scenario;
+  el('projectionTimeLabel').hidden = !projected;
+  el('flightTime').textContent = flightHorizon.toFixed(1) + ' s';
+  el('flightComparison').textContent = scenario ? 'Scenario ball–receiver gap: ' + scenario.gap.toFixed(1) + ' yards.' + (scenario.outsideField ? ' The ball scenario is outside the field.' : '') :
+    current.post_release?.projection_unavailable || 'No projection available.';
   if (!timer) {
-    el('play').textContent = atThrow ? 'Replay' : 'Play';
-    el('play').setAttribute('aria-label', atThrow ? 'Replay from play start' : 'Play replay');
+    el('play').textContent = atEnd ? 'Replay' : 'Play';
+    el('play').setAttribute('aria-label', atEnd ? 'Replay from play start' : 'Play replay');
   }
   const requiredDepth = current.third_down_review ? Math.max(2, current.situation.yards_to_go) : 2;
-  const valid = f.t >= 1 && f.t <= current.route.observed_seconds - .3 + 1e-8 && f.downfield >= requiredDepth;
+  const valid = !projected && !f.interpolated && f.t >= 1 && f.t <= current.route.observed_seconds - .3 + 1e-8 && f.downfield >= requiredDepth;
   el('nearestReadout').textContent = f.separation.toFixed(2) + ' yd gap · ' + (nearest ? nearest.name : 'unknown');
-  el('gateStatus').textContent = !valid ? 'This moment is not counted' :
+  el('gateStatus').textContent = projected ? 'Projected motion · no spacing score' : f.interpolated ? 'Animated between recorded samples' : afterThrow ? 'After throw · excluded from spacing screen' : !valid ? 'This moment is not counted' :
     f.separation > 2 ? 'Gap above 2 yards at this moment' : 'Opponent within 2 yards';
   el('gateStatus').dataset.eligible = String(valid && f.separation > 2);
   const yardsShort = gainLine == null ? null : gainLine - f.x;
   const positionText = yardsShort == null ? 'Line unavailable' : Math.abs(yardsShort) < .05 ? 'At the first-down line' :
     (Math.round(Math.abs(yardsShort) * 10 + 1e-8) / 10).toFixed(1) + ' yd ' + (yardsShort > 0 ? 'short of' : 'beyond') + ' the first-down line';
-  el('nearestReadout').textContent = positionText + ' · ' + f.separation.toFixed(1) + ' yd nearest gap';
-  el('frameEligibility').textContent = !valid ? 'Outside the time / position rules' :
+  const ball = f.players.find(p => p.side === 'ball');
+  el('nearestReadout').textContent = scenario ? 'Scenario ball–receiver gap: ' + scenario.gap.toFixed(1) + ' yd' : afterThrow && ball ? 'Recorded ball–receiver gap: ' + Math.hypot(ball.x - f.x, ball.y - f.y).toFixed(1) + ' yd' : positionText + ' · ' + f.separation.toFixed(1) + ' yd nearest gap';
+  el('frameEligibility').textContent = projected ? 'Projection only' : !valid ? 'Outside the time / position rules' :
     f.separation <= 2 ? 'Gap is too small to count' : 'Can contribute to an earlier gap';
   el('frameEligibilityNote').dataset.eligible = String(valid && f.separation > 2);
-  el('frameExplanation').textContent = f.t < 1 ? 'We do not count the first second of the play.' :
+  el('frameExplanation').textContent = projected ? 'Assumed ball and receiver motion. Other players are frozen; no nearest-defender measurement or score is inferred.' : f.interpolated ? 'Animation interpolates two recorded frames. Only the recorded samples contribute to screening.' : afterThrow ? 'Recorded after the throw; never counted toward the earlier-spacing screen.' : f.t < 1 ? 'We do not count the first second of the play.' :
     f.t > current.route.observed_seconds - .3 + 1e-8 ? 'We do not count the final 0.3 seconds before the throw.' :
     f.downfield < requiredDepth ? 'The receiver has not reached the required downfield position (' + requiredDepth + ' yards), so it does not count.' :
     f.separation <= 2 ? 'The closest opponent is within 2 yards. This moment does not count toward an earlier gap.' :
     'The gap is more than 2 yards here. It must last at least half a second without a break to become a qualifying window.';
-  canvas.setAttribute('aria-label', current.route.displayName + ' at ' + f.t.toFixed(1) + ' seconds since snap; nearest defender ' +
+  canvas.setAttribute('aria-label', projected ? current.route.displayName + ' projected at ' + flightHorizon.toFixed(1) + ' seconds after throw. Dotted ball cone and straight receiver continuation; other players frozen at their last recorded positions. Scenario ball to receiver gap ' + scenario.gap.toFixed(1) + ' yards. Not a landing prediction.' : current.route.displayName + ' at ' + f.t.toFixed(1) + ' seconds since snap; nearest defender ' +
     (nearest ? nearest.name : 'unknown') + ', ' + f.separation.toFixed(2) + ' yards away. Thrower: ' +
     (current.thrower ? current.thrower.name : 'unknown') + '. Selected receiver: ' + current.route.displayName +
-    '. ' + el('downDistance').textContent + '. ' + positionText + '. ' + el('playSummary').textContent + ' All 22 players shown.');
+    '. ' + el('downDistance').textContent + '. ' + positionText + '. ' + el('playSummary').textContent + ' All 22 players shown.' + (scenario ? ' Dotted paths are straight-motion scenarios at ' + flightHorizon.toFixed(1) + ' seconds after throw, not recorded landing positions. Scenario ball to receiver gap ' + scenario.gap.toFixed(1) + ' yards.' : ''));
   canvas.dataset.lineToGain = gainLine ?? '';
-  for (const [id, value] of Object.entries({ frameNumber: f.frame, frameTime: f.t.toFixed(1) + ' s',
-    frameNearest: nearest ? nearest.name : 'Unknown', frameGap: f.separation.toFixed(2) + ' yd',
-    frameDepth: f.downfield.toFixed(1) + ' yd', frameTimeDepth: valid ? 'Eligible' : 'Excluded' })) {
+  for (const [id, value] of Object.entries({ frameNumber: projected ? 'Projection' : f.interpolated ? 'Between ' + f.frame + ' and ' + (f.frame + 1) : f.frame, frameTime: displayTime.toFixed(1) + ' s',
+    frameNearest: projected ? 'Not modeled' : nearest ? nearest.name : 'Unknown', frameGap: projected ? 'Not measured' : f.separation.toFixed(2) + ' yd',
+    frameDepth: projected ? 'Not measured' : f.downfield.toFixed(1) + ' yd', frameTimeDepth: valid ? 'Eligible' : 'Excluded' })) {
     el(id).textContent = value;
   }
-  Plotly.relayout('timeline', { 'shapes[0].x0': f.t, 'shapes[0].x1': f.t });
+  const cursorTime = Math.round(displayTime * 10) / 10;
+  if (cursorTime !== lastTimelinePosition) {
+    lastTimelinePosition = cursorTime;
+    Plotly.relayout('timeline', { 'shapes[0].x0': cursorTime, 'shapes[0].x1': cursorTime });
+  }
 }
 
 async function loadReplay(id, scroll = false) {
@@ -420,7 +531,10 @@ async function loadReplay(id, scroll = false) {
     'Original study example: its earlier spacing rule requires at least 2 yards downfield, regardless of the first-down line.';
   el('description').textContent = r.playDescription;
   el('releaseSource').textContent = r.release_source;
-  el('scrub').max = current.frames.length - 1;
+  el('scrub').max = playbackEndIndex(current);
+  lastTimelinePosition = null;
+  el('flightReview').disabled = !current.post_release?.frames.length;
+  flightHorizon = 0;
   const sustained = [current.third_down_review.conversion_window];
   el('windowSummary').textContent = sustained.length ? 'First sustained spacing: ' + sustained.map(w =>
     ((w.start_frame - r.snap) / 10).toFixed(1) + '–' + ((w.end_frame - r.snap) / 10).toFixed(1) +
@@ -430,7 +544,9 @@ async function loadReplay(id, scroll = false) {
     { type: 'line', x0: 0, x1: 0, y0: 0, y1: 1, yref: 'paper', line: { color: '#f2f0e6', width: 2 } },
     { type: 'line', x0: 0, x1: r.observed_seconds, y0: 2, y1: 2, line: { color: '#899a82', dash: 'dash' } },
     { type: 'rect', x0: 0, x1: 1, y0: 0, y1: 1, yref: 'paper', fillcolor: '#ddd', opacity: .35, line: { width: 0 }, layer: 'below' },
-    { type: 'rect', x0: r.observed_seconds - .3, x1: r.observed_seconds, y0: 0, y1: 1, yref: 'paper', fillcolor: '#ddd', opacity: .35, line: { width: 0 }, layer: 'below' }
+    { type: 'rect', x0: r.observed_seconds - .3, x1: r.observed_seconds, y0: 0, y1: 1, yref: 'paper', fillcolor: '#ddd', opacity: .35, line: { width: 0 }, layer: 'below' },
+    { type: 'rect', x0: r.observed_seconds, x1: recordedFrames(current).at(-1).t, y0: 0, y1: 1, yref: 'paper', fillcolor: '#e6bc70', opacity: .13, line: { width: 0 }, layer: 'below' },
+    { type: 'rect', x0: recordedFrames(current).at(-1).t, x1: playbackTime(current, playbackEndIndex(current)), y0: 0, y1: 1, yref: 'paper', fillcolor: '#e6bc70', opacity: .06, line: { width: 1, color: '#e6bc70', dash: 'dot' }, layer: 'below' }
   ];
   sustained.forEach(w => shapes.push({ type: 'rect', x0: (w.start_frame - r.snap) / 10,
     x1: (w.end_frame - r.snap) / 10, y0: 0, y1: 1, yref: 'paper', fillcolor: '#c0ee79',
@@ -441,9 +557,13 @@ async function loadReplay(id, scroll = false) {
       marker: { size: 4 }, line: { color: '#c0ee79' }, name: 'Nearest-defender spacing',
       hovertemplate: '%{x:.1f} s · %{y:.2f} yd<extra></extra>' },
     { x: [r.observed_seconds], y: [r.release_separation], mode: 'markers',
-      marker: { color: '#e6bc70', size: 9 }, name: 'Throw · replay ends' }
+      marker: { color: '#e6bc70', size: 9 }, name: 'Throw · recorded flight follows' },
+    { x: [replay.frames[replay.frames.length - 1], ...replay.post_release.frames].map(f => f.t),
+      y: [replay.frames[replay.frames.length - 1], ...replay.post_release.frames].map(f => f.separation),
+      mode: 'lines+markers', line: { color: '#e6bc70' }, marker: { size: 4 },
+      hovertemplate: '%{x:.1f} s · %{y:.2f} yd · after throw, excluded<extra></extra>', name: 'Recorded after throw · excluded' }
     ], { margin: { l: 34, r: 24, t: 12, b: 32 }, font: chartFont,
-    xaxis: { title: { text: 'Seconds after snap', font: { size: 10 } }, range: [0, r.observed_seconds + .1],
+    xaxis: { title: { text: 'Seconds after snap', font: { size: 10 } }, range: [0, playbackTime(replay, playbackEndIndex(replay)) + .1],
       tickfont: { size: 10 }, gridcolor: '#304239', zeroline: false, automargin: true },
     yaxis: { title: { text: 'yd', font: { size: 10 } }, rangemode: 'tozero',
       tickfont: { size: 10 }, gridcolor: '#304239', zeroline: false, automargin: true }, shapes,
@@ -461,7 +581,19 @@ async function loadReplay(id, scroll = false) {
   }
 }
 
-el('scrub').oninput = e => { stop(); index = Number(e.target.value); draw(); };
+el('flightReview').onclick = () => {
+  jumpToFrame(current.review_cue.throw_frame_index);
+  startPlayback();
+  el('field').scrollIntoView({ block: 'center', behavior: reducedMotion.matches ? 'instant' : 'smooth' });
+};
+el('scrub').oninput = e => { stop(); index = Math.round(Number(e.target.value)); draw(); };
+el('scrub').onkeydown = e => {
+  const movement = { ArrowLeft: -1, ArrowDown: -1, ArrowRight: 1, ArrowUp: 1 };
+  if (!(e.key in movement) && e.key !== 'Home' && e.key !== 'End') return;
+  e.preventDefault(); stop();
+  index = e.key === 'Home' ? 0 : e.key === 'End' ? playbackEndIndex(current) : Math.max(0, Math.min(playbackEndIndex(current), index + movement[e.key]));
+  draw();
+};
 el('reset').onclick = () => { stop(); index = 0; draw(); };
 for (const [id, view] of [['fitView', 'fit'], ['fullView', 'full']]) {
   el(id).onclick = () => {
@@ -472,19 +604,21 @@ for (const [id, view] of [['fitView', 'fit'], ['fullView', 'full']]) {
   };
 }
 new ResizeObserver(() => draw()).observe(el('field').parentElement);
-el('play').onclick = () => {
-  if (timer) { stop(); return; }
-  if (loading) return;
-  if (index >= current.frames.length - 1) index = 0;
+function startPlayback() {
+  if (loading || timer) return;
+  if (index >= playbackEndIndex(current)) index = 0;
   el('play').textContent = 'Pause'; el('play').setAttribute('aria-label', 'Pause replay');
   el('play').dataset.playing = 'true';
-  timer = setInterval(() => {
-    index++;
-    if (index >= current.frames.length - 1) { index = current.frames.length - 1; stop(); }
-    draw();
-  }, 100);
-  draw();
-};
+  let previousTime = null;
+  const tick = now => {
+    if (previousTime !== null) index += Math.min(now - previousTime, 80) / 100;
+    previousTime = now;
+    if (index >= playbackEndIndex(current)) { index = playbackEndIndex(current); stop(); draw(); return; }
+    draw(); timer = requestAnimationFrame(tick);
+  };
+  timer = requestAnimationFrame(tick); draw();
+}
+el('play').onclick = () => { if (timer) { stop(); draw(); } else startPlayback(); };
 
 el('commit').textContent = model.sourceCommit;
 loadReplay(model.featuredId);

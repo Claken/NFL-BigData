@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import polars as pl
 from analyze import KEY, history_metrics
 from audit import normalize, read_csv
+from flight import post_release_data
 from plotly.offline import get_plotlyjs
 from third_down import FEATURED_PLAY, pressure_flags, review_context, third_down_candidates
 
@@ -157,6 +158,7 @@ def example_data(key, routes, raw, processed, names, scouting, sources=None, pla
             "thrower": thrower_data(route, scouting, tracking, names),
             "frames": frames, "windows": history["windows"],
             "situation": situation, "recorded_outcome": outcome,
+            "post_release": post_release_data(route, tracking_game, direction, names),
             "line_of_scrimmage": line, "initial_frame_index": start,
             "review_cue": review_cue(frames, history["windows"])}, manual
 
@@ -330,8 +332,21 @@ Missing/ineligible/below-threshold samples break the interval. These thresholds 
 screening choices, not validated boundaries for a safe pass. Useful catches short of
 the line followed by running gains are outside the screen.
 
-The pass result and yardage come from plays.csv; no hypothetical catch or ball flight
-is reconstructed. Only C/I/IN failures are eligible; sacks, rushing outcomes, penalties,
+The pass result and yardage come from plays.csv. Recorded post-release player/ball
+positions are shown separately, for 0.2–0.5 seconds in the current sample. The shared
+replay timeline continues into a dotted scenario up to 2 seconds after release, comparing
+the ball and selected receiver at the same time. A full swept cone grows from the last
+measured ball position. Camera scale stays fixed and animation interpolates recorded
+samples; these interpolations are not added measurements. Other players freeze at their
+last recorded positions during projection. Last-three-sample x/y velocity fits anchor at the
+last recorded position; ball scenarios vary speed by ±20% and direction by ±15°.
+The receiver continues at its fitted velocity. This is a ground-plane sensitivity
+scenario, not a landing region, calibrated uncertainty, catch probability or safe-pass
+model: height and vertical velocity are absent, so landing time is unknown. Three valid
+consecutive post-release samples are required. The original pre-throw screening frames,
+metrics and first-interval selection do not use these future samples.
+
+Only C/I/IN failures are eligible; sacks, rushing outcomes, penalties,
 fumbles, no-plays, scoring ambiguities and goal-to-go plays are excluded.
 Recorded PFF hurry/hit flags are aggregated over the 11 defensive-role records only;
 offensive nulls are inapplicable, while missing defensive labels remain unknown.
