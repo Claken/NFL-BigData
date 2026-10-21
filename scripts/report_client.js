@@ -23,26 +23,45 @@ const teamNames = {
   SEA: 'Seattle Seahawks', SF: 'San Francisco 49ers', TB: 'Tampa Bay Buccaneers', TEN: 'Tennessee Titans',
   WAS: 'Washington Football Team'
 };
-function plainPlaySummary(replay) {
+function playSummaryParts(replay) {
   const focus = replay.third_down_review, distance = focus.yards_to_go, gain = focus.outcome.yards_gained;
   const yards = number => number + (number === 1 ? ' yard' : ' yards');
+  const emphasis = (text, kind = '') => ({ text, kind });
   const team = teamNames[replay.route.possessionTeam];
   const subject = team ? 'The ' + team : 'The attacking team';
-  const objective = subject + ' needed to move the ball ' + yards(distance) + ' on their third attempt to earn another four attempts.';
+  const objective = [subject + ' needed to move the ball ', emphasis(yards(distance), 'goal'),
+    ' on their ', emphasis('third attempt'), ' to earn another four attempts. '];
   let outcome;
-  if (replay.route.passResult === 'IN') outcome = 'An opponent caught the pass instead, so the other team took possession of the ball.';
-  else if (replay.route.passResult === 'I') outcome = 'The pass was not caught, so they gained no yards and did not earn those extra attempts.';
-  else if (gain < 0) outcome = 'The pass was caught, but the team lost ' + yards(Math.abs(gain)) + ', leaving them ' + yards(distance - gain) + ' short of the target.';
-  else if (gain === 0) outcome = 'The pass was caught, but the team gained no yards and remained ' + yards(distance) + ' short of the target.';
-  else outcome = 'The pass was caught, but the team gained only ' + yards(gain) + ', leaving them ' + yards(distance - gain) + ' short of the target.';
-  return objective + ' ' + outcome;
+  if (replay.route.passResult === 'IN') outcome = ['An ', emphasis('opponent caught the pass', 'result'),
+    ' instead, so ', emphasis('the other team took possession', 'result'), ' of the ball.'];
+  else if (replay.route.passResult === 'I') outcome = ['The pass was ', emphasis('not caught', 'result'),
+    ', so they ', emphasis('gained no yards', 'result'), ' and did not earn those extra attempts.'];
+  else {
+    const gained = gain < 0 ? 'lost ' + yards(Math.abs(gain)) : gain === 0 ? 'gained no yards' : 'gained only ' + yards(gain);
+    outcome = ['The pass was caught, but the team ', emphasis(gained, 'result'),
+      gain === 0 ? ' and remained ' : ', leaving them ',
+      emphasis(yards(distance - gain) + ' short of the target', 'result'), '.'];
+  }
+  return [...objective, ...outcome];
+}
+function plainPlaySummary(replay) {
+  return playSummaryParts(replay).map(part => typeof part === 'string' ? part : part.text).join('');
+}
+function renderPlaySummary(replay) {
+  el('playSummary').replaceChildren(...playSummaryParts(replay).map(part => {
+    if (typeof part === 'string') return document.createTextNode(part);
+    const strong = document.createElement('strong');
+    strong.textContent = part.text;
+    if (part.kind) strong.className = 'summary-' + part.kind;
+    return strong;
+  }));
 }
 
 function setStory(replay) {
   const cue = replay.review_cue, r = replay.route, focus = replay.third_down_review, c = focus.context;
   const earlier = replay.frames[cue.earlier_frame_index], thrown = replay.frames[cue.throw_frame_index];
   const review = replay.frames[cue.review_frame_index];
-  el('playSummary').textContent = plainPlaySummary(replay);
+  renderPlaySummary(replay);
   el('timelineWindowLabel').textContent = 'First beyond-line interval';
   const surname = r.displayName.split(' ').slice(-1)[0];
   const question = 'At ' + review.t.toFixed(1) + ' s, was a throw toward ' + surname + ' realistic?';

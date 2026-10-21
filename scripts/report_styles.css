@@ -70,6 +70,9 @@ main { max-width: 1480px; margin: auto; padding: 30px 32px 32px; }
 .field-surface { background: #173f2b; border: 1px solid #4a6d4e; border-radius: var(--radius); overflow: hidden; box-shadow: 0 22px 70px #0003; }
 .pitch-scoreboard { padding: 14px 18px; background: #102c1d; border-bottom: 1px solid #466449; }
 .play-summary { font-size: 17px; line-height: 1.55; color: var(--ink); max-width: 880px; }
+.play-summary strong { font-weight: 700; }
+.play-summary .summary-goal { color: var(--blue); }
+.play-summary .summary-result { color: var(--gold); }
 .pitch-question { padding: 12px 18px; background: #102c1d; border-top: 1px solid #466449; }
 .pitch-question .eyebrow { color: var(--green); font-size: 9px; }
 .pitch-question p { font-size: 16px; line-height: 1.4; margin-top: 5px; }
