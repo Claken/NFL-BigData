@@ -1,10 +1,10 @@
 {
-  "tests_passed": 40,
+  "tests_passed": 42,
   "ruff": "passed",
   "javascript_syntax": "passed",
   "analysis_outputs_unchanged": true,
   "prior_locked_full_analysis_build": "passed; unchanged analysis files checked against that build",
-  "fresh_locked_report_rebuild": "Passed in the existing pinned project environment; rebuilt with recorded receiver speed, situation context and embedded NFL Buddy branding. Statistical exports and original replay geometry are unchanged.",
+  "fresh_locked_report_rebuild": "Passed in the existing pinned environment; field-led presentation and review_cue annotations added. Original replay data and statistical exports preserved.",
   "queue_routes": 50,
   "unique_packaged_replays": 52,
   "manual_nearest_defender_checks": 156,
@@ -162,8 +162,8 @@
   },
   "image_freshness": {
     "checked_date": "2026-10-21",
-    "capture_url": "http://127.0.0.1:8776/report.html (rebuilt production candidate)",
-    "report_sha256": "0ec0f02bb0a13ea352dd1042efa6975777fd5a27337c1d151d9072c61fee5c19",
+    "capture_url": "http://127.0.0.1:8776/report.html (reviewed production candidate)",
+    "report_sha256": "db60c58e7a42f62e4dbc0c2675aca2e0ae0377925c0965b2ede5231d70537e70",
     "refreshed_previews": [
       "report_ui_overview.png",
       "report_ui_review.png",
@@ -174,18 +174,18 @@
       "report_ui_motion.png",
       "review_queue_preview.png"
     ],
-    "detail_previews": "Refreshed structured play/frame screenshots with the embedded NFL Buddy branding; existing frame values retained.",
+    "detail_previews": "Current dark field-story design; speed, play/frame detail and queue drawers preserved.",
     "matched_pair_png": "Fresh report build in the existing project environment produced a byte-identical chart (SHA-256 403a62f1b8223c308676fb9a1d8f6c9aed75db4a2d55189c33ec76a457ce4a95).",
     "legacy_chart": "outputs/separation.png is the separately documented original one-game audit, not a multigame report screenshot.",
     "screenshots": {
-      "review_queue_preview.png": "2842fa082d3ce70ca38149bf6e34f6459a38b9c84b50e9b23af37312f61f4753",
-      "report_ui_overview.png": "7cd69e4c9c649f91e1dde3abb76cab92275a51ed494a6ac35a700e1f5a2741fa",
-      "report_ui_review.png": "2c72617ec3c7da00a3b7d921dfcf05f60b57452e591a91c56e531cf8abb6cb2f",
-      "report_ui_context.png": "f57957c2e24ba4665373e84fedcf844ea5b4c98954cca38a3889b491475d8d01",
-      "report_ui_frame.png": "5a3d537ecbbdf4470b852fc7c3a3e118d933f57ec5400838139d9f63c37a61bf",
-      "report_ui_live.png": "7cd69e4c9c649f91e1dde3abb76cab92275a51ed494a6ac35a700e1f5a2741fa",
-      "report_ui_motion_mobile.png": "eaf0febd58210d2747e41aca43d64a91619a8a010f131e55ca9e6390763a0ebf",
-      "report_ui_motion.png": "61d0dfcfecd9ee9b9378ce4bcaa474532d8dd1a0c35e370aada1341ffc72eee8"
+      "review_queue_preview.png": "e4d4ccd600fd1f7c3b753e84b5c25cec858de4a2a242244bf9fee7094352266e",
+      "report_ui_overview.png": "9f396a5892fef839a20b59035fa39eedcb307aebff8d21204051e23abe93ce67",
+      "report_ui_review.png": "086b8c208712a94af2f9cebbeaaad49cbd11f2cf50346e6c2ea21600bb92a069",
+      "report_ui_context.png": "d422985ed672a8b64b810266a974a3e76c3a73b8f7f0770eb7a7d832f1111699",
+      "report_ui_frame.png": "bd8cf32a4a6adfd960c4982170350eda683606a79c230279324d36b6ed79cf52",
+      "report_ui_live.png": "9f396a5892fef839a20b59035fa39eedcb307aebff8d21204051e23abe93ce67",
+      "report_ui_motion_mobile.png": "e7626af2831b3bd8e48b610e24463e31bc02980bf07c07e5c8f5288289f5bfa1",
+      "report_ui_motion.png": "fe89cdb7f923221dddeb8d019e3cdd3c4bbcc83ec1071e0b9d1ebdbed0bc2b1b"
     }
   },
   "receiver_movement_and_situation": {
@@ -222,5 +222,36 @@
     ],
     "limits": "Situation and movement are descriptive context only; spacing score unchanged; no ball-flight, catch or conversion prediction.",
     "branding": "Approved concurrent NFL Buddy branding included; both mascot image tags are embedded data URLs."
+  },
+  "field_story_redesign": {
+    "purpose": "Give coaches a game/play/timestamp cue for film review through a field-led earlier-space versus throw comparison.",
+    "tests_passed": 42,
+    "ruff": "passed",
+    "javascript_syntax": "passed",
+    "html": "Unique IDs, valid internal anchors, no remote assets or unreplaced model/mascot placeholders.",
+    "review_cue_policy": "Peak nearest gap inside the longest qualifying window; film cue starts at that window start. Without a qualifying window, review from snap; earlier view uses eligible pre-throw frames only.",
+    "data_integrity": "All 52 original replay objects match bdc4a31 after removing review_cue. Queue and seven statistical/evidence exports are byte-identical.",
+    "browser_checks": [
+      "Scott Miller: earlier 4.03 yd at 1.4 s; throw 1.43 yd at 2.7 s; review cue jumps to 1.2 s.",
+      "Copy cue includes receiver, game 2021091910, play 3195, exact times and the film-review question. Clipboard copy succeeded.",
+      "Play 2885 explicitly shows no lasting earlier gap, offers full-route review and starts at snap.",
+      "Queue filters select DeVonta Smith play 3202 with review start at 1.4 s; empty results and Clear filters work.",
+      "Navigation opens queue/evidence drawers, and the hidden evidence chart resizes when opened.",
+      "Playback, Home/End and moment buttons update the pitch and timeline.",
+      "390x844 mobile has no horizontal overflow; both mobile moment buttons select the expected frames.",
+      "1440x900 desktop shows the football pitch, both snapshots and the film-review action in the initial viewport.",
+      "No browser console errors observed."
+    ],
+    "preserved": "All 22 players, equal yard scales, QB/receiver IDs, first-down line, speed and gap context, 50-route queue, statistics, methods and downloads.",
+    "snapshot_files": [
+      "report_ui_overview.png",
+      "report_ui_review.png",
+      "report_ui_motion.png",
+      "report_ui_motion_mobile.png",
+      "report_ui_context.png",
+      "report_ui_frame.png",
+      "review_queue_preview.png"
+    ],
+    "limitations": "Descriptive tracking cue; no proof of an available or missed pass, no ball-flight model and no football mentor validation."
   }
 }

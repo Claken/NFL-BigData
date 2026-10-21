@@ -12,12 +12,33 @@ from report import (
     add_gap_trend,
     replay_id,
     review_candidates,
+    review_cue,
     situation_data,
     speed_value,
     thrower_data,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_story_cue_uses_peak_inside_longest_qualifying_window_and_its_start():
+    frames = [{"frame": i + 10, "t": i / 10, "downfield": 4,
+               "separation": 30 if i == 0 else 8 if i == 14 else 3} for i in range(25)]
+    windows = [{"start_frame": 20, "end_frame": 25, "duration_seconds": .5},
+               {"start_frame": 27, "end_frame": 28, "duration_seconds": .1}]
+    result = review_cue(frames, windows)
+    assert result == {"has_window": True, "earlier_frame_index": 14,
+                      "review_frame_index": 10, "throw_frame_index": 24}
+
+
+def test_story_with_no_qualifying_window_does_not_offer_a_window_cue():
+    frames = [{"frame": i + 10, "t": i / 10, "downfield": 4,
+               "separation": 10 if i == 24 else 1 + i / 100} for i in range(25)]
+    result = review_cue(frames, [{"start_frame": 20, "end_frame": 22,
+                                  "duration_seconds": .2}])
+    assert result["has_window"] is False
+    assert result["review_frame_index"] == 0
+    assert frames[result["earlier_frame_index"]]["t"] <= 2.1
 
 
 @pytest.mark.parametrize("direction, raw_line, down, distance, expected_line, goal", [
@@ -123,6 +144,16 @@ def test_packaged_queue_replays_match_endpoints_windows_and_field_geometry():
     for replay in replays.values():
         route, frames = replay["route"], replay["frames"]
         situation = replay["situation"]
+        cue = replay["review_cue"]
+        qualified = [w for w in replay["windows"] if w["duration_seconds"] >= .5]
+        assert cue["has_window"] == bool(qualified)
+        assert cue["throw_frame_index"] == len(frames) - 1
+        if qualified:
+            window = max(qualified, key=lambda w: w["duration_seconds"])
+            assert frames[cue["review_frame_index"]]["frame"] == window["start_frame"]
+            assert window["start_frame"] <= frames[cue["earlier_frame_index"]]["frame"] <= window["end_frame"]
+        else:
+            assert cue["review_frame_index"] == 0
         assert situation["down"] is None or 1 <= situation["down"] <= 4
         if situation["yards_to_go"] is None:
             assert situation["line_to_gain"] is None

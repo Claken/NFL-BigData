@@ -22,13 +22,13 @@
 
 ## TL;DR
 
-We built an interactive report that replays receiver spacing through a route and queues plays for film review.
+NFL Buddy gives coaches and analysts a precise moment to take back to film: compare earlier space with the gap at the throw, then copy the game, play and review timestamp.
 
 Across 122 games, **33.1%** of routes close to a defender at release (3,598 of 10,870) had at least 0.5 seconds of earlier space, so a release snapshot can hide that window.
 
-NFL coaches and analysts can use it to choose which routes to watch on film; nearest-defender distance alone does not show whether the throw was available.
+The field leads the story; the 50-route queue, speed context and full analysis sit behind expandable controls. Spacing identifies a review cue, not proof that a throw was available.
 
-![Report overview showing the main finding and spacing-window definition](outputs/multigame/report_ui_overview.png)
+![Football field with earlier-space and throw snapshots, plus an exact film-review cue](outputs/multigame/report_ui_overview.png)
 
 ## Explore the report
 
@@ -49,13 +49,13 @@ Open [`outputs/multigame/report.html`](outputs/multigame/report.html) in your br
 
 ### 3. Review a route
 
-1. Read **Finding** for the question, audience and result; expand **Football terms & units** if needed.
-2. Choose **Compare two plays** to try the Scott Miller examples A and B.
-3. Open **More plays** to filter the queue by receiver, alignment or coverage, then select a route.
-4. Play or scrub through the field replay and separation timeline together.
-5. Check **Evidence** and **Method** for group results, sensitivity checks and exclusions.
+1. Select **Earlier space** and **At the throw** to compare two moments on the field.
+2. **Jump to the window**, then copy the film-review cue with the game, play and timestamp.
+3. Check the passing lane and quarterback timing on game film; spacing alone does not establish an available pass.
+4. Open **Review queue** to filter other routes, or select **Play 2885** for a contrasting history.
+5. Expand **Speed, situation & how to read the field** or **Evidence & method** for the supporting detail.
 
-![Route review with named players, down-and-distance, receiver speed, field replay and separation timeline](outputs/multigame/report_ui_review.png)
+![Field-led replay with two selectable moments and a film-review action](outputs/multigame/report_ui_review.png)
 
 ## Questions it answers
 

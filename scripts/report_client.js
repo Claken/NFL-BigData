@@ -19,7 +19,7 @@ function setStory(replay) {
   const cue = replay.review_cue, r = replay.route;
   const earlier = replay.frames[cue.earlier_frame_index], thrown = replay.frames[cue.throw_frame_index];
   const review = replay.frames[cue.review_frame_index];
-  el('storyHeading').innerText = cue.has_window ? 'Space earlier.\nTight at the throw.' : 'Same receiver.\nDifferent history.';
+  el('storyHeading').innerText = cue.has_window ? 'Space earlier.\nTight at the throw.' : 'No lasting\nearlier gap.';
   el('earlierLabel').textContent = cue.has_window ? 'Earlier space' : 'Earlier view';
   el('earlierGap').textContent = earlier.separation.toFixed(2) + ' yd';
   el('earlierTime').textContent = earlier.t.toFixed(1) + ' s after snap';
@@ -41,8 +41,8 @@ function jumpToFrame(frameIndex) {
   if (!current || loading) return;
   stop(); index = frameIndex; draw();
 }
-el('storyEarlier').onclick = () => jumpToFrame(current.review_cue.earlier_frame_index);
-el('storyThrow').onclick = () => jumpToFrame(current.review_cue.throw_frame_index);
+for (const id of ['storyEarlier', 'mobileEarlier']) el(id).onclick = () => jumpToFrame(current.review_cue.earlier_frame_index);
+for (const id of ['storyThrow', 'mobileThrow']) el(id).onclick = () => jumpToFrame(current.review_cue.throw_frame_index);
 el('reviewMoment').onclick = () => jumpToFrame(current.review_cue.review_frame_index);
 el('copyCue').onclick = async () => {
   try {
@@ -183,7 +183,15 @@ function draw() {
     canvas.width = Math.round(W * ratio); canvas.height = Math.round(H * ratio);
   }
   const ctx = canvas.getContext('2d'); ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-  const b = boundsFor(current)[fieldView], pad = 24;
+  const b = { ...boundsFor(current)[fieldView] }, pad = 24;
+  // Fill the pitch without stretching yard scales or cropping any tracked player.
+  const aspect = (W - 2 * pad) / (H - 2 * pad);
+  const width = b.x1 - b.x0, height = b.y1 - b.y0;
+  if (width / height < aspect) {
+    const extra = (height * aspect - width) / 2; b.x0 -= extra; b.x1 += extra;
+  } else {
+    const extra = (width / aspect - height) / 2; b.y0 -= extra; b.y1 += extra;
+  }
   const scale = Math.min((W - 2 * pad) / (b.x1 - b.x0), (H - 2 * pad) / (b.y1 - b.y0));
   const ox = (W - (b.x1 - b.x0) * scale) / 2, oy = (H - (b.y1 - b.y0) * scale) / 2;
   const xy = p => [ox + (p.x - b.x0) * scale, H - oy - (p.y - b.y0) * scale];
@@ -235,11 +243,12 @@ function draw() {
   f.players.forEach(p => {
     const [x, y] = xy(p), active = p.id === current.route.nflId, passing = p.id === current.thrower?.id;
     const focused = active || passing || p.id === f.nearest || p.side === 'ball';
-    ctx.globalAlpha = focused ? 1 : .66;
+    ctx.globalAlpha = focused ? 1 : .8;
     ctx.beginPath(); ctx.arc(x, y, active ? 13 : passing ? 11 : p.side === 'ball' ? 4 : 9, 0, Math.PI * 2);
     ctx.fillStyle = active ? '#c0ee79' : passing ? '#ba9bec' : p.side === 'offense' ? '#8bb9d1' : p.side === 'defense' ? '#eb9d7d' : '#e6bc70';
     ctx.fill(); ctx.strokeStyle = '#eff2d8'; ctx.lineWidth = 1; ctx.stroke();
     if (active || passing) { ctx.strokeStyle = active ? '#c0ee79' : '#ba9bec'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 17, 0, Math.PI * 2); ctx.stroke(); }
+    if (p.id === f.nearest) { ctx.strokeStyle = '#e6bc70'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 13, 0, Math.PI * 2); ctx.stroke(); }
     if (p.side !== 'ball') { ctx.fillStyle = '#102117'; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center'; ctx.fillText(p.label, x, y + 4); }
     ctx.globalAlpha = 1;
   });
@@ -273,8 +282,8 @@ function draw() {
   el('scrub').value = index;
   el('clock').value = f.t.toFixed(1) + ' / ' + current.route.observed_seconds.toFixed(1) + ' s';
   const atThrow = index === current.frames.length - 1;
-  el('storyEarlier').setAttribute('aria-pressed', String(index === current.review_cue.earlier_frame_index));
-  el('storyThrow').setAttribute('aria-pressed', String(atThrow));
+  for (const id of ['storyEarlier', 'mobileEarlier']) el(id).setAttribute('aria-pressed', String(index === current.review_cue.earlier_frame_index));
+  for (const id of ['storyThrow', 'mobileThrow']) el(id).setAttribute('aria-pressed', String(atThrow));
   const playbackStatus = atThrow ? 'Throw — replay ends before ball flight.' :
     'Replay stops at the throw, before ball flight.';
   if (el('playbackStatus').textContent !== playbackStatus) el('playbackStatus').textContent = playbackStatus;
@@ -340,6 +349,7 @@ async function loadReplay(id, scroll = false) {
     (situation.goal_to_go ? ' to the goal line' : ' for a new set of downs');
   el('lineToGainLabel').textContent = situation.goal_to_go ? 'Goal line' : 'First-down line';
   el('lineToGainKey').hidden = situation.line_to_gain == null;
+  el('storyPlayMeta').textContent = r.possessionTeam + ' · Week ' + r.week + ' · Play ' + r.playId;
   setStory(current);
   for (let i = 0; i < 2; i++) el('example' + i).setAttribute('aria-pressed', String(id === model.exampleIds[i]));
   const receiver = current.frames[0].players.find(p => p.id === r.nflId);

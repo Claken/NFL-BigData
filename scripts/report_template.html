@@ -20,11 +20,12 @@
 <section id="replaySection" class="replay-panel" tabindex="-1" aria-labelledby="replayHeading">
   <div class="replay-header">
     <div><p class="eyebrow" id="replayHeading">Follow the highlighted receiver</p><h2 id="selectedName"></h2><p class="thrower-caption">Thrower <b id="throwerName"></b><span class="situation-row"><b id="downDistance"></b></span></p></div>
-    <div class="example-switch" aria-label="Matched examples"><button id="example0" aria-pressed="true">A · Earlier space</button><button id="example1" aria-pressed="false">B · The contrast</button></div>
+    <p id="storyPlayMeta" class="replay-meta"></p>
   </div>
   <p id="loadingStatus" class="loading" role="status">Preparing the field…</p>
   <div class="story-stage">
     <div class="pitch-column">
+      <div class="mobile-moments" aria-label="Compare moments"><button id="mobileEarlier" aria-pressed="true">01 · Earlier space</button><button id="mobileThrow" aria-pressed="false">02 · At the throw</button></div>
       <div class="field-surface">
         <div class="field-toolbar"><span><i class="live-dot"></i>Recorded tracking <span class="field-direction">· offense →</span></span><div class="view-switch" aria-label="Field view"><button id="fitView" aria-pressed="true">Fit play</button><button id="fullView" aria-pressed="false">Full field</button></div></div>
         <canvas id="field" width="1120" height="600" role="img" aria-label="Football field with the selected receiver highlighted"></canvas>
@@ -46,7 +47,7 @@
       <details class="cue-details"><summary>Game, play &amp; review note</summary><textarea id="reviewCueText" readonly aria-label="Film-review cue" rows="6"></textarea></details>
     </aside>
   </div>
-  <div class="timeline-heading"><h3>Watch the gap change</h3><span><i class="window-key"></i> Earlier window <span id="historyMetric"></span></span></div>
+  <div class="timeline-heading"><h3>Watch the gap change</h3><span><i class="window-key"></i> Earlier window <span id="historyMetric"></span> <i class="excluded-key"></i> Excluded time</span></div>
   <div id="timeline" class="chart timeline-chart" aria-label="Nearest-defender separation timeline"></div>
   <details class="more-context"><summary>Speed, situation &amp; how to read the field</summary>
     <p id="situationHint" class="detail-caption"></p>
@@ -102,7 +103,7 @@
       <section class="detail-section" aria-labelledby="fieldKeyHeading"><h4 id="fieldKeyHeading">Read the field</h4>
         <ul class="visual-key">
           <li><span class="key-symbol numbered-player" aria-hidden="true">#</span><div><b>Numbered dots</b><span>Players and jersey numbers</span></div></li>
-          <li><span class="key-symbol ball-symbol" aria-hidden="true"></span><div><b>Brown dot</b><span>The ball</span></div></li>
+          <li><span class="key-symbol ball-symbol" aria-hidden="true"></span><div><b>Small gold dot</b><span>The ball</span></div></li>
           <li><span class="key-symbol radius-symbol" aria-hidden="true"></span><div><b>Ring</b><span>2-yard radius around the receiver</span></div></li>
           <li><span class="key-symbol line-symbol" aria-hidden="true"></span><div><b>Grey dashed line</b><span>Where the ball started</span></div></li>
         </ul>
@@ -123,6 +124,8 @@
 <details class="section-drawer" id="queueDrawer"><summary><span class="drawer-index">02</span><span>Choose your next film review</span><span class="drawer-meta">50 routes · filter by receiver &amp; coverage</span><span class="drawer-plus" aria-hidden="true">+</span></summary><div class="drawer-body">
 <section class="card queue-panel" id="reviewQueue" aria-labelledby="queueHeading">
   <h2 id="queueHeading">More plays to explore</h2>
+  <p class="sub">Featured contrast · Scott Miller, same game</p>
+  <div class="example-switch" aria-label="Matched examples"><button id="example0" aria-pressed="true">Play 3195 · Earlier gap</button><button id="example1" aria-pressed="false">Play 2885 · No lasting gap</button></div>
   <p class="sub">50 long-window examples, selected for video review. Not a player ranking or a typical sample.</p>
   <div class="filters">
     <label class="receiver-filter" for="receiverFilter"><span>Receiver</span><select id="receiverFilter"></select></label>

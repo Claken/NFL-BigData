@@ -43,7 +43,19 @@ deadband does not affect the spacing score. There is no trend for the first thre
 only earlier observations are used, and the nearest defender may change. First-down-line
 proximity is position context, not a prediction of a catch or conversion. These additions
 do not change the eligibility rules, 33.1% result or queue, and add no ball-flight model.
-Replays stop at the recorded release. The brown dot is the ball; post-throw flight is not
+The main view leads with the football field, an earlier snapshot and the throw snapshot.
+The earlier snapshot is the largest observed gap inside the longest qualifying window;
+the review cue starts at that window's first observed frame. When there is no qualifying
+window, no window cue is invented: review starts at the snap, and the earlier view uses
+the largest gap among time/downfield-eligible frames (or the snap if none exist).
+Copying the cue produces game/play IDs, the selected receiver and the exact time after
+snap, with a question for film review. It makes no missed-pass claim. Queue and evidence
+drawers preserve all 52 replays, statistical results, definitions and exports; anchor links
+open their containing drawers. Speed and detailed play/frame metadata remain expandable.
+The pitch uses equal yard scales, yard lines and hash marks; all 22 players are retained,
+with the receiver, thrower and nearest opponent highlighted. Only the already-traversed
+receiver path is drawn.
+Replays stop at the recorded release. The small gold dot is the ball; post-throw flight is not
 shown. The playback notice changes to “Throw — replay ends” at the final frame, and the
 Replay button starts again from the beginning.
 Complete play descriptions, frame details, eligibility, timing and exclusions remain
