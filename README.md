@@ -12,7 +12,7 @@
 [![uv](https://img.shields.io/badge/uv-locked_dependencies-DE5FE9?style=flat-square)](uv.lock)
 [![Tests](https://img.shields.io/badge/tests-pytest-0A9EDC?style=flat-square&logo=pytest&logoColor=white)](#development)
 
-[Explore the report](#explore-the-report) · [Questions it answers](#questions-it-answers) · [How it works](#how-it-works) · [Reproduce](#reproduce-the-analysis) · [Documentation](#documentation)
+[Open live report](https://nflbuddy.nix.zone/) · [Questions it answers](#questions-it-answers) · [How it works](#how-it-works) · [Reproduce](#reproduce-the-analysis) · [Documentation](#documentation)
 
 **Tracking data → Spacing history → Film-review queue**
 
@@ -29,6 +29,8 @@ NFL coaches and analysts can use it to choose which routes to watch on film; nea
 ![Report overview showing the main finding and spacing-window definition](outputs/multigame/report_ui_overview.png)
 
 ## Explore the report
+
+**[Open NFL Buddy →](https://nflbuddy.nix.zone/)** — no installation needed. For an offline copy, follow the steps below.
 
 ### 1. Get the project
 
@@ -161,6 +163,7 @@ The tests cover metric rules, eligibility, recorded thrower identity and replay 
 | [Interactive report](outputs/multigame/report.html) | Main finding, route review, evidence, methods and downloads |
 | [Detailed findings](outputs/multigame/findings.md) | Definitions, comparisons, uncertainty and limitations |
 | [Reproduction guide](REPRODUCE.md) | Locked build commands, provenance, exclusions and output inventory |
+| [Deployment guide](deploy/README.md) | Live hosting, updates and rollback on the VPS |
 | [Film-review queue](outputs/multigame/film_review_queue.csv) | The 50 selected routes and their window metrics |
 | [All eligible routes](outputs/multigame/routes.csv) | Derived metrics for all 26,050 eligible routes |
 | [Analysis results](outputs/multigame/analysis.json) | Group rates, bootstrap intervals, sensitivities and exclusions |

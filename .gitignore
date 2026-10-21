@@ -222,3 +222,6 @@ __marimo__/
 # Downloaded and generated dataset caches
 data/raw/
 data/processed/
+
+# Local Cloudflare CLI cache
+.cloudflare/
