@@ -14,6 +14,7 @@ import polars as pl
 from analyze import KEY, history_metrics
 from audit import normalize, read_csv
 from plotly.offline import get_plotlyjs
+from third_down import third_down_candidates
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -139,7 +140,13 @@ def example_data(key, routes, raw, processed, names, scouting, sources=None, pla
     line = normalize(route["absoluteYardlineNumber"], 0, direction)[0]
     if plays is None:
         plays = {(p["gameId"], p["playId"]): p for p in read_csv(raw, "plays.csv").to_dicts()}
-    situation = situation_data(line, plays.get((key["gameId"], key["playId"]), {}))
+    play = plays.get((key["gameId"], key["playId"]), {})
+    situation = situation_data(line, play)
+    result, gain = play.get("passResult"), play.get("playResult")
+    outcome = {"label": {"C": "Completed", "I": "Incomplete", "IN": "Intercepted"}.get(result, "Unknown result"),
+               "detail": "Recorded in the play log", "yards_gained": gain if result != "IN" else None}
+    if gain is not None and result != "IN":
+        outcome["detail"] = f"{gain:g} yards gained"
     add_gap_trend(frames)
     start = len(frames) - 1
     if history["windows"]:
@@ -149,7 +156,8 @@ def example_data(key, routes, raw, processed, names, scouting, sources=None, pla
     return {"id": replay_id(key), "route": route,
             "thrower": thrower_data(route, scouting, tracking, names),
             "frames": frames, "windows": history["windows"],
-            "situation": situation, "line_of_scrimmage": line, "initial_frame_index": start,
+            "situation": situation, "recorded_outcome": outcome,
+            "line_of_scrimmage": line, "initial_frame_index": start,
             "review_cue": review_cue(frames, history["windows"])}, manual
 
 
@@ -169,8 +177,11 @@ def main():
     scouting = read_csv(args.raw, "pffScoutingData.csv").select(*KEY, "pff_role")
     plays = {(p["gameId"], p["playId"]): p for p in read_csv(args.raw, "plays.csv").to_dicts()}
     queue = review_candidates(routes)
+    third_queue, third_counts = third_down_candidates(routes, plays, args.processed)
+    if not third_queue:
+        raise ValueError("No validated failed-third-down review cues")
     keys = {replay_id(key): {k: key[k] for k in KEY}
-            for key in [*stats["pair"]["examples"], *queue.select(KEY).to_dicts()]}
+            for key in [*stats["pair"]["examples"], *queue.select(KEY).to_dicts(), *third_queue]}
     game_plays = {}
     for key in keys.values():
         game_plays.setdefault(key["gameId"], set()).add(key["playId"])
@@ -207,6 +218,15 @@ def main():
         queue_entries.append({**route, "replay_id": route_id, "queue_rank": rank,
                               "window_start_seconds": (longest["start_frame"] - route["snap"]) / 10,
                               "window_end_seconds": (longest["end_frame"] - route["snap"]) / 10})
+    focused_entries = []
+    for rank, entry in enumerate(third_queue, 1):
+        route_id = replay_id(entry)
+        replay = replays[route_id]
+        replay["third_down_review"] = entry
+        replay["review_cue"] = review_cue(replay["frames"], entry["conversion_windows"])
+        # Open at the first sustained beyond-line moment, the same instant named in the question.
+        replay["review_cue"]["earlier_frame_index"] = replay["review_cue"]["review_frame_index"]
+        focused_entries.append({**entry, "replay_id": route_id, "queue_rank": rank})
     reference = examples[0]["route"]
     cohort = routes.filter((pl.col("alignment") == reference["alignment"])
                            & (pl.col("pff_passCoverage") == reference["pff_passCoverage"]))
@@ -218,7 +238,8 @@ def main():
     headline = (f"{pct(main_stat['fraction'])} of routes close at release had sustained earlier spacing")
     groups = [g for g in stats["alignment_coverage_groups"] if g["closed_at_release_routes"] >= 100][:8]
     model = {"stats": stats, "replays": list(replays.values()), "exampleIds": example_ids,
-             "queue": queue_entries, "scatter": scatter, "groups": groups}
+             "queue": focused_entries, "thirdDownCounts": third_counts,
+             "featuredId": focused_entries[0]["replay_id"], "scatter": scatter, "groups": groups}
     encoded = json.dumps(model, separators=(",", ":")).replace("<", "\\u003c")
     template = (ROOT / "scripts/report_template.html").read_text()
     mascot = base64.b64encode((ROOT / "assets/nfl-player-mascot.png").read_bytes()).decode("ascii")
@@ -233,6 +254,10 @@ def main():
         "__PLAY_COUNT__": f"{stats['eligible_plays']:,}",
         "__LATE_RATE__": pct(stats["late_start_sensitivity"]["fraction"]),
         "__DEEP_RATE__": pct(stats["deeper_sensitivity"]["fraction"]),
+        "__THIRD_QUEUE_COUNT__": str(len(focused_entries)),
+        "__THIRD_QUALIFYING_COUNT__": str(third_counts["qualifying_routes"]),
+        "__THIRD_FAILED_PLAYS__": str(third_counts["eligible_failed_plays"]),
+        "__REPLAY_COUNT__": str(len(replays)),
     }
     for placeholder, value in display_values.items():
         body = body.replace(placeholder, value)
@@ -278,7 +303,33 @@ def main():
     ]:
         sensitivity.append(f"- {label}: {pct(item['fraction'])} "
                            f"({item['earlier_sustained_routes']:,}/{item['closed_at_release_routes']:,}).")
-    findings = f"""# Similar release spacing can hide different earlier histories
+    findings = f"""# Failed-third-down film review
+
+The report now opens on failed third-down passes: show the yards needed, the recorded
+outcome and an exact earlier moment to inspect on film. Of {third_counts['eligible_failed_plays']}
+eligible non-penalized, non-goal-to-go failed third-down pass plays ({third_counts['eligible_failed_routes']}
+eligible receiver routes), {third_counts['qualifying_routes']} routes had a sustained gap
+at or beyond the first-down line and were within 2 yards of a defender at release.
+The report packages the {len(focused_entries)} longest such windows, with deterministic
+game/play/player tie breaks. Several routes may come from one play. This is a selected
+review list, not a conversion rate, missed-read count or player ranking.
+
+For this queue, the receiver must be at least the yards-to-go downfield (and at least
+2 yards), with nearest separation strictly above 2 yards for six consecutive 10 Hz
+samples, spanning at least 0.5 s. The interval starts at snap+1 s and ends at release−0.3 s.
+Missing, short-of-line or below-threshold samples break the window. The review opens
+at the first frame of the longest window, rather than the largest gap anywhere on the route.
+Pass outcomes and yardage come from plays.csv, not from animating a hypothetical catch.
+Completed passes short of the required distance, incompletions and interceptions are
+eligible; penalties, no-plays, fumbles and ambiguous scoring outcomes are excluded.
+The animation stops at release because complete ball flight is not provided.
+
+Use third_down_review_queue.csv for this focused queue. Check the passing lane,
+pressure and intended read on film; the selected receiver is not necessarily the target.
+The original study and its film_review_queue.csv export remain below and use a different
+cohort and downfield rule. Their 33.1% result is not a failed-third-down success estimate.
+
+# Original study: similar release spacing can hide different earlier histories
 
 **{headline}.** In this selected sample, {main_stat['earlier_sustained_routes']:,} of
 {main_stat['closed_at_release_routes']:,} routes at ≤2 yards at release had an earlier spacing
@@ -357,12 +408,22 @@ the spacing result to a football recommendation. Mentor review remains outstandi
         "initial_separation", "release_separation", "observed_seconds", "longest_2_0",
         "window_start_seconds", "window_end_seconds", "release_source", "playDescription"
     ).write_csv(args.output / "film_review_queue.csv")
+    pl.DataFrame([{**{k: r[k] for k in ["queue_rank", *KEY, "displayName", "possessionTeam", "week",
+                                         "yards_to_go", "window_start_seconds", "window_end_seconds",
+                                         "observed_seconds", "release_separation", "playDescription"]},
+                   "outcome": r["outcome"]["label"], "outcome_detail": r["outcome"]["detail"],
+                   "yards_gained": r["outcome"]["yards_gained"],
+                   "window_duration_seconds": r["conversion_window"]["duration_seconds"]}
+                  for r in focused_entries]).write_csv(args.output / "third_down_review_queue.csv")
     (args.output / "replay_data.json").write_text(json.dumps(
-        {"example_ids": example_ids, "replays": list(replays.values()), "queue": queue_entries},
+        {"example_ids": example_ids, "replays": list(replays.values()), "queue": queue_entries,
+         "third_down_queue": focused_entries, "third_down_counts": third_counts,
+         "featured_id": model["featuredId"]},
         separators=(",", ":")) + "\n")
     print(headline)
     print(f"Packaged {len(queue_entries)} queue routes and {len(examples)} matched examples "
           f"({len(replays)} unique replays); {len(manual)} independent frame checks passed.")
+    print(f"Failed third downs: {third_counts}")
 
 
 if __name__ == "__main__":

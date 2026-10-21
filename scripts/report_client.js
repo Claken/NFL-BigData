@@ -16,24 +16,34 @@ let index = 0, timer = null, current = null, loadVersion = 0, loading = false, f
 const fieldBounds = new Map();
 
 function setStory(replay) {
-  const cue = replay.review_cue, r = replay.route;
+  const cue = replay.review_cue, r = replay.route, focus = replay.third_down_review;
   const earlier = replay.frames[cue.earlier_frame_index], thrown = replay.frames[cue.throw_frame_index];
   const review = replay.frames[cue.review_frame_index];
-  el('storyHeading').innerText = cue.has_window ? 'Space earlier.\nTight at the throw.' : 'No lasting\nearlier gap.';
-  el('earlierLabel').textContent = cue.has_window ? 'Earlier space' : 'Earlier view';
-  el('earlierGap').textContent = earlier.separation.toFixed(2) + ' yd';
-  el('earlierTime').textContent = earlier.t.toFixed(1) + ' s after snap';
-  el('throwTime').textContent = thrown.t.toFixed(1) + ' s after snap';
-  el('reviewActionTitle').textContent = cue.has_window ? 'Start film at ' + review.t.toFixed(1) + ' s' : 'Review the full route';
-  el('reviewQuestion').textContent = cue.has_window ? 'Check the passing lane and quarterback timing.' :
-    'No lasting earlier gap meets the rules. What limited the space?';
-  el('reviewMoment').textContent = cue.has_window ? '↶ Jump to the window' : '↶ Watch from the start';
+  const outcome = focus?.outcome || replay.recorded_outcome;
+  el('pitchDown').textContent = el('downDistance').textContent + ' · ' + (focus ? 'third attempt of four' : 'original study example');
+  el('pitchObjective').textContent = replay.situation.yards_to_go == null ? 'Distance unavailable' : replay.situation.goal_to_go ? 'Reach the goal line' : 'Need ' + replay.situation.yards_to_go + ' yards';
+  el('pitchObjectiveHelp').textContent = replay.situation.yards_to_go == null ? 'See the source play record' : replay.situation.goal_to_go ? 'to score a touchdown' : 'to earn a new set of four attempts';
+  el('timelineWindowLabel').textContent = focus ? 'Beyond-line window' : 'Original spacing window';
+  el('pitchOutcome').textContent = outcome.label;
+  el('pitchOutcomeDetail').textContent = outcome.detail;
+  const surname = r.displayName.split(' ').slice(-1)[0];
+  const question = focus ? 'At ' + review.t.toFixed(1) + ' s, could ' + surname + ' receive a pass beyond the blue line?' :
+    'Was the earlier space usable? Check this original illustration on film.';
+  el('pitchQuestion').textContent = question;
+  el('storyHeading').innerText = focus ? 'The team fell short.\nReview an earlier option.' : 'Original study.\nSpacing comparison.';
+  el('earlierLabel').textContent = focus ? 'Earlier · beyond the line' : 'Earlier spacing';
+  el('earlierGap').textContent = earlier.separation.toFixed(1) + ' yd gap';
+  el('earlierTime').textContent = earlier.t.toFixed(1) + ' s · ' + earlier.downfield.toFixed(1) + ' yd downfield';
+  el('throwTime').textContent = thrown.t.toFixed(1) + ' s · ' + thrown.downfield.toFixed(1) + ' yd downfield';
+  el('reviewActionTitle').textContent = 'Review from ' + review.t.toFixed(1) + ' s';
+  el('reviewQuestion').textContent = 'Check the passing lane, pressure on the thrower, and which receiver he was reading.';
+  el('reviewMoment').textContent = '↶ Go to the review moment';
   el('reviewCueText').value = r.displayName + ' · ' + r.possessionTeam + ' · Week ' + r.week +
     '\nGame ' + r.gameId + ' · Play ' + r.playId + '\n' + el('downDistance').textContent +
+    '\nRecorded result: ' + outcome.label + '. ' + outcome.detail + '.' +
     '\nReview from ' + review.t.toFixed(1) + ' s after snap. Throw at ' + thrown.t.toFixed(1) + ' s.' +
-    (cue.has_window ? '\nEarlier gap: ' + r.longest_2_0.toFixed(1) + ' s under the spacing rules. Check passing lane and quarterback timing.' :
-      '\nNo qualifying earlier gap. Review what limited the space.') +
-    '\nTracking cue only; not proof of an available or missed pass.';
+    '\n' + question + ' Check the passing lane, pressure and intended read.' +
+    '\nSelected receiver is not necessarily the target. Tracking alone cannot prove an available or missed pass.';
   el('cueStatus').textContent = '';
 }
 
@@ -111,20 +121,20 @@ function renderQueue() {
     const meta = document.createElement('p'); meta.className = 'route-meta';
     meta.textContent = r.possessionTeam + ' · Week ' + r.week + ' · Play ' + r.playId;
     const tags = document.createElement('div'); tags.className = 'route-tags';
-    for (const label of [r.alignment, r.pff_passCoverage || 'Unknown']) {
+    for (const label of ['3rd & ' + r.yards_to_go, r.outcome.label]) {
       const tag = document.createElement('span'); tag.textContent = label; tags.append(tag);
     }
     const metrics = document.createElement('div'); metrics.className = 'route-numbers';
-    for (const [value, label] of [[r.longest_2_0.toFixed(1) + ' s', 'lasting gap earlier'], [r.release_separation.toFixed(2) + ' yd', 'gap at the throw']]) {
+    for (const [value, label] of [[r.conversion_window.duration_seconds.toFixed(1) + ' s', 'space beyond first-down line'], [r.release_separation.toFixed(1) + ' yd', 'gap at the throw']]) {
       const metric = document.createElement('div'), b = document.createElement('b'), caption = document.createElement('span');
       b.textContent = value; caption.textContent = label; metric.append(b, caption); metrics.append(metric);
     }
     const window = document.createElement('p'); window.className = 'route-window';
-    window.textContent = 'Window ' + r.window_start_seconds.toFixed(1) + '–' + r.window_end_seconds.toFixed(1) +
+    window.textContent = 'Review ' + r.window_start_seconds.toFixed(1) + '–' + r.window_end_seconds.toFixed(1) +
       ' s after play starts · throw at ' + r.observed_seconds.toFixed(1) + ' s\nGame ' + r.gameId;
     window.style.whiteSpace = 'pre-line';
     const button = document.createElement('button');
-    button.textContent = current?.id === r.replay_id ? 'Viewing this route ✓' : 'Watch route →';
+    button.textContent = current?.id === r.replay_id ? 'Viewing this route ✓' : 'Review failed third down →';
     button.setAttribute('aria-label', 'Replay ' + r.displayName + ', game ' + r.gameId + ', play ' + r.playId);
     button.setAttribute('aria-pressed', String(current?.id === r.replay_id));
     button.onclick = () => loadReplay(r.replay_id, true);
@@ -183,7 +193,7 @@ function draw() {
     canvas.width = Math.round(W * ratio); canvas.height = Math.round(H * ratio);
   }
   const ctx = canvas.getContext('2d'); ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-  const b = { ...boundsFor(current)[fieldView] }, pad = 24;
+  const b = { ...boundsFor(current)[fieldView] }, pad = 34;
   // Fill the pitch without stretching yard scales or cropping any tracked player.
   const aspect = (W - 2 * pad) / (H - 2 * pad);
   const width = b.x1 - b.x0, height = b.y1 - b.y0;
@@ -240,16 +250,18 @@ function draw() {
     ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
     ctx.fillStyle = '#c0ee791a'; ctx.beginPath(); ctx.arc(x1, y1, 2 * scale, 0, 2 * Math.PI); ctx.fill(); ctx.lineWidth = 1; ctx.stroke();
   }
-  f.players.forEach(p => {
+  // Paint the selected players last so contextual dots cannot cover their identities.
+  const paintOrder = p => p.id === current.route.nflId ? 4 : p.id === current.thrower?.id ? 3 : p.id === f.nearest ? 2 : 1;
+  [...f.players].sort((a, b) => paintOrder(a) - paintOrder(b)).forEach(p => {
     const [x, y] = xy(p), active = p.id === current.route.nflId, passing = p.id === current.thrower?.id;
     const focused = active || passing || p.id === f.nearest || p.side === 'ball';
     ctx.globalAlpha = focused ? 1 : .8;
-    ctx.beginPath(); ctx.arc(x, y, active ? 13 : passing ? 11 : p.side === 'ball' ? 4 : 9, 0, Math.PI * 2);
+    ctx.beginPath(); ctx.arc(x, y, active ? 11 : passing ? 10 : p.side === 'ball' ? 4 : 7, 0, Math.PI * 2);
     ctx.fillStyle = active ? '#c0ee79' : passing ? '#ba9bec' : p.side === 'offense' ? '#8bb9d1' : p.side === 'defense' ? '#eb9d7d' : '#e6bc70';
     ctx.fill(); ctx.strokeStyle = '#eff2d8'; ctx.lineWidth = 1; ctx.stroke();
-    if (active || passing) { ctx.strokeStyle = active ? '#c0ee79' : '#ba9bec'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 17, 0, Math.PI * 2); ctx.stroke(); }
-    if (p.id === f.nearest) { ctx.strokeStyle = '#e6bc70'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 13, 0, Math.PI * 2); ctx.stroke(); }
-    if (p.side !== 'ball') { ctx.fillStyle = '#102117'; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center'; ctx.fillText(p.label, x, y + 4); }
+    if (active || passing) { ctx.strokeStyle = active ? '#c0ee79' : '#ba9bec'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 14, 0, Math.PI * 2); ctx.stroke(); }
+    if (p.id === f.nearest) { ctx.strokeStyle = '#e6bc70'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 10, 0, Math.PI * 2); ctx.stroke(); }
+    if (p.side !== 'ball') { ctx.fillStyle = '#102117'; ctx.font = 'bold ' + (active || passing ? 11 : 9) + 'px system-ui'; ctx.textAlign = 'center'; ctx.fillText(p.label, x, y + 3); }
     ctx.globalAlpha = 1;
   });
   ctx.restore(); ctx.textAlign = 'center'; ctx.fillStyle = '#e5ebc9b0'; ctx.font = 'bold 16px system-ui';
@@ -277,6 +289,16 @@ function draw() {
     ctx.fillStyle = color; ctx.fillText(label, x + 7, y + 11);
   }
   ctx.restore();
+  ctx.save(); ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center';
+  for (const [worldX, label, color] of [[current.line_of_scrimmage, 'START', '#e9e6cb'], [gainLine, 'NEED ' + current.situation.yards_to_go + ' YD →', '#78cfff']]) {
+    if (worldX == null) continue;
+    const [px] = xy({ x: worldX, y: 0 }), labelWidth = ctx.measureText(label).width + 12;
+    const x = Math.max(labelWidth / 2 + 2, Math.min(W - labelWidth / 2 - 2, px));
+    const y = label === 'START' ? H - 28 : 4;
+    ctx.fillStyle = '#102719'; ctx.fillRect(x - labelWidth / 2, y, labelWidth, 22);
+    ctx.fillStyle = color; ctx.fillText(label, x, y + 15);
+  }
+  ctx.restore();
   canvas.dataset.throwerId = current.thrower?.id ?? '';
   canvas.dataset.receiverId = current.route.nflId;
   el('scrub').value = index;
@@ -294,36 +316,28 @@ function draw() {
     el('play').textContent = atThrow ? 'Replay' : 'Play';
     el('play').setAttribute('aria-label', atThrow ? 'Replay from play start' : 'Play replay');
   }
-  const valid = f.t >= 1 && f.t <= current.route.observed_seconds - .3 + 1e-8 && f.downfield >= 2;
+  const requiredDepth = current.third_down_review ? Math.max(2, current.situation.yards_to_go) : 2;
+  const valid = f.t >= 1 && f.t <= current.route.observed_seconds - .3 + 1e-8 && f.downfield >= requiredDepth;
   el('nearestReadout').textContent = f.separation.toFixed(2) + ' yd gap · ' + (nearest ? nearest.name : 'unknown');
   el('gateStatus').textContent = !valid ? 'This moment is not counted' :
     f.separation > 2 ? 'Gap above 2 yards at this moment' : 'Opponent within 2 yards';
   el('gateStatus').dataset.eligible = String(valid && f.separation > 2);
-  const speed = f.receiver_speed_yards_per_second, rate = f.gap_change_yards_per_second;
-  el('receiverSpeed').textContent = speed == null ? 'Unavailable' : (speed * 3600 / 1760).toFixed(1) + ' mph';
-  el('receiverSpeedDetail').textContent = speed == null ? 'No valid recorded speed' : speed.toFixed(1) + ' yd/s · at this frame';
-  el('gapTrend').textContent = { opening: '↗ Opening', closing: '↘ Closing', steady: '→ Steady', unknown: 'Not yet measured' }[f.gap_trend];
-  el('gapTrendCard').dataset.trend = f.gap_trend;
-  el('gapTrendRate').textContent = rate == null ? 'Needs 0.3 s of history' :
-    (rate > 0 ? '+' : '') + rate.toFixed(1) + ' yd/s · past 0.3 s';
-  el('firstDownDistanceLabel').textContent = current.situation.goal_to_go ? 'To goal line' : 'To first-down line';
   const yardsShort = gainLine == null ? null : gainLine - f.x;
-  el('firstDownDistance').textContent = yardsShort == null ? 'Unavailable' : Math.abs(yardsShort) < .05 ? 'At the line' :
-    Math.abs(yardsShort).toFixed(1) + ' yd ' + (yardsShort > 0 ? 'short' : 'beyond');
+  const positionText = yardsShort == null ? 'Line unavailable' : Math.abs(yardsShort) < .05 ? 'At the first-down line' :
+    (Math.round(Math.abs(yardsShort) * 10 + 1e-8) / 10).toFixed(1) + ' yd ' + (yardsShort > 0 ? 'short of' : 'beyond') + ' the first-down line';
+  el('nearestReadout').textContent = positionText + ' · ' + f.separation.toFixed(1) + ' yd nearest gap';
   el('frameEligibility').textContent = !valid ? 'Outside the time / position rules' :
     f.separation <= 2 ? 'Gap is too small to count' : 'Can contribute to an earlier gap';
   el('frameEligibilityNote').dataset.eligible = String(valid && f.separation > 2);
   el('frameExplanation').textContent = f.t < 1 ? 'We do not count the first second of the play.' :
     f.t > current.route.observed_seconds - .3 + 1e-8 ? 'We do not count the final 0.3 seconds before the throw.' :
-    f.downfield < 2 ? 'The receiver is less than 2 yards beyond the starting line at this moment, so it does not count.' :
+    f.downfield < requiredDepth ? 'The receiver has not reached the required downfield position (' + requiredDepth + ' yards), so it does not count.' :
     f.separation <= 2 ? 'The closest opponent is within 2 yards. This moment does not count toward an earlier gap.' :
     'The gap is more than 2 yards here. It must last at least half a second without a break to become a qualifying window.';
   canvas.setAttribute('aria-label', current.route.displayName + ' at ' + f.t.toFixed(1) + ' seconds since snap; nearest defender ' +
     (nearest ? nearest.name : 'unknown') + ', ' + f.separation.toFixed(2) + ' yards away. Thrower: ' +
     (current.thrower ? current.thrower.name : 'unknown') + '. Selected receiver: ' + current.route.displayName +
-    '. ' + el('downDistance').textContent + '. Receiver speed: ' + el('receiverSpeed').textContent +
-    '. Nearest gap: ' + el('gapTrend').textContent + '. ' + el('firstDownDistanceLabel').textContent + ': ' +
-    el('firstDownDistance').textContent + '. All 22 players shown.');
+    '. ' + el('downDistance').textContent + '. ' + positionText + '. Recorded result: ' + el('pitchOutcome').textContent + '. ' + el('pitchOutcomeDetail').textContent + '. All 22 players shown.');
   canvas.dataset.lineToGain = gainLine ?? '';
   for (const [id, value] of Object.entries({ frameNumber: f.frame, frameTime: f.t.toFixed(1) + ' s',
     frameNearest: nearest ? nearest.name : 'Unknown', frameGap: f.separation.toFixed(2) + ' yd',
@@ -344,9 +358,6 @@ async function loadReplay(id, scroll = false) {
   const distance = situation.yards_to_go;
   el('downDistance').textContent = (downName || 'Down unknown') + (distance == null ? '' : ' & ' +
     (situation.goal_to_go ? 'Goal' : String(distance)));
-  el('situationHint').textContent = distance == null ? 'Distance unavailable' : distance +
-    (distance === 1 ? ' yard' : ' yards') +
-    (situation.goal_to_go ? ' to the goal line' : ' for a new set of downs');
   el('lineToGainLabel').textContent = situation.goal_to_go ? 'Goal line' : 'First-down line';
   el('lineToGainKey').hidden = situation.line_to_gain == null;
   el('storyPlayMeta').textContent = r.possessionTeam + ' · Week ' + r.week + ' · Play ' + r.playId;
@@ -363,19 +374,16 @@ async function loadReplay(id, scroll = false) {
     contextGame: r.gameId, contextPlay: r.playId, contextAlignment: r.alignment,
     contextCoverage: r.pff_passCoverage || 'Unknown' })) el(id).textContent = value;
   el('routeOrigin').textContent = queued ? 'Queue #' + queued.queue_rank + ' of ' + model.queue.length +
-    ': selected for a long earlier gap, not a player ranking.' : 'Matched illustration: selected for contrast, not as a typical route.';
-  el('releaseMetric').textContent = r.release_separation.toFixed(2) + ' yd';
-  el('historyMetric').textContent = r.longest_2_0.toFixed(1) + ' s';
-  el('timeMetric').textContent = r.observed_seconds.toFixed(1) + ' s';
-  el('initialMetric').textContent = r.initial_separation.toFixed(2) + ' yd';
-  el('routeExplanation').textContent = 'At the throw, the closest opponent was ' + r.release_separation.toFixed(2) +
-    ' yards from ' + r.displayName + '. ' + (r.longest_2_0 >= .5 ?
-    'Earlier, a gap of more than 2 yards lasted ' + r.longest_2_0.toFixed(1) + ' seconds under our rules. That is a moment to inspect on video, not proof a pass was available.' :
-    'No earlier gap lasted at least half a second while meeting all five rules. This does not mean the player was never a possible target.');
+    ': failed third down with a sustained gap beyond the first-down line, then ≤2 yd gap at the throw. Longest windows first; not a player ranking.' : 'Matched illustration: selected for contrast, not as a typical route.';
+  el('releaseMetric').textContent = r.release_separation.toFixed(1) + ' yd gap';
+  el('historyMetric').textContent = (current.third_down_review?.conversion_window.duration_seconds ?? r.longest_2_0).toFixed(1) + ' s';
+  el('routeExplanation').textContent = current.third_down_review ?
+    'This window is beyond the first-down line. It identifies a moment to inspect on film, not proof that a pass was available.' :
+    'Original study example: its earlier spacing rule requires at least 2 yards downfield, regardless of the first-down line.';
   el('description').textContent = r.playDescription;
   el('releaseSource').textContent = r.release_source;
   el('scrub').max = current.frames.length - 1;
-  const sustained = current.windows.filter(w => w.duration_seconds >= .5);
+  const sustained = (current.third_down_review?.conversion_windows || current.windows).filter(w => w.duration_seconds >= .5);
   el('windowSummary').textContent = sustained.length ? 'Lasting earlier gaps: ' + sustained.map(w =>
     ((w.start_frame - r.snap) / 10).toFixed(1) + '–' + ((w.end_frame - r.snap) / 10).toFixed(1) +
     ' s (' + w.duration_seconds.toFixed(1) + ' s)').join('; ') + ' after the play starts.' : 'No lasting earlier gap meets all five rules.';
@@ -415,7 +423,7 @@ async function loadReplay(id, scroll = false) {
   }
 }
 
-el('example0').onclick = () => loadReplay(model.exampleIds[0]);
+el('example0').onclick = () => loadReplay(model.featuredId);
 el('example1').onclick = () => loadReplay(model.exampleIds[1]);
 el('scrub').oninput = e => { stop(); index = Number(e.target.value); draw(); };
 el('reset').onclick = () => { stop(); index = 0; draw(); };
@@ -486,6 +494,6 @@ el('eventDetails').append(table(['Recorded exclusion category', 'Count'], Object
 const note = document.createElement('p'); note.className = 'sub';
 note.textContent = 'Non-pass outcomes and invalid segments are counted per play; receiver/observation exclusions per route. These mixed-unit counts must not be added into a single attrition percentage.';
 el('eventDetails').append(note); el('commit').textContent = st.source_commit;
-loadReplay(model.exampleIds[0]);
+loadReplay(model.featuredId);
 
 if (location.hash) revealSection(location.hash);

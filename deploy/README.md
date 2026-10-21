@@ -19,6 +19,7 @@ Build and review the report first; see [`REPRODUCE.md`](../REPRODUCE.md). Commit
 report.html
 findings.md
 film_review_queue.csv
+third_down_review_queue.csv
 routes.csv
 matched_pair.png
 analysis.json
@@ -26,7 +27,7 @@ analysis.json
 
 Use a new release directory named after the source commit, for example `/var/www/nflbuddy/releases/1e40b1530d90/`. Keep source files, raw datasets, credentials and the Git checkout out of this directory.
 
-1. Create a local staging folder with the six files above. Add `release.json` with the source commit, file sizes and SHA-256 hashes. Precompress text files to `.gz` beside the originals; Nginx serves these when supported. Generate `SHA256SUMS` for the staged files.
+1. Create a local staging folder with the seven files above. Add `release.json` with the source commit, file sizes and SHA-256 hashes. Precompress text files to `.gz` beside the originals; Nginx serves these when supported. Generate `SHA256SUMS` for the staged files.
 2. Create the release directory with `sudo install -d -m 0755`, then upload the staging folder:
 
    ```bash
@@ -44,7 +45,7 @@ Use a new release directory named after the source commit, for example `/var/www
    ```
 
 5. When changing Nginx configuration, install `nginx.conf`, run `sudo nginx -t`, and only reload after it passes: `sudo systemctl reload nginx`. A report-only update needs no reload or tunnel change.
-6. Verify HTTPS, HTTP redirection, the five companion downloads, A/B replay, playback and queue filtering at the public URL. Compare downloaded companion files with the local SHA-256 hashes. `/release.json` identifies the deployed build.
+6. Verify HTTPS, HTTP redirection, the six companion downloads, failed-third-down review, playback and queue filtering at the public URL. Compare downloaded companion files with the local SHA-256 hashes. `/release.json` identifies the deployed build.
 
 Cloudflare may add script-loading and security scripts to public HTML. The origin report remains byte-identical to the reviewed file; use the repository copy for the fully self-contained offline artifact.
 
@@ -54,4 +55,4 @@ Keep previous release directories. Point `current.next` at the previous release 
 
 ## Initial release verification
 
-Deployed on 2026-10-21 from commit `1e40b1530d90d3174f624a88858d47b0765d46a0`. All uploaded file checksums passed, the origin returned the exact report bytes, public HTTPS returned 200, HTTP redirected to HTTPS, all five companion files matched local hashes, and `/.git/config` returned 404. Public browser checks covered playback, the release endpoint, formatted play/frame details and receiver filtering.
+Deployed on 2026-10-21 from commit `1e40b1530d90d3174f624a88858d47b0765d46a0`. All uploaded file checksums passed, the origin returned the exact report bytes, public HTTPS returned 200, HTTP redirected to HTTPS, all five original companion files matched local hashes, and `/.git/config` returned 404. Public browser checks covered playback, the release endpoint, formatted play/frame details and receiver filtering.

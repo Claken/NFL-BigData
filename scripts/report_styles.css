@@ -68,12 +68,23 @@ main { max-width: 1480px; margin: auto; padding: 30px 32px 32px; }
 .replay-meta { color: var(--muted); font-size: 12px; }
 .mobile-moments { display: none; }
 .field-surface { background: #173f2b; border: 1px solid #4a6d4e; border-radius: var(--radius); overflow: hidden; box-shadow: 0 22px 70px #0003; }
+.pitch-scoreboard { line-height: 1.25; display: flex; align-items: center; gap: 22px; padding: 14px 20px; background: #102c1d; border-bottom: 1px solid #466449; }
+.pitch-scoreboard span, .pitch-scoreboard small { display: block; font-size: 11px; color: #c4d5c6; }
+.pitch-scoreboard b { display: block; font-size: 22px; margin: 3px 0; letter-spacing: -.025em; }
+.pitch-situation b { color: var(--blue); }
+.pitch-result b { color: #ffc4a5; }
+.pitch-scoreboard .result-arrow { font-size: 26px; color: #73967b; }
+.pitch-question { padding: 12px 18px; background: #102c1d; border-top: 1px solid #466449; }
+.pitch-question .eyebrow { color: var(--green); font-size: 9px; }
+.pitch-question p { font-size: 16px; line-height: 1.4; margin-top: 5px; }
+.third-down-basics { color: var(--muted); font-size: 12px; line-height: 1.6; max-width: 850px; margin: 10px 0 22px; }
+.third-down-basics b { color: var(--ink); }
 .field-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 9px 16px; background: #143422; color: #b7d1b9; font-size: 11px; }
 .live-dot { display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: var(--green); margin-right: 6px; }
 .view-switch { display: flex; gap: 4px; }
 .view-switch button { font-size: 11px; padding: 5px 9px; min-height: 28px; background: transparent; border-color: transparent; color: #c8d8c8; }
 .view-switch button[aria-pressed="true"] { background: #284b31; color: var(--green); }
-canvas { display: block; width: 100%; height: auto; aspect-ratio: 1.95; }
+canvas { display: block; width: 100%; height: auto; aspect-ratio: 2.35; }
 .field-status { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px 12px; padding: 10px 16px; background: #143422; font-size: 11px; color: #d0decf; }
 .gate-badge { color: #b9cbb9; }
 .gate-badge[data-eligible="true"] { color: var(--green); }
@@ -237,6 +248,12 @@ th { background: var(--surface); }
   canvas { aspect-ratio: 1.55; }
 }
 @media (min-width: 721px) and (max-height: 800px) {
+  .pitch-scoreboard { padding: 8px 16px; }
+  .pitch-scoreboard b { font-size: 20px; }
+  .pitch-question { padding: 8px 16px; }
+  .pitch-question p { font-size: 14px; }
+  canvas { aspect-ratio: 3; }
+  .field-toolbar { padding-top: 4px; padding-bottom: 4px; }
   main { padding-top: 16px; }
   .hero { margin-bottom: 12px; }
   .hero h1 { font-size: 42px; }
@@ -250,6 +267,11 @@ th { background: var(--surface); }
   #reviewMoment { margin-top: 10px; }
 }
 @media (max-width: 720px) {
+  .pitch-scoreboard { gap: 12px; padding: 12px; }
+  .pitch-scoreboard b { font-size: 18px; }
+  .pitch-scoreboard span, .pitch-scoreboard small { font-size: 10px; }
+  .pitch-question { padding: 12px; }
+  .pitch-question p { font-size: 14px; }
   :root { --anchor-offset: 108px; }
   .topbar-inner { padding: 9px 16px; flex-wrap: wrap; gap: 8px; }
   .section-nav { gap: 20px; }
@@ -269,7 +291,7 @@ th { background: var(--surface); }
   .story-stage { display: flex; flex-direction: column; gap: 18px; }
   .story-rail { padding-top: 0; }
   .story-rail > h3 { font-size: 25px; }
-  .story-rail > h3 br { display: none; }
+  .story-rail > h3 br { display: initial; }
   .story-beats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .story-beat { padding: 12px 8px; gap: 8px; }
   .beat-arrow { display: none; }

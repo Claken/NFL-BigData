@@ -1,26 +1,28 @@
 {
-  "tests_passed": 42,
+  "tests_passed": 64,
   "ruff": "passed",
   "javascript_syntax": "passed",
   "analysis_outputs_unchanged": true,
   "prior_locked_full_analysis_build": "passed; unchanged analysis files checked against that build",
-  "fresh_locked_report_rebuild": "Passed in the existing pinned environment; field-led presentation and review_cue annotations added. Original replay data and statistical exports preserved.",
+  "fresh_locked_report_rebuild": "Passed in the pinned project environment; full eligible cohort scanned for failed-third-down windows. Original statistical exports verified byte-identical.",
   "queue_routes": 50,
-  "unique_packaged_replays": 52,
-  "manual_nearest_defender_checks": 156,
+  "unique_packaged_replays": 91,
+  "manual_nearest_defender_checks": 273,
   "manual_distance_tolerance_yards": 1e-12,
   "external_html_asset_tags": 0,
   "browser_checks": [
-    "receiver filter returns expected two DeVonta Smith routes",
-    "three filters combine to one route",
-    "empty results shown",
-    "clearing filters restores 50 routes without changing replay",
-    "queued route loads name, windows and metrics",
-    "scrub reaches queued release endpoint",
-    "two receivers on same play retain distinct tracks and distances",
-    "play advances newly selected route",
-    "matched example still works",
-    "queue selection highlighted and back link works"
+    "Incomplete, completed short and intercepted outcomes match the play log",
+    "Recorded result remains visible and unchanged while scrubbing",
+    "Default cue opens at the first beyond-line window frame named in the on-pitch question",
+    "Earlier/throw/jump controls synchronize pitch and timeline",
+    "Play advances; Home and End reach snap and throw",
+    "Copy cue contains situation, recorded result, game/play IDs and film-review time",
+    "Receiver and coverage filters combine; empty state and clear restore the 50-route list",
+    "Full-field view retains target line and all 22 players",
+    "Original matched examples are explicitly separate from the failed-third-down queue",
+    "1280x720 laptop: situation, outcome, question and review action visible without scrolling",
+    "390x844 phone: no horizontal overflow; situation, outcome and question precede the field; moment controls work",
+    "No browser console errors"
   ],
   "browser_preview": "review_queue_preview.png",
   "offline_limit": "All replay data and assets embedded; network-disabled browser mode not tested.",
@@ -163,29 +165,27 @@
   "image_freshness": {
     "checked_date": "2026-10-21",
     "capture_url": "http://127.0.0.1:8776/report.html (reviewed production candidate)",
-    "report_sha256": "63d02131e337963288b18558e74f37b7cca9d8e5ab72fa2eb1c0a08441d0c84a",
+    "report_sha256": "4ac0b4905b379db9348c6240f31546ae9b77b8d4f81da5a1b0f146fdb8fe6f63",
     "refreshed_previews": [
       "report_ui_overview.png",
       "report_ui_review.png",
       "report_ui_context.png",
       "report_ui_frame.png",
       "report_ui_live.png",
-      "report_ui_motion_mobile.png",
-      "report_ui_motion.png",
+      "report_ui_mobile.png",
       "review_queue_preview.png"
     ],
-    "detail_previews": "Current dark field-story design; speed, play/frame detail and queue drawers preserved.",
+    "detail_previews": "Current failed-third-down play, source/frame details and focused queue. Phone preview includes situation, actual outcome and review question. Obsolete speed UI previews retired.",
     "matched_pair_png": "Fresh report build in the existing project environment produced a byte-identical chart (SHA-256 403a62f1b8223c308676fb9a1d8f6c9aed75db4a2d55189c33ec76a457ce4a95).",
     "legacy_chart": "outputs/separation.png is the separately documented original one-game audit, not a multigame report screenshot.",
     "screenshots": {
-      "review_queue_preview.png": "e4d4ccd600fd1f7c3b753e84b5c25cec858de4a2a242244bf9fee7094352266e",
-      "report_ui_overview.png": "9f396a5892fef839a20b59035fa39eedcb307aebff8d21204051e23abe93ce67",
-      "report_ui_review.png": "086b8c208712a94af2f9cebbeaaad49cbd11f2cf50346e6c2ea21600bb92a069",
-      "report_ui_context.png": "d422985ed672a8b64b810266a974a3e76c3a73b8f7f0770eb7a7d832f1111699",
-      "report_ui_frame.png": "bd8cf32a4a6adfd960c4982170350eda683606a79c230279324d36b6ed79cf52",
-      "report_ui_live.png": "9f396a5892fef839a20b59035fa39eedcb307aebff8d21204051e23abe93ce67",
-      "report_ui_motion_mobile.png": "e7626af2831b3bd8e48b610e24463e31bc02980bf07c07e5c8f5288289f5bfa1",
-      "report_ui_motion.png": "fe89cdb7f923221dddeb8d019e3cdd3c4bbcc83ec1071e0b9d1ebdbed0bc2b1b"
+      "report_ui_overview.png": "80cd34f40f83de43a925c95c020a3aec152d26a971676d246b53d58be3bdb216",
+      "report_ui_review.png": "433178f819b4034f417a86667e63bb05c069a2e28acdfeb00757ff1723db6387",
+      "report_ui_context.png": "c1eb74d6156bdb28c9cc308d0caed9388077262f3de2599ded4b5ec3a935666c",
+      "report_ui_frame.png": "3cdf5f50d87199bf4b7268876977876f4fdd00ad46ad0d35897dcb2aedd74dd1",
+      "report_ui_live.png": "80cd34f40f83de43a925c95c020a3aec152d26a971676d246b53d58be3bdb216",
+      "report_ui_mobile.png": "bd0b9f92d61ea01dbcfe8ff0a1cedf788fa9abf574340ba64e04b62b36c3e594",
+      "review_queue_preview.png": "ddffc0b4d5cfd03dee568a0fa942786f1584cf53aea41226460ecd0a0259a095"
     }
   },
   "receiver_movement_and_situation": {
@@ -254,5 +254,26 @@
       "review_queue_preview.png"
     ],
     "limitations": "Descriptive tracking cue; no proof of an available or missed pass, no ball-flight model and no football mentor validation."
+  },
+  "verification_scope": "Top-level checks, failed_third_down_review and image_freshness describe the current report. Other named UI blocks are historical release records.",
+  "failed_third_down_review": {
+    "definition": "Third-down C/I/IN failures; penalties, fumbles, ambiguous scoring, no-plays and goal-to-go excluded. >2 yd nearest gap for >=0.5 s at/beyond yards-to-go and >=2 yd downfield between snap+1 s and release-0.3 s; <=2 yd gap at throw.",
+    "counts": {
+      "eligible_failed_routes": 3510,
+      "eligible_failed_plays": 923,
+      "qualifying_routes": 177,
+      "packaged_routes": 50
+    },
+    "selection": "50 longest qualifying windows, deterministic game/play/player tie breaks; multiple receivers can share a play. Not a representative sample or conversion rate.",
+    "featured_id": "2021101001:345:43808",
+    "outcome_source": "plays.csv: passResult and playResult; no simulated ball flight",
+    "featured_review_seconds": 2.3,
+    "speed_ui": "Removed; recorded speed and trailing gap trend retained in replay exports.",
+    "original_statistical_exports": {
+      "analysis.json": "ef3f2fcc6bb0f31b99d07b482266cd5c3376a211cf75045469eb13e9e3de1cbb",
+      "routes.csv": "02d086a4fde69dc334345659799eb3938cfa605d8ef6de415d339b992a902b70",
+      "film_review_queue.csv": "f2a51c4fd14ca51914740c66fb470d4c93e03a3a441c9bd058380d66c9fbdabb",
+      "matched_pair.png": "403a62f1b8223c308676fb9a1d8f6c9aed75db4a2d55189c33ec76a457ce4a95"
+    }
   }
 }

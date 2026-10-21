@@ -1,4 +1,30 @@
-# Similar release spacing can hide different earlier histories
+# Failed-third-down film review
+
+The report now opens on failed third-down passes: show the yards needed, the recorded
+outcome and an exact earlier moment to inspect on film. Of 923
+eligible non-penalized, non-goal-to-go failed third-down pass plays (3510
+eligible receiver routes), 177 routes had a sustained gap
+at or beyond the first-down line and were within 2 yards of a defender at release.
+The report packages the 50 longest such windows, with deterministic
+game/play/player tie breaks. Several routes may come from one play. This is a selected
+review list, not a conversion rate, missed-read count or player ranking.
+
+For this queue, the receiver must be at least the yards-to-go downfield (and at least
+2 yards), with nearest separation strictly above 2 yards for six consecutive 10 Hz
+samples, spanning at least 0.5 s. The interval starts at snap+1 s and ends at release−0.3 s.
+Missing, short-of-line or below-threshold samples break the window. The review opens
+at the first frame of the longest window, rather than the largest gap anywhere on the route.
+Pass outcomes and yardage come from plays.csv, not from animating a hypothetical catch.
+Completed passes short of the required distance, incompletions and interceptions are
+eligible; penalties, no-plays, fumbles and ambiguous scoring outcomes are excluded.
+The animation stops at release because complete ball flight is not provided.
+
+Use third_down_review_queue.csv for this focused queue. Check the passing lane,
+pressure and intended read on film; the selected receiver is not necessarily the target.
+The original study and its film_review_queue.csv export remain below and use a different
+cohort and downfield rule. Their 33.1% result is not a failed-third-down success estimate.
+
+# Original study: similar release spacing can hide different earlier histories
 
 **33.1% of routes close at release had sustained earlier spacing.** In this selected sample, 3,598 of
 10,870 routes at ≤2 yards at release had an earlier spacing

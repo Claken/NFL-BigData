@@ -17,6 +17,7 @@ from report import (
     speed_value,
     thrower_data,
 )
+from third_down import failed_third_down, third_down_candidates
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -145,7 +146,8 @@ def test_packaged_queue_replays_match_endpoints_windows_and_field_geometry():
         route, frames = replay["route"], replay["frames"]
         situation = replay["situation"]
         cue = replay["review_cue"]
-        qualified = [w for w in replay["windows"] if w["duration_seconds"] >= .5]
+        qualified = [w for w in replay.get("third_down_review", {}).get("conversion_windows", replay["windows"])
+                     if w["duration_seconds"] >= .5]
         assert cue["has_window"] == bool(qualified)
         assert cue["throw_frame_index"] == len(frames) - 1
         if qualified:
@@ -193,3 +195,73 @@ def test_packaged_queue_replays_match_endpoints_windows_and_field_geometry():
                     assert frame["separation"] > 2
                     assert frame["downfield"] >= 2
                     assert 1 <= frame["t"] <= route["observed_seconds"] - 0.3 + 1e-9
+
+
+@pytest.mark.parametrize("change, label", [
+    ({}, "Incomplete"), ({"down": 4}, None), ({"down": 1}, None),
+    ({"yardsToGo": 0}, None), ({"yardsToGo": None}, None),
+    ({"passResult": "C", "playResult": 7}, "Completed · 7 yd"),
+    ({"passResult": "C", "playResult": 10}, None),
+    ({"passResult": "C", "playResult": -2}, "Completed · -2 yd"),
+    ({"passResult": "IN", "playResult": 30}, "Intercepted"),
+    ({"passResult": "S"}, None), ({"playResult": None}, None),
+    ({"penaltyYards": 0, "foulName1": "Defensive Holding"}, None),
+    ({"penaltyYards": 5}, None), ({"playDescription": "Incomplete. PENALTY declined."}, None),
+    ({"playDescription": "Completed, FUMBLES"}, None), ({"playDescription": "No Play"}, None),
+])
+def test_failed_third_down_uses_actual_outcome_and_excludes_ambiguity(change, label):
+    play = {"down": 3, "yardsToGo": 10, "passResult": "I", "playResult": 0,
+            "playDescription": "Pass incomplete", **change}
+    result = failed_third_down(play)
+    assert (result["label"] if result else None) == label
+
+
+@pytest.mark.parametrize("depth, gap, missing, goal, qualifies", [
+    (9.99, 3, None, False, False), (10, 3, None, False, True),
+    (10, 2, None, False, False), (10, 3, 13, False, False),
+    (10, 3, None, True, False),
+])
+def test_beyond_line_window_does_not_count_space_short_of_line_or_bridge_missing_samples(
+        tmp_path, depth, gap, missing, goal, qualifies):
+    route = {"gameId": 1, "playId": 2, "nflId": 3, "snap": 0, "release": 18,
+             "absoluteYardlineNumber": 100 if goal else 40, "release_separation": 1}
+    rows = [{"gameId": 1, "playId": 2, "nflId": 3, "frameId": i,
+             "playDirection": "right", "downfield_yards": depth,
+             "separation_yards": gap if 10 <= i <= 15 else 1} for i in range(19) if i != missing]
+    pl.DataFrame(rows).write_parquet(tmp_path / "separation_1.parquet")
+    play = {"down": 3, "yardsToGo": 10, "passResult": "I", "playResult": 0}
+    queue, _ = third_down_candidates(pl.DataFrame([route]), {(1, 2): play}, tmp_path)
+    assert bool(queue) == qualifies
+    if qualifies:
+        assert queue[0]["conversion_window"]["duration_seconds"] == .5
+
+
+def test_focused_queue_has_sustained_space_beyond_first_down_line_and_real_failed_results():
+    from audit import read_csv
+
+    data = json.loads((ROOT / "outputs/multigame/replay_data.json").read_text())
+    replays = {r["id"]: r for r in data["replays"]}
+    plays = {(p["gameId"], p["playId"]): p for p in read_csv(ROOT / "data/raw", "plays.csv").to_dicts()}
+    queue = data["third_down_queue"]
+    assert len(queue) == data["third_down_counts"]["packaged_routes"] == 50
+    assert data["third_down_counts"]["qualifying_routes"] >= len(queue)
+    assert queue[0]["replay_id"] == data["featured_id"]
+    durations = [q["conversion_window"]["duration_seconds"] for q in queue]
+    assert durations == sorted(durations, reverse=True)
+    for q in queue:
+        replay = replays[q["replay_id"]]
+        assert q["outcome"] == failed_third_down(plays[(q["gameId"], q["playId"])])
+        assert replay["situation"]["down"] == 3
+        assert replay["situation"]["goal_to_go"] is False
+        assert replay["frames"][-1]["separation"] <= 2
+        window = q["conversion_window"]
+        frames = [f for f in replay["frames"] if window["start_frame"] <= f["frame"] <= window["end_frame"]]
+        assert len(frames) >= 6
+        assert [f["frame"] for f in frames] == list(range(window["start_frame"], window["end_frame"] + 1))
+        assert frames[-1]["t"] - frames[0]["t"] == pytest.approx(window["duration_seconds"])
+        for f in frames:
+            assert f["separation"] > 2
+            assert f["x"] >= replay["situation"]["line_to_gain"] - 1e-9
+            assert 1 <= f["t"] <= replay["route"]["observed_seconds"] - .3 + 1e-9
+        cue = replay["review_cue"]
+        assert replay["frames"][cue["earlier_frame_index"]]["frame"] == window["start_frame"]
