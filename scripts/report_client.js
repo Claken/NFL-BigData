@@ -193,8 +193,8 @@ function draw() {
   el('scrub').value = index;
   el('clock').value = f.t.toFixed(1) + ' / ' + current.route.observed_seconds.toFixed(1) + ' s';
   const atThrow = index === current.frames.length - 1;
-  const playbackStatus = (atThrow ? 'Throw — replay ends.' : 'Play start → throw only.') +
-    ' Brown dot = ball; flight is not shown.';
+  const playbackStatus = atThrow ? 'Throw — replay ends before ball flight.' :
+    'Replay stops at the throw, before ball flight.';
   if (el('playbackStatus').textContent !== playbackStatus) el('playbackStatus').textContent = playbackStatus;
   el('playbackStatus').dataset.phase = atThrow ? 'throw' : 'before';
   el('scrub').setAttribute('aria-valuetext', f.t.toFixed(1) + ' seconds since play start; ' +

@@ -130,7 +130,6 @@ main { max-width: 1440px; margin: auto; padding: 26px 28px 48px; }
 .example-switch button { font-size: 14px; padding: 9px 12px; flex: 1; }
 .replay-context h3 { margin-top: 18px; }
 .route-explanation { font-size: 16px; line-height: 1.7; color: #365262; margin: 16px 0; }
-.replay-help { font-size: 14px; color: #365262; margin-top: 10px; }
 .replay-boundary { padding: 10px 12px; margin-top: 12px; border-left: 3px solid #8a9da9; border-radius: 4px; background: #f0f4f6; color: #365262; font-size: 14px; line-height: 1.5; }
 .replay-boundary[data-phase="throw"] { background: #faf3e5; border-color: #a27627; color: #654b20; font-weight: 650; }
 .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 14px 0; gap: 8px; }
@@ -316,8 +315,7 @@ details p { font-size: 15px; color: #49616f; line-height: 1.7; max-width: 960px;
     <div class="metric"><b id="historyMetric"></b><span>lasting gap earlier</span></div>
   </div>
   <p id="loadingStatus" class="loading" role="status">Preparing replays…</p>
-  <p class="replay-help">Purple = thrower. Green = selected receiver. Gold line = gap to the nearest opponent.</p>
-  <p id="playbackStatus" class="replay-boundary" role="status" aria-live="polite">Play start → throw only. Brown dot = ball; flight is not shown.</p>
+  <p id="playbackStatus" class="replay-boundary" role="status" aria-live="polite">Replay stops at the throw, before ball flight.</p>
   <div class="controls"><button id="play" class="primary" aria-label="Play replay" disabled>Play</button><button id="reset" disabled>Restart</button><input id="scrub" type="range" min="0" value="0" step="1" aria-label="Replay frame" aria-describedby="playbackStatus" disabled><output id="clock" aria-label="Replay time"></output></div>
   <div class="field-surface">
     <div class="field-toolbar"><span>Team with the ball moves right →</span><div class="view-switch" aria-label="Field view"><button id="fitView" aria-pressed="true">Fit play</button><button id="fullView" aria-pressed="false">Full field</button></div></div>
@@ -4209,8 +4207,8 @@ function draw() {
   el('scrub').value = index;
   el('clock').value = f.t.toFixed(1) + ' / ' + current.route.observed_seconds.toFixed(1) + ' s';
   const atThrow = index === current.frames.length - 1;
-  const playbackStatus = (atThrow ? 'Throw — replay ends.' : 'Play start → throw only.') +
-    ' Brown dot = ball; flight is not shown.';
+  const playbackStatus = atThrow ? 'Throw — replay ends before ball flight.' :
+    'Replay stops at the throw, before ball flight.';
   if (el('playbackStatus').textContent !== playbackStatus) el('playbackStatus').textContent = playbackStatus;
   el('playbackStatus').dataset.phase = atThrow ? 'throw' : 'before';
   el('scrub').setAttribute('aria-valuetext', f.t.toFixed(1) + ' seconds since play start; ' +

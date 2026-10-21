@@ -128,8 +128,8 @@
   },
   "replay_endpoint": {
     "scope": "Play start through recorded throw; no post-throw ball flight.",
-    "before_throw": "Play start \u2192 throw only. Brown dot = ball; flight is not shown.",
-    "at_throw": "Throw \u2014 replay ends. Brown dot = ball; flight is not shown.",
+    "before_throw": "Replay stops at the throw, before ball flight.",
+    "at_throw": "Throw \u2014 replay ends before ball flight.",
     "controls": "Final frame changes Play to Replay; Replay resets the notice and clock immediately. Slider announces time and endpoint.",
     "browser_checks": [
       "End sets final-frame message and Replay label",
@@ -139,6 +139,7 @@
       "Mobile 390x844 notice readable without horizontal overflow"
     ],
     "data_integrity": "Tracking, replay payload, route metrics, analysis and independent distance checks byte-identical.",
-    "tests_passed": 24
+    "tests_passed": 24,
+    "copy": "Single sentence; redundant color guide and brown-dot explanation removed."
   }
 }
