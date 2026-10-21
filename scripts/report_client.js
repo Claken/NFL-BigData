@@ -174,11 +174,7 @@ function renderQueue() {
     result.textContent = queuePlayResult(r);
     const meta = document.createElement('p'); meta.className = 'route-meta';
     meta.textContent = 'Week ' + r.week + ' · Q' + c.quarter + ' ' + c.game_clock + ' · ' + c.away_team + ' ' + c.away_score + '–' + c.home_score + ' ' + c.home_team;
-    const context = document.createElement('p'); context.className = 'route-window';
-    context.textContent = contextLabels[c.dropback_group] + ' · ' + c.pressure_note;
-    const window = document.createElement('p'); window.className = 'route-window';
-    window.textContent = 'Throw ' + r.observed_seconds.toFixed(1) + ' s · game ' + r.gameId + ' / play ' + r.playId;
-    card.append(name, situation, result, meta, context, window);
+    card.append(name, situation, result, meta);
     for (const receiver of receivers) {
       const button = document.createElement('button'); button.className = 'route-choice';
       button.textContent = receiver.displayName + ' · inspect ' + receiver.window_start_seconds.toFixed(1) + ' s';

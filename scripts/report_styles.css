@@ -170,14 +170,13 @@ details p { font-size: 13px; color: var(--muted); line-height: 1.7; max-width: 1
 .route-card .queue-situation { color: var(--ink); }
 .queue-situation strong { color: var(--blue); }
 .route-card .queue-result { color: var(--gold); margin-bottom: 12px; }
-.route-rank, .route-meta, .route-window, .route-tags { color: var(--muted); font-size: 11px; }
+.route-rank, .route-meta, .route-tags { color: var(--muted); font-size: 11px; }
 .route-rank { white-space: nowrap; }
 .route-tags { display: flex; gap: 6px; margin: 10px 0; }
 .route-tags span { background: var(--raised); padding: 3px 6px; border-radius: 4px; }
 .route-numbers { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .route-numbers b { display: block; font-size: 22px; color: var(--green); }
 .route-numbers span { font-size: 10px; color: var(--muted); }
-.route-window { margin: 10px 0; }
 .route-card button { width: 100%; font-size: 12px; }
 .queue-footnote, .empty { color: var(--muted); font-size: 12px; margin-top: 16px; }
 .detail-body { display: grid; gap: 20px; padding: 10px 0 20px; }

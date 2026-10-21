@@ -164,7 +164,7 @@
   "image_freshness": {
     "checked_date": "2026-10-21",
     "capture_url": "http://127.0.0.1:8776/report.html (reviewed production candidate)",
-    "report_sha256": "64539154413d4e83148a59bf55a9b4ef89ef49fc31c827a9107c173beb506a54",
+    "report_sha256": "85e5594aebfa0a3695624f207fce7d77ef49e194c09138c21730d7cfcd947610",
     "refreshed_previews": [
       "report_ui_overview.png",
       "report_ui_review.png",
@@ -184,7 +184,7 @@
       "report_ui_frame.png": "6100235f4b20c91ea1d5d2994724c0049c7eeb47f5358208c2ebe86cf5a5b3c5",
       "report_ui_live.png": "d56eb0a71e5c0c8abf6c26407b9b3bafd75ed0bcbaa283f4f9685e97d7637433",
       "report_ui_mobile.png": "dd03899c05ddae3a8a3e4e013d495b617570becf2a4c9c753636d479e4015298",
-      "review_queue_preview.png": "73784f698a3823ed55c934323a59b5f79f5ebc8ebc25f71160ac6e632a838617"
+      "review_queue_preview.png": "19d51c29b88e9e8b86d613b2cfe97fc3c261ea93f6a07f53a7b54c1425b94d74"
     },
     "emphasis_previews_refreshed": [
       "report_ui_overview.png",
@@ -192,7 +192,7 @@
       "report_ui_live.png",
       "report_ui_mobile.png"
     ],
-    "queue_preview_refreshed": "Full team names and plain-language situation/result cards."
+    "queue_preview_refreshed": "Compact cards with team name, plain-language situation/result, game context and receiver buttons."
   },
   "receiver_movement_and_situation": {
     "replays_checked": 52,
@@ -331,8 +331,10 @@
       "George Kittle filter gives one card, explains 1 yard short and opens the correct replay",
       "Clear restores 50 cards",
       "1280x900 and 390x844 show no horizontal overflow",
-      "No console errors"
+      "No console errors",
+      "50 cards and 92 receiver buttons retained; removed metadata lines absent; Mike Evans selection opens the correct replay; no mobile overflow or console errors."
     ],
-    "data": "Queue selections, underlying metrics and replay data unchanged."
+    "data": "Queue selections, underlying metrics and replay data unchanged.",
+    "removed_lines": "Dropback type and hurry/hit labels, plus throw time and game/play IDs removed from the visible queue cards."
   }
 }
