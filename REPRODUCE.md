@@ -33,6 +33,16 @@ tracking, and highlighted in purple; the selected receiver is green. Both have n
 jersey numbers above the replay and labels on the field. Missing or ambiguous passer
 identity is shown as unidentified, never inferred from position or ball proximity.
 The selected receiver is not necessarily the pass's intended target.
+Each replay joins `down` and `yardsToGo` from `plays.csv`; invalid values stay unknown.
+The blue dashed target is the normalized starting line plus yards to go, capped at the
+goal line (x=110); both field views keep the target visible. Current receiver speed is
+the recorded tracking `s`, shown in yd/s and mph (yd/s × 3600 / 1760), not a player ranking.
+Gap trend is (nearest distance now − nearest distance 0.3 seconds earlier) / 0.3:
+opening above +0.2 yd/s, closing below −0.2 yd/s, otherwise steady. The ±0.2 display
+deadband does not affect the spacing score. There is no trend for the first three frames;
+only earlier observations are used, and the nearest defender may change. First-down-line
+proximity is position context, not a prediction of a catch or conversion. These additions
+do not change the eligibility rules, 33.1% result or queue, and add no ball-flight model.
 Replays stop at the recorded release. The brown dot is the ball; post-throw flight is not
 shown. The playback notice changes to “Throw — replay ends” at the final frame, and the
 Replay button starts again from the beginning.

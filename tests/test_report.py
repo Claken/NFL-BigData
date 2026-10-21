@@ -7,9 +7,65 @@ import polars as pl
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from report import replay_id, review_candidates, thrower_data
+from audit import normalize
+from report import (
+    add_gap_trend,
+    replay_id,
+    review_candidates,
+    situation_data,
+    speed_value,
+    thrower_data,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+@pytest.mark.parametrize("direction, raw_line, down, distance, expected_line, goal", [
+    ("right", 40, 3, 8, 48, False),
+    ("left", 80, 4, 2, 42, False),
+    ("right", 105, 1, 5, 110, True),
+    ("left", 15, 2, 5, 110, True),
+])
+def test_first_down_line_follows_offense_and_handles_goal_to_go(
+        direction, raw_line, down, distance, expected_line, goal):
+    line = normalize(raw_line, 0, direction)[0]
+    result = situation_data(line, {"down": down, "yardsToGo": distance})
+    assert result == {"down": down, "yards_to_go": distance,
+                      "line_to_gain": expected_line, "goal_to_go": goal}
+
+
+def test_missing_situation_is_not_invented():
+    assert situation_data(50, {}) == {"down": None, "yards_to_go": None,
+                                      "line_to_gain": None, "goal_to_go": None}
+    assert situation_data(50, {"down": 0, "yardsToGo": -1}) == situation_data(50, {})
+
+
+@pytest.mark.parametrize("value, expected", [(6.5, 6.5), (0, 0), (None, None),
+                                            (float("nan"), None), (float("inf"), None), (-1, None)])
+def test_recorded_speed_preserves_stopped_player_and_missing_data(value, expected):
+    assert speed_value(value) == expected
+
+
+@pytest.mark.parametrize("delta, trend", [(0.3, "opening"), (-0.3, "closing"),
+                                         (0.06, "steady"), (-0.06, "steady")])
+def test_gap_trend_is_trailing_nearest_gap_not_individual_defender_speed(delta, trend):
+    frames = [{"frame": i, "separation": 2 + i * delta / 3, "nearest": i % 2}
+              for i in range(4)]
+    add_gap_trend(frames)
+    assert all(f["gap_trend"] == "unknown" for f in frames[:3])
+    assert frames[-1]["gap_change_yards_per_second"] == pytest.approx(delta / 0.3)
+    assert frames[-1]["gap_trend"] == trend
+    # A future observation must not change past readouts.
+    before = [f.copy() for f in frames]
+    frames.append({"frame": 4, "separation": 100})
+    add_gap_trend(frames)
+    assert frames[:4] == before
+
+
+def test_gap_trend_does_not_bridge_missing_tracking_frames():
+    frames = [{"frame": i, "separation": float(i)} for i in [0, 1, 3, 4]]
+    add_gap_trend(frames)
+    assert frames[-1]["gap_change_yards_per_second"] is None
 
 
 @pytest.mark.parametrize("roles, expected", [
@@ -66,6 +122,14 @@ def test_packaged_queue_replays_match_endpoints_windows_and_field_geometry():
     # Verify all displayed frames, including leftward plays, against normalized geometry.
     for replay in replays.values():
         route, frames = replay["route"], replay["frames"]
+        situation = replay["situation"]
+        assert situation["down"] is None or 1 <= situation["down"] <= 4
+        if situation["yards_to_go"] is None:
+            assert situation["line_to_gain"] is None
+        else:
+            assert situation["yards_to_go"] > 0
+            assert situation["line_to_gain"] == pytest.approx(
+                min(110, replay["line_of_scrimmage"] + situation["yards_to_go"]))
         thrower = replay["thrower"]
         assert thrower is not None
         assert thrower["source"] == "pff_role: Pass"
@@ -75,6 +139,8 @@ def test_packaged_queue_replays_match_endpoints_windows_and_field_geometry():
         assert frames[-1]["separation"] == route["release_separation"]
         assert 0 <= replay["initial_frame_index"] < len(frames)
         for frame in frames:
+            assert frame["receiver_speed_yards_per_second"] is not None
+            assert frame["receiver_speed_yards_per_second"] >= 0
             players = [p for p in frame["players"] if p["side"] != "ball"]
             assert len({p["id"] for p in players}) == 22
             passer = next(p for p in players if p["id"] == thrower["id"])

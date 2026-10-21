@@ -10,7 +10,7 @@
 <a class="skip-link" href="#replaySection">Skip to the examples</a>
 <div class="topbar">
   <div class="topbar-inner">
-    <a class="brand" href="#overview"><span class="brand-mark" aria-hidden="true">NFL</span>Receiver spacing study</a>
+    <a class="brand" href="#overview"><img class="brand-mark" src="__MASCOT__" alt="" width="60" height="40">NFL Buddy</a>
     <nav class="section-nav" aria-label="Report sections">
       <a href="#overview">Finding</a><a href="#replaySection">Try it</a><a href="#comparison">Evidence</a><a href="#methodology">Method</a><a href="#downloads">Downloads</a>
     </nav>
@@ -19,6 +19,7 @@
 <main>
 <header id="overview" class="hero">
   <div class="hero-copy">
+    <div class="hero-brand"><img class="hero-mascot" src="__MASCOT__" alt="8-bit football player holding a football and using a computer" width="144" height="96"><span>NFL Buddy</span></div>
     <p class="eyebrow">A film-review tool for coaches &amp; analysts</p>
     <h1>Was there more space before the throw?</h1>
     <p class="lead">Find earlier gaps between a receiver—the player trying to catch the ball—and the nearest opponent. Replay those moments to choose plays for video review.</p>
@@ -41,6 +42,7 @@
     <div><dt>Separation / spacing</dt><dd>The distance from the receiver to the closest defender. The closest defender can change as players move.</dd></div>
     <div><dt>Window</dt><dd>Here, a stretch of time with a gap above our distance threshold. It does not mean a clear path for throwing the ball.</dd></div>
     <div><dt>Line of scrimmage / downfield</dt><dd>The line of scrimmage is where the ball starts the play. Downfield means beyond that line, toward the end the offense is attacking.</dd></div>
+    <div><dt>Down &amp; distance</dt><dd>The offense normally has four attempts (downs) to gain 10 yards for a new set. “3rd &amp; 8” means third attempt, with 8 yards still needed. Goal to go means the goal line is the target.</dd></div>
     <div><dt>Alignment</dt><dd>Where the receiver starts. Wide means near the sideline; Slot means farther inside. HB means halfback and TE means tight end, two player roles.</dd></div>
     <div><dt>Coverage</dt><dd>The defense’s plan for guarding receivers or areas of the field. Labels such as Cover-1 and Cover-2 identify different plans; you can leave this filter on All.</dd></div>
     <div><dt>Film review / dropback</dt><dd>Film review means watching game video. A dropback is the quarterback’s movement back to prepare a pass; longer plays allow more time for gaps to appear.</dd></div>
@@ -64,6 +66,7 @@
     <div class="thrower-identity"><span>Thrower</span><b id="throwerName"></b></div>
     <div class="receiver-identity"><span>Selected receiver</span><b id="selectedName"></b></div>
   </div>
+  <p class="situation-row"><b id="downDistance"></b><span id="situationHint"></span></p>
   <div class="example-switch" aria-label="Matched examples"><button id="example0" aria-pressed="true">A · A lasting gap earlier</button><button id="example1" aria-pressed="false">B · No lasting gap earlier</button></div>
   <div class="metrics">
     <div class="metric"><b id="releaseMetric"></b><span>gap at the throw</span></div>
@@ -77,7 +80,12 @@
     <canvas id="field" width="1120" height="533" role="img" aria-label="NFL field replay with receiver and nearest defender highlighted"></canvas>
   </div>
   <div class="live-readout"><p id="nearestReadout"></p><span class="gate-badge" id="gateStatus"></span></div>
-  <div class="legend"><span><i class="dot" style="background:#7351a3"></i>Thrower</span><span><i class="dot" style="background:#177449"></i>Selected receiver</span><span><i class="dot" style="background:#1769a6"></i>Teammates</span><span><i class="dot" style="background:#c65332"></i>Opponents</span><span><i class="dot" style="background:#704d22"></i>Ball</span></div>
+  <dl class="motion-facts" aria-label="Speed and game situation at this frame">
+    <div><dt>Receiver speed</dt><dd id="receiverSpeed"></dd><span id="receiverSpeedDetail"></span></div>
+    <div id="gapTrendCard"><dt>Nearest gap</dt><dd id="gapTrend"></dd><span id="gapTrendRate"></span></div>
+    <div><dt id="firstDownDistanceLabel">To first-down line</dt><dd id="firstDownDistance"></dd><span>Position only; a catch and gain are not assured.</span></div>
+  </dl>
+  <div class="legend"><span><i class="dot" style="background:#7351a3"></i>Thrower</span><span><i class="dot" style="background:#177449"></i>Selected receiver</span><span><i class="dot" style="background:#1769a6"></i>Teammates</span><span><i class="dot" style="background:#c65332"></i>Opponents</span><span><i class="dot" style="background:#704d22"></i>Ball</span><span id="lineToGainKey"><i class="gain-line-key"></i><span id="lineToGainLabel">First-down line</span></span></div>
   <div class="timeline-heading"><h3>Gap to the closest opponent</h3><p class="sub">Higher blue line = more space. Black cursor = the moment shown above.</p></div>
   <div id="timeline" class="chart" aria-label="Nearest-defender separation timeline"></div>
   <p class="chart-note"><b>Green:</b> qualifying earlier gap. <b>Grey:</b> excluded time. <b>Red point:</b> throw, where the replay ends.</p>
@@ -110,7 +118,7 @@
       <section class="detail-section" aria-labelledby="playDescriptionHeading"><h4 id="playDescriptionHeading">Official play description</h4><p id="description"></p><dl class="source-facts"><div><dt>Release marker</dt><dd id="releaseSource"></dd></div></dl></section>
       <section class="detail-section" aria-labelledby="matchingHeading"><h4 id="matchingHeading">About the A/B comparison</h4><p id="pairContext" class="matching-reference"></p>
         <ul class="matching-list"><li>Same player, game, starting position and defensive plan</li><li>Gap at throw: within <b>0.15 yd</b></li><li>Gap at play start: within <b>0.5 yd</b></li><li>Time to throw: within <b>0.3 s</b></li></ul>
-        <p class="detail-caption">Chosen for the largest history contrast among qualifying pairs; not typical plays.</p>
+        <p class="detail-caption">Chosen for the largest history contrast; not typical plays. Down, distance and speed are not matched.</p>
       </section>
     </div>
   </details>
@@ -133,6 +141,10 @@
           <li><span class="key-symbol line-symbol" aria-hidden="true"></span><div><b>Grey dashed line</b><span>Where the ball started</span></div></li>
         </ul>
         <p class="detail-caption">All 22 players · offense moves right → · recorded positions, not game video.</p>
+      </section>
+      <section class="detail-section" aria-labelledby="movementHeading"><h4 id="movementHeading">Speed, gap change &amp; the first-down line</h4>
+        <p class="detail-caption">Speed is recorded for this receiver at this frame, not a rating of how fast the player usually is. Opening / closing compares the nearest gap now with 0.3 seconds earlier; the closest opponent can change. Rates within ±0.2 yd/s display as steady, and the first 0.3 seconds have no trend yet.</p>
+        <p class="detail-caption">The blue dashed line marks the yards needed for a new set of downs, or the goal line on goal-to-go plays. Being beyond it does not prove a pass, catch or conversion was available. These context cues do not alter the spacing score or predict ball flight.</p>
       </section>
       <section class="detail-section" aria-labelledby="keyboardHeading"><h4 id="keyboardHeading">Keyboard controls</h4><p class="detail-caption">Focus the time slider; the field and chart stay synchronized.</p>
         <dl class="keyboard-guide"><div><dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>Step one frame</dd></div><div><dt><kbd>Home</kbd></dt><dd>Play start</dd></div><div><dt><kbd>End</kbd></dt><dd>Throw</dd></div></dl>

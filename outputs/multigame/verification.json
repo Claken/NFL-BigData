@@ -1,10 +1,10 @@
 {
-  "tests_passed": 24,
+  "tests_passed": 40,
   "ruff": "passed",
   "javascript_syntax": "passed",
   "analysis_outputs_unchanged": true,
   "prior_locked_full_analysis_build": "passed; unchanged analysis files checked against that build",
-  "fresh_locked_report_rebuild": "passed using the locked environment; 52 replays and 156 independent checks retained, with all 10 analysis/replay/evidence exports byte-identical to the pre-wording build",
+  "fresh_locked_report_rebuild": "Passed in the existing pinned project environment; rebuilt with recorded receiver speed, situation context and embedded NFL Buddy branding. Statistical exports and original replay geometry are unchanged.",
   "queue_routes": 50,
   "unique_packaged_replays": 52,
   "manual_nearest_defender_checks": 156,
@@ -162,25 +162,65 @@
   },
   "image_freshness": {
     "checked_date": "2026-10-21",
-    "capture_url": "https://nflbuddy.nix.zone/",
-    "deployed_source_commit": "1e40b1530d90d3174f624a88858d47b0765d46a0",
-    "report_sha256": "ee6fe262348b1ea1dcae6745e7a3f9bd8d19b4f166edd280aea693b34dfb9e3a",
+    "capture_url": "http://127.0.0.1:8776/report.html (rebuilt production candidate)",
+    "report_sha256": "0ec0f02bb0a13ea352dd1042efa6975777fd5a27337c1d151d9072c61fee5c19",
     "refreshed_previews": [
       "report_ui_overview.png",
       "report_ui_review.png",
-      "review_queue_preview.png",
-      "report_ui_live.png"
+      "report_ui_context.png",
+      "report_ui_frame.png",
+      "report_ui_live.png",
+      "report_ui_motion_mobile.png",
+      "report_ui_motion.png",
+      "review_queue_preview.png"
     ],
-    "detail_previews": "report_ui_context.png and report_ui_frame.png already show the current structured play/frame panels; checked against live DOM including frame 16: 3.31 yd gap and 1.1 yd downfield.",
+    "detail_previews": "Refreshed structured play/frame screenshots with the embedded NFL Buddy branding; existing frame values retained.",
     "matched_pair_png": "Fresh report build in the existing project environment produced a byte-identical chart (SHA-256 403a62f1b8223c308676fb9a1d8f6c9aed75db4a2d55189c33ec76a457ce4a95).",
     "legacy_chart": "outputs/separation.png is the separately documented original one-game audit, not a multigame report screenshot.",
     "screenshots": {
-      "report_ui_overview.png": "e6dad27850c1c14c0d9f718f3b064f3ff4d8518a9207ef26e08ba0e2290c1f9e",
-      "report_ui_review.png": "aca05c3ec5cd54ae0768b69fbdea0d171e77489fc633c42040d7f0f5e501fdee",
-      "review_queue_preview.png": "2b49b809441dc1d20c0631d7dbea9d83543ebbe6ed5806b48ea57f7ef1880ca3",
-      "report_ui_live.png": "e6dad27850c1c14c0d9f718f3b064f3ff4d8518a9207ef26e08ba0e2290c1f9e",
-      "report_ui_context.png": "8c01755a5825f5e232d5a39503ce0298d66f09f09ce69e7f96a116e125211667",
-      "report_ui_frame.png": "ea640cf43416d2caca3529006d984c8eb000f6e8d68ba10dd21c0544b68a7665"
+      "review_queue_preview.png": "2842fa082d3ce70ca38149bf6e34f6459a38b9c84b50e9b23af37312f61f4753",
+      "report_ui_overview.png": "7cd69e4c9c649f91e1dde3abb76cab92275a51ed494a6ac35a700e1f5a2741fa",
+      "report_ui_review.png": "2c72617ec3c7da00a3b7d921dfcf05f60b57452e591a91c56e531cf8abb6cb2f",
+      "report_ui_context.png": "f57957c2e24ba4665373e84fedcf844ea5b4c98954cca38a3889b491475d8d01",
+      "report_ui_frame.png": "5a3d537ecbbdf4470b852fc7c3a3e118d933f57ec5400838139d9f63c37a61bf",
+      "report_ui_live.png": "7cd69e4c9c649f91e1dde3abb76cab92275a51ed494a6ac35a700e1f5a2741fa",
+      "report_ui_motion_mobile.png": "eaf0febd58210d2747e41aca43d64a91619a8a010f131e55ca9e6390763a0ebf",
+      "report_ui_motion.png": "61d0dfcfecd9ee9b9378ce4bcaa474532d8dd1a0c35e370aada1341ffc72eee8"
     }
+  },
+  "receiver_movement_and_situation": {
+    "replays_checked": 52,
+    "raw_speed_frames_checked": 3426,
+    "play_situations_checked": 52,
+    "missing_situations": 1,
+    "goal_to_go_replays": 1,
+    "original_replay_geometry_and_spacing": "byte-equivalent after removing the new context fields",
+    "queue": "unchanged",
+    "gap_rate": "independently recomputed for every packaged frame",
+    "tests_passed": 40,
+    "ruff": "passed",
+    "javascript_syntax": "passed",
+    "speed_units": "Tracking s in yd/s; mph = s * 3600 / 1760. No player-level fast/slow classification.",
+    "gap_trend": "Trailing 0.3-second nearest-gap difference divided by 0.3; display deadband \u00b10.2 yd/s, no future frames; nearest opponent may change.",
+    "line_to_gain": "Offense-right line of scrimmage plus yardsToGo, capped at x=110 for goal-to-go; missing distance produces no target line.",
+    "browser_checks": [
+      "A shows 1st & 10, 15.1 mph / 7.4 yd/s, closing -0.9 yd/s and 5.8 yd short at 1.6 s.",
+      "Home shows no gap trend yet; End updates speed, gap and line position and retains the throw boundary notice.",
+      "B changes to 2nd & 12.",
+      "Greg Ward play 613 shows 3rd & Goal, goal-line label and line x=110.",
+      "Tim Patrick play 2030 shows 4th & 1; both field views work.",
+      "J.D. McKissic play 3903 shows unknown down/distance and hides the target line.",
+      "Playback updates readouts; receiver filtering and queue selection continue to work.",
+      "390x844 mobile layout has no document-level horizontal overflow.",
+      "No browser console errors observed."
+    ],
+    "preview_files": [
+      "report_ui_review.png",
+      "review_queue_preview.png",
+      "report_ui_motion.png",
+      "report_ui_motion_mobile.png"
+    ],
+    "limits": "Situation and movement are descriptive context only; spacing score unchanged; no ball-flight, catch or conversion prediction.",
+    "branding": "Approved concurrent NFL Buddy branding included; both mascot image tags are embedded data URLs."
   }
 }

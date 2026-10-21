@@ -53,7 +53,7 @@ Open [`outputs/multigame/report.html`](outputs/multigame/report.html) in your br
 4. Play or scrub through the field replay and separation timeline together.
 5. Check **Evidence** and **Method** for group results, sensitivity checks and exclusions.
 
-![Route-review workspace with a filterable queue, field replay and separation timeline](outputs/multigame/report_ui_review.png)
+![Route review with named players, down-and-distance, receiver speed, field replay and separation timeline](outputs/multigame/report_ui_review.png)
 
 ## Questions it answers
 
@@ -93,13 +93,15 @@ Scott Miller has two routes in the same game, both from a Wide alignment against
 | 3195 | 1.43 yd | 0.9 s |
 | 2885 | 1.33 yd | 0.0 s |
 
-Their release spacing is similar, but their earlier histories differ. The pair was selected to illustrate that contrast; it is not a typical-route estimate.
+Their release spacing is similar, but their earlier histories differ. The pair was selected to illustrate that contrast; it is not a typical-route estimate. Down, distance and receiver speed are not matched.
 
 ## Features
 
 | Capability | What you can do |
 | --- | --- |
 | **Synchronized replay** | Follow all 22 players, with the named thrower in purple and selected receiver in green |
+| **Game situation** | See down-and-distance, a blue first-down or goal line, and the receiver's distance to it |
+| **Movement context** | Read current receiver speed and whether the nearest gap is opening, closing or steady |
 | **Playback controls** | Play, pause and scrub from play start to the throw; a clear end label explains that ball flight is not shown |
 | **Field views** | Switch between Fit play and Full field with equal yard scales |
 | **Review queue** | Filter 50 selected routes by receiver, alignment and coverage |

@@ -105,6 +105,12 @@ function boundsFor(replay) {
   for (const frame of replay.frames) for (const p of frame.players) {
     x0 = Math.min(x0, p.x); x1 = Math.max(x1, p.x); y0 = Math.min(y0, p.y); y1 = Math.max(y1, p.y);
   }
+  x0 = Math.min(x0, replay.line_of_scrimmage);
+  x1 = Math.max(x1, replay.line_of_scrimmage);
+  if (replay.situation.line_to_gain != null) {
+    x0 = Math.min(x0, replay.situation.line_to_gain);
+    x1 = Math.max(x1, replay.situation.line_to_gain);
+  }
   const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
   const width = Math.max(48, x1 - x0 + 8), height = Math.max(32, y1 - y0 + 8);
   const bounds = { fit: { x0: cx - width / 2, x1: cx + width / 2, y0: cy - height / 2, y1: cy + height / 2 },
@@ -140,6 +146,12 @@ function draw() {
   ctx.strokeStyle = '#718494'; ctx.setLineDash([5, 4]); ctx.beginPath();
   const [lineX, lineTop] = xy({ x: current.line_of_scrimmage, y: 160 / 3 });
   ctx.moveTo(lineX, lineTop); ctx.lineTo(lineX, xy({ x: 0, y: 0 })[1]); ctx.stroke(); ctx.setLineDash([]);
+  const gainLine = current.situation.line_to_gain;
+  if (gainLine != null) {
+    const [gainX, gainTop] = xy({ x: gainLine, y: 160 / 3 });
+    ctx.strokeStyle = '#216db3'; ctx.lineWidth = 2; ctx.setLineDash([8, 5]); ctx.beginPath();
+    ctx.moveTo(gainX, gainTop); ctx.lineTo(gainX, xy({ x: 0, y: 0 })[1]); ctx.stroke(); ctx.setLineDash([]);
+  }
   ctx.strokeStyle = '#17744970'; ctx.lineWidth = 2; ctx.beginPath();
   current.frames.forEach((p, i) => { const [x, y] = xy(p); if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); }); ctx.stroke();
   ctx.strokeStyle = '#177449'; ctx.lineWidth = 3; ctx.beginPath();
@@ -208,6 +220,17 @@ function draw() {
   el('gateStatus').textContent = !valid ? 'This moment is not counted' :
     f.separation > 2 ? 'Gap above 2 yards at this moment' : 'Opponent within 2 yards';
   el('gateStatus').dataset.eligible = String(valid && f.separation > 2);
+  const speed = f.receiver_speed_yards_per_second, rate = f.gap_change_yards_per_second;
+  el('receiverSpeed').textContent = speed == null ? 'Unavailable' : (speed * 3600 / 1760).toFixed(1) + ' mph';
+  el('receiverSpeedDetail').textContent = speed == null ? 'No valid recorded speed' : speed.toFixed(1) + ' yd/s · at this frame';
+  el('gapTrend').textContent = { opening: '↗ Opening', closing: '↘ Closing', steady: '→ Steady', unknown: 'Not yet measured' }[f.gap_trend];
+  el('gapTrendCard').dataset.trend = f.gap_trend;
+  el('gapTrendRate').textContent = rate == null ? 'Needs 0.3 s of history' :
+    (rate > 0 ? '+' : '') + rate.toFixed(1) + ' yd/s · past 0.3 s';
+  el('firstDownDistanceLabel').textContent = current.situation.goal_to_go ? 'To goal line' : 'To first-down line';
+  const yardsShort = gainLine == null ? null : gainLine - f.x;
+  el('firstDownDistance').textContent = yardsShort == null ? 'Unavailable' : Math.abs(yardsShort) < .05 ? 'At the line' :
+    Math.abs(yardsShort).toFixed(1) + ' yd ' + (yardsShort > 0 ? 'short' : 'beyond');
   el('frameEligibility').textContent = !valid ? 'Outside the time / position rules' :
     f.separation <= 2 ? 'Gap is too small to count' : 'Can contribute to an earlier gap';
   el('frameEligibilityNote').dataset.eligible = String(valid && f.separation > 2);
@@ -218,7 +241,11 @@ function draw() {
     'The gap is more than 2 yards here. It must last at least half a second without a break to become a qualifying window.';
   canvas.setAttribute('aria-label', current.route.displayName + ' at ' + f.t.toFixed(1) + ' seconds since snap; nearest defender ' +
     (nearest ? nearest.name : 'unknown') + ', ' + f.separation.toFixed(2) + ' yards away. Thrower: ' +
-    (current.thrower ? current.thrower.name : 'unknown') + '. Selected receiver: ' + current.route.displayName + '. All 22 players shown.');
+    (current.thrower ? current.thrower.name : 'unknown') + '. Selected receiver: ' + current.route.displayName +
+    '. ' + el('downDistance').textContent + '. Receiver speed: ' + el('receiverSpeed').textContent +
+    '. Nearest gap: ' + el('gapTrend').textContent + '. ' + el('firstDownDistanceLabel').textContent + ': ' +
+    el('firstDownDistance').textContent + '. All 22 players shown.');
+  canvas.dataset.lineToGain = gainLine ?? '';
   for (const [id, value] of Object.entries({ frameNumber: f.frame, frameTime: f.t.toFixed(1) + ' s',
     frameNearest: nearest ? nearest.name : 'Unknown', frameGap: f.separation.toFixed(2) + ' yd',
     frameDepth: f.downfield.toFixed(1) + ' yd', frameTimeDepth: valid ? 'Eligible' : 'Excluded' })) {
@@ -234,6 +261,15 @@ async function loadReplay(id, scroll = false) {
   for (const control of ['play', 'reset', 'scrub']) el(control).disabled = true;
   current = replays.get(id); index = current.initial_frame_index;
   const r = current.route, queued = queueById.get(id);
+  const situation = current.situation, downName = { 1: '1st', 2: '2nd', 3: '3rd', 4: '4th' }[situation.down];
+  const distance = situation.yards_to_go;
+  el('downDistance').textContent = (downName || 'Down unknown') + (distance == null ? '' : ' & ' +
+    (situation.goal_to_go ? 'Goal' : String(distance)));
+  el('situationHint').textContent = distance == null ? 'Distance unavailable' : distance +
+    (distance === 1 ? ' yard' : ' yards') +
+    (situation.goal_to_go ? ' to the goal line' : ' for a new set of downs');
+  el('lineToGainLabel').textContent = situation.goal_to_go ? 'Goal line' : 'First-down line';
+  el('lineToGainKey').hidden = situation.line_to_gain == null;
   for (let i = 0; i < 2; i++) el('example' + i).setAttribute('aria-pressed', String(id === model.exampleIds[i]));
   const receiver = current.frames[0].players.find(p => p.id === r.nflId);
   el('selectedName').textContent = r.displayName + (receiver?.label ? ' #' + receiver.label : '');

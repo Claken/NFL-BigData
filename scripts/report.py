@@ -1,6 +1,7 @@
 """Build an offline evidence report and synchronized replay from measured routes."""
 
 import argparse
+import base64
 import json
 import math
 from pathlib import Path
@@ -42,7 +43,35 @@ def thrower_data(route, scouting, tracking, names):
             "jersey_number": player["jerseyNumber"][0], "source": "pff_role: Pass"}
 
 
-def example_data(key, routes, raw, processed, names, scouting, sources=None):
+def situation_data(line, play):
+    """Recorded down/distance on an offense-right field; goal line is x=110."""
+    down, distance = play.get("down"), play.get("yardsToGo")
+    down = down if isinstance(down, int) and 1 <= down <= 4 else None
+    distance = (float(distance) if isinstance(distance, (int, float))
+                and math.isfinite(distance) and distance > 0 else None)
+    goal = line + distance >= 110 - 1e-6 if distance is not None else None
+    return {"down": down, "yards_to_go": distance, "goal_to_go": goal,
+            "line_to_gain": min(110, line + distance) if distance is not None else None}
+
+
+def speed_value(value):
+    """Missing or invalid tracking speed is unknown, never zero-filled."""
+    return float(value) if value is not None and math.isfinite(value) and value >= 0 else None
+
+
+def add_gap_trend(frames):
+    """Trailing 0.3 s nearest-gap change; no future frames or defender-speed shortcut."""
+    for i, frame in enumerate(frames):
+        rate = None
+        if i >= 3 and frame["frame"] - frames[i - 3]["frame"] == 3:
+            rate = (frame["separation"] - frames[i - 3]["separation"]) / 0.3
+        frame["gap_change_yards_per_second"] = rate
+        # A display deadband, independent of the sustained-window definition.
+        frame["gap_trend"] = ("unknown" if rate is None else "opening" if rate > 0.2 + 1e-9
+                              else "closing" if rate < -0.2 - 1e-9 else "steady")
+
+
+def example_data(key, routes, raw, processed, names, scouting, sources=None, plays=None):
     route = routes.filter(pl.all_horizontal([pl.col(k) == key[k] for k in KEY])).row(0, named=True)
     if sources is None:
         tracking_game = read_csv(raw, f"tracking/tracking_{key['gameId']}.csv")
@@ -66,7 +95,10 @@ def example_data(key, routes, raw, processed, names, scouting, sources=None):
     frames, manual = [], []
     for index, row in enumerate(distances.iter_rows(named=True)):
         players = []
+        receiver_speed = None
         for p in source_frames[row["frameId"]].iter_rows(named=True):
+            if p["nflId"] == key["nflId"]:
+                receiver_speed = speed_value(p["s"])
             x, y = normalize(p["x"], p["y"], direction)
             is_offense = p["team"] == route["possessionTeam"]
             players.append({"id": p["nflId"], "x": round(x, 3), "y": round(y, 3),
@@ -76,7 +108,8 @@ def example_data(key, routes, raw, processed, names, scouting, sources=None):
         x, y = normalize(row["x"], row["y"], direction)
         frames.append({"frame": row["frameId"], "t": (row["frameId"] - route["snap"]) / 10,
                        "separation": row["separation_yards"], "downfield": row["downfield_yards"],
-                       "nearest": row["defenderId"], "x": x, "y": y, "players": players})
+                       "nearest": row["defenderId"], "x": x, "y": y, "players": players,
+                       "receiver_speed_yards_per_second": receiver_speed})
         # Independent nearest search against original raw coordinates, not cached defender coordinates.
         if index in [0, distances.height // 2, distances.height - 1]:
             candidates = []
@@ -91,6 +124,10 @@ def example_data(key, routes, raw, processed, names, scouting, sources=None):
             manual.append({**key, "frameId": row["frameId"], "defenderId": defender,
                            "independent_distance": distance, "calculated_distance": row["separation_yards"]})
     line = normalize(route["absoluteYardlineNumber"], 0, direction)[0]
+    if plays is None:
+        plays = {(p["gameId"], p["playId"]): p for p in read_csv(raw, "plays.csv").to_dicts()}
+    situation = situation_data(line, plays.get((key["gameId"], key["playId"]), {}))
+    add_gap_trend(frames)
     start = len(frames) - 1
     if history["windows"]:
         longest = max(history["windows"], key=lambda w: w["duration_seconds"])
@@ -99,7 +136,7 @@ def example_data(key, routes, raw, processed, names, scouting, sources=None):
     return {"id": replay_id(key), "route": route,
             "thrower": thrower_data(route, scouting, tracking, names),
             "frames": frames, "windows": history["windows"],
-            "line_of_scrimmage": line, "initial_frame_index": start}, manual
+            "situation": situation, "line_of_scrimmage": line, "initial_frame_index": start}, manual
 
 
 def pct(x):
@@ -116,6 +153,7 @@ def main():
     routes = pl.read_parquet(args.output / "routes.parquet")
     names = {r["nflId"]: r["displayName"] for r in read_csv(args.raw, "players.csv").iter_rows(named=True)}
     scouting = read_csv(args.raw, "pffScoutingData.csv").select(*KEY, "pff_role")
+    plays = {(p["gameId"], p["playId"]): p for p in read_csv(args.raw, "plays.csv").to_dicts()}
     queue = review_candidates(routes)
     keys = {replay_id(key): {k: key[k] for k in KEY}
             for key in [*stats["pair"]["examples"], *queue.select(KEY).to_dicts()]}
@@ -135,7 +173,7 @@ def main():
                 .filter(pl.col("playId").is_in(play_ids)),
             )
         replay, checks = example_data(key, routes, args.raw, args.processed, names, scouting,
-                                      source_cache[game_id])
+                                      source_cache[game_id], plays)
         replays[route_id] = replay
         manual.extend(checks)
     example_ids = [replay_id(key) for key in stats["pair"]["examples"]]
@@ -169,7 +207,8 @@ def main():
              "queue": queue_entries, "scatter": scatter, "groups": groups}
     encoded = json.dumps(model, separators=(",", ":")).replace("<", "\\u003c")
     template = (ROOT / "scripts/report_template.html").read_text()
-    body = template
+    mascot = base64.b64encode((ROOT / "assets/nfl-player-mascot.png").read_bytes()).decode("ascii")
+    body = template.replace("__MASCOT__", f"data:image/png;base64,{mascot}")
     display_values = {
         "__RATE__": pct(main_stat["fraction"]),
         "__HIDDEN_COUNT__": f"{main_stat['earlier_sustained_routes']:,}",
