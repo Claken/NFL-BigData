@@ -89,12 +89,13 @@ main { max-width: 1480px; margin: auto; padding: 30px 32px 32px; }
 .view-switch button { font-size: 11px; padding: 5px 9px; min-height: 28px; background: transparent; border-color: transparent; color: #c8d8c8; }
 .view-switch button[aria-pressed="true"] { background: #284b31; color: var(--green); }
 canvas { display: block; width: 100%; height: auto; aspect-ratio: 2.35; }
-.field-status { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px 12px; padding: 10px 16px; background: #143422; font-size: 11px; color: #d0decf; }
+.field-status { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 5px 12px; min-height: 53px; padding: 10px 16px; background: #143422; font-size: 11px; color: #d0decf; }
 .gate-badge { color: #b9cbb9; }
 .gate-badge[data-eligible="true"] { color: var(--green); }
 .controls { display: flex; align-items: center; gap: 10px; margin: 14px 0 10px; }
 .controls button { min-height: 38px; padding: 6px 14px; font-size: 12px; }
 #play::before { content: '▶'; font-size: 9px; margin-right: 6px; }
+#play { min-width: 88px; flex: 0 0 88px; }
 #play[data-playing="true"]::before { content: 'Ⅱ'; }
 #reset { font-size: 18px; padding: 3px 12px; }
 /* Preserve the native slider; outline the projected section with dotted borders. */
@@ -120,16 +121,16 @@ canvas { display: block; width: 100%; height: auto; aspect-ratio: 2.35; }
 .opponent-dot { background: #eb9d7d; }
 .ball-dot { background: var(--gold); }
 .gain-line-key { display: inline-block; width: 14px; border-top: 2px dashed var(--blue); margin-right: 4px; vertical-align: middle; }
-.replay-boundary { color: var(--muted); font-size: 10px; margin-top: 8px; }
+.replay-boundary { color: var(--muted); font-size: 10px; margin-top: 8px; min-height: 3em; }
 .replay-boundary[data-phase="throw"] { color: var(--gold); }
 .flight-banner { min-height: 34px; padding: 8px 14px; background: #102c1d; color: var(--gold); font-size: 11px; border-top: 1px solid var(--line); }
 .flight-key { display: flex; flex-wrap: wrap; gap: 6px 18px; color: var(--muted); font-size: 11px; margin-top: 8px; }
 .flight-key i { display: inline-block; width: 22px; border-top: 2px solid var(--gold); margin-right: 7px; vertical-align: middle; }
 .flight-key .path-dotted { border-top-style: dotted; }
 .flight-controls { padding: 12px 14px; margin-top: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
-.flight-time { font-size: 13px; line-height: 1.5; }
+.flight-time { font-size: 13px; line-height: 1.5; min-height: 3em; }
 .flight-time output { color: var(--gold); font-weight: 700; }
-#flightComparison { font-size: 13px; color: var(--gold); margin-top: 8px; }
+#flightComparison { font-size: 13px; color: var(--gold); margin-top: 8px; min-height: 3em; }
 #flightLimit { font-size: 11px; color: var(--muted); line-height: 1.6; margin-top: 6px; }
 
 .story-rail { display: flex; flex-direction: column; min-width: 0; padding-top: 4px; }
@@ -306,7 +307,8 @@ kbd { padding: 3px 6px; border: 1px solid var(--line); border-radius: 4px; font-
   .field-toolbar > span { flex-basis: 100%; }
   .field-direction { display: none; }
   canvas { aspect-ratio: 1.15; }
-  .field-status { padding: 8px 10px; font-size: 10px; }
+  .field-status { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(30px, auto) minmax(30px, auto); padding: 8px 10px; font-size: 10px; }
+  #flightComparison { min-height: 4.5em; }
   .legend { gap: 7px 10px; }
   .controls { gap: 6px; }
   .controls output { min-width: 68px; font-size: 10px; }

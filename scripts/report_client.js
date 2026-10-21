@@ -457,12 +457,10 @@ function draw() {
   el('scrub').setAttribute('aria-valuetext', displayTime.toFixed(1) + ' seconds since play start; ' +
     (projected ? 'projected motion, not measured' : afterThrow ? 'recorded post-release positions' : atThrow ? 'throw' : 'before the throw'));
   el('flightReview').setAttribute('aria-pressed', String(afterThrow));
-  el('flightControls').hidden = !(projected || (atEnd && afterThrow));
-  el('flightLimit').hidden = !scenario;
-  el('projectionTimeLabel').hidden = !projected;
-  el('flightTime').textContent = flightHorizon.toFixed(1) + ' s';
+  el('flightTime').textContent = projected ? flightHorizon.toFixed(1) + ' s after the throw' :
+    current.post_release?.projection_unavailable ? 'unavailable for this play' : 'starts after recorded tracking';
   el('flightComparison').textContent = scenario ? 'Projected ball–receiver gap: ' + scenario.gap.toFixed(1) + ' yards.' + (scenario.outsideField ? ' The projected ball is outside the field.' : '') :
-    current.post_release?.projection_unavailable || 'No projection available.';
+    current.post_release?.projection_unavailable || 'Ball–receiver gap appears during projection.';
   if (!timer) {
     el('play').textContent = atEnd ? 'Replay' : 'Play';
     el('play').setAttribute('aria-label', atEnd ? 'Replay from play start' : 'Play replay');

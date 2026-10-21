@@ -37,15 +37,15 @@
         <canvas id="field" width="1120" height="600" role="img" aria-label="Football field with the selected receiver highlighted"></canvas>
         <div class="field-status"><span id="nearestReadout"></span><span class="gate-badge" id="gateStatus"></span></div>
       </div>
-      <section id="flightControls" class="flight-controls" aria-label="Explore a possible continuation" hidden>
-        <p id="projectionTimeLabel" class="flight-time">Projection at <output id="flightTime"></output> after the throw · use the replay timeline</p>
-        <p id="flightComparison"></p>
-        <p id="flightLimit">The cone covers assumed ball paths up to this time (±20% speed, ±15° direction). Green: receiver continues straight. Other players stay at their last recorded positions. <b>Landing time is unknown; this is not a landing prediction.</b></p>
-      </section>
       <div class="controls"><button id="play" class="primary" aria-label="Play replay" disabled>Play</button><button id="reset" aria-label="Restart replay" disabled>↺</button><div id="scrubTrack" class="scrub-track"><div class="scrub-rail" aria-hidden="true"><span class="scrub-projected"><span class="scrub-projected-fill"></span></span></div><input id="scrub" type="range" min="0" value="0" step="0.01" aria-label="Replay frame" aria-describedby="playbackStatus scrubKey" disabled></div><output id="clock" aria-label="Replay time"></output></div>
       <div class="legend"><span><i class="dot receiver-dot"></i>Receiver</span><span><i class="dot thrower-dot"></i>Thrower</span><span><i class="dot teammate-dot"></i>Teammates</span><span><i class="dot opponent-dot"></i>Opponents</span><span><i class="dot ball-dot"></i>Ball</span><span id="lineToGainKey"><i class="gain-line-key"></i><span id="lineToGainLabel">First-down line</span></span></div>
       <div class="flight-key" id="scrubKey"><span><i class="path-solid"></i>Solid paths: recorded</span><span><i class="path-dotted"></i>Dotted paths: assumed continuation</span></div>
       <p id="playbackStatus" class="replay-boundary" role="status" aria-live="polite">Replay includes the brief recorded start of ball flight. The landing is not recorded.</p>
+      <section id="flightControls" class="flight-controls" aria-label="Projection guide">
+        <p id="projectionTimeLabel" class="flight-time">Projection · <output id="flightTime">starts after recorded tracking</output></p>
+        <p id="flightComparison"></p>
+        <p id="flightLimit">The cone covers assumed ball paths up to this time (±20% speed, ±15° direction). Green: receiver continues straight. Other players stay at their last recorded positions. <b>Landing time is unknown; this is not a landing prediction.</b></p>
+      </section>
     </div>
     <aside class="story-rail" aria-labelledby="storyHeading">
       <p class="eyebrow">What to check first</p><h3 id="storyHeading">Beyond the line.<br>Space to inspect.</h3>

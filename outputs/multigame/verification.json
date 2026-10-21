@@ -163,7 +163,7 @@
   "image_freshness": {
     "checked_date": "2026-10-21",
     "capture_url": "http://127.0.0.1:8776/report.html (reviewed production candidate)",
-    "report_sha256": "37e0b5d3ada08d6d7dd43bab929c0dbdc78f9c10a47b31bac7d174f06212478e",
+    "report_sha256": "c4ba41238ac0a45c2f6ef5bb420355a47678f53e8ebd3d9a953d816fd378e91a",
     "refreshed_previews": [
       "report_ui_overview.png",
       "report_ui_review.png",
@@ -186,8 +186,8 @@
       "report_ui_live.png": "83156e1fa354ec0c0b69110d4e93f9d42da881fddd8efb50acf7e7111fb547b7",
       "report_ui_mobile.png": "105c21896f68247f90632a976d20943c1e74339d2e0798563702f75b3241eebe",
       "review_queue_preview.png": "961f7ab33552b6399f55db9741f315f2c3d9a96131f3cee89c3fab2a18659d82",
-      "report_ui_flight.png": "b5d16795622b469c7d5281bc6bb4723d709b27a42d803e70a8c4ff76f2017963",
-      "report_ui_flight_mobile.png": "5fddae571b107641b7d6cfa5f7ffd2e807e46e62c004f6ec4a4840b17f4f7f62"
+      "report_ui_flight.png": "0ac27ed2a34e8ebcdf6128b11ba6c035e8127f57a2a0fd93f825fe309e9e509a",
+      "report_ui_flight_mobile.png": "ea76c8472bc6bf2b7d750be141122cdf894842c4435de6c90a4d6db49c89d5ce"
     },
     "emphasis_previews_refreshed": [
       "report_ui_overview.png",
@@ -196,7 +196,7 @@
       "report_ui_mobile.png"
     ],
     "queue_preview_refreshed": "Compact cards with team name, plain-language situation/result, game context and receiver buttons.",
-    "latest_refresh": "Projection terminology: desktop and mobile flight previews refreshed; other previews retained from native-slider release."
+    "latest_refresh": "Stable projection layout: desktop and mobile flight previews refreshed; other previews retained from previous releases."
   },
   "receiver_movement_and_situation": {
     "replays_checked": 52,
@@ -397,6 +397,218 @@
       "Nine projection tests passed",
       "JavaScript syntax and diff whitespace checks passed",
       "Mobile projection wording visible without horizontal overflow"
+    ]
+  },
+  "projection_layout": {
+    "cause": "Projection guide was inserted above playback controls, adding roughly 130px. Changing status wrapping and button labels could also move the controls.",
+    "fix": "Playback controls directly beneath the field; projection guide always visible below them; stable space for changing labels and fixed Play/Pause/Replay button width.",
+    "viewports": {
+      "desktop": "1280x720",
+      "mobile": "390x844"
+    },
+    "measured_geometry": {
+      "desktop": {
+        "before": {
+          "field": {
+            "height": 294.65625,
+            "left": 33,
+            "top": 465.03125,
+            "width": 884
+          },
+          "flightControls": {
+            "height": 153.1875,
+            "left": 32,
+            "top": 963.1875,
+            "width": 886
+          },
+          "playbackStatus": {
+            "height": 30,
+            "left": 32,
+            "top": 923.1875,
+            "width": 886
+          },
+          "queueDrawer": {
+            "height": 959.21875,
+            "left": 32,
+            "top": 1462.34375,
+            "width": 1201
+          },
+          "scrubTrack": {
+            "height": 38,
+            "left": 181.09375,
+            "top": 827.6875,
+            "width": 640.90625
+          },
+          "timeline": {
+            "height": 145,
+            "left": 32,
+            "top": 1151.96875,
+            "width": 1201
+          }
+        },
+        "after": {
+          "field": {
+            "height": 294.65625,
+            "left": 33,
+            "top": 465.03125,
+            "width": 884
+          },
+          "flightControls": {
+            "height": 153.1875,
+            "left": 32,
+            "top": 963.1875,
+            "width": 886
+          },
+          "playbackStatus": {
+            "height": 30,
+            "left": 32,
+            "top": 923.1875,
+            "width": 886
+          },
+          "queueDrawer": {
+            "height": 959.21875,
+            "left": 32,
+            "top": 1462.34375,
+            "width": 1201
+          },
+          "scrubTrack": {
+            "height": 38,
+            "left": 181.09375,
+            "top": 827.6875,
+            "width": 640.90625
+          },
+          "timeline": {
+            "height": 145,
+            "left": 32,
+            "top": 1151.96875,
+            "width": 1201
+          }
+        },
+        "stable": true
+      },
+      "mobile": {
+        "before": {
+          "field": {
+            "height": 296.515625,
+            "left": 17,
+            "top": 825.109375,
+            "width": 341
+          },
+          "flightControls": {
+            "height": 207.875,
+            "left": 16,
+            "top": 1397.625,
+            "width": 343
+          },
+          "playbackStatus": {
+            "height": 30,
+            "left": 16,
+            "top": 1357.625,
+            "width": 343
+          },
+          "queueDrawer": {
+            "height": 1194.8125,
+            "left": 16,
+            "top": 2514.53125,
+            "width": 343
+          },
+          "scrubTrack": {
+            "height": 38,
+            "left": 157.09375,
+            "top": 1217.625,
+            "width": 127.90625
+          },
+          "timeline": {
+            "height": 150,
+            "left": 16,
+            "top": 2160.78125,
+            "width": 343
+          }
+        },
+        "playing": {
+          "field": {
+            "height": 296.515625,
+            "left": 17,
+            "top": 825.109375,
+            "width": 341
+          },
+          "flightControls": {
+            "height": 207.875,
+            "left": 16,
+            "top": 1397.625,
+            "width": 343
+          },
+          "playbackStatus": {
+            "height": 30,
+            "left": 16,
+            "top": 1357.625,
+            "width": 343
+          },
+          "queueDrawer": {
+            "height": 1194.8125,
+            "left": 16,
+            "top": 2514.53125,
+            "width": 343
+          },
+          "scrubTrack": {
+            "height": 38,
+            "left": 157.09375,
+            "top": 1217.625,
+            "width": 127.90625
+          },
+          "timeline": {
+            "height": 150,
+            "left": 16,
+            "top": 2160.78125,
+            "width": 343
+          }
+        },
+        "after": {
+          "field": {
+            "height": 296.515625,
+            "left": 17,
+            "top": 825.109375,
+            "width": 341
+          },
+          "flightControls": {
+            "height": 207.875,
+            "left": 16,
+            "top": 1397.625,
+            "width": 343
+          },
+          "playbackStatus": {
+            "height": 30,
+            "left": 16,
+            "top": 1357.625,
+            "width": 343
+          },
+          "queueDrawer": {
+            "height": 1194.8125,
+            "left": 16,
+            "top": 2514.53125,
+            "width": 343
+          },
+          "scrubTrack": {
+            "height": 38,
+            "left": 157.09375,
+            "top": 1217.625,
+            "width": 127.90625
+          },
+          "timeline": {
+            "height": 150,
+            "left": 16,
+            "top": 2160.78125,
+            "width": 343
+          }
+        },
+        "stable": true
+      }
+    },
+    "checks": [
+      "Field, slider, projection guide, playback status, chart and review queue have identical document geometry at Home and projected End on desktop and mobile.",
+      "Mobile geometry also identical during playback.",
+      "No mobile horizontal overflow or browser console errors.",
+      "Nine projection tests, JavaScript syntax, Ruff and diff whitespace checks passed."
     ]
   }
 }
