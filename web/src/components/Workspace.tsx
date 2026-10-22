@@ -199,12 +199,15 @@ export default function Workspace({
               </Button>
               <Button
                 variant="ghost"
-                aria-pressed={full}
-                onClick={() => setFull(!full)}
-                aria-label={full ? "Fit players in view" : "Show full field"}
+                className="camera-toggle"
+                role="switch"
+                aria-label="Full field view"
+                aria-checked={full}
+                title={full ? "Switch to fitted view" : "Switch to full field"}
+                onClick={() => setFull((value) => !value)}
               >
-                {full ? <Focus size={16} /> : <Expand size={16} />}
-                <span>{full ? "Fit view" : "Full field"}</span>
+                {full ? <Expand size={16} /> : <Focus size={16} />}
+                <span>View: {full ? "Full field" : "Fit"}</span>
               </Button>
             </div>
           </div>
@@ -226,6 +229,7 @@ export default function Workspace({
               time={time}
               full={full}
               trails={trails}
+              projectionEnabled={projectionEnabled}
             />
             <div className="field-bottomline">
               <div className="field-legend">

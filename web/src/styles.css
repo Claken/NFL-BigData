@@ -2212,3 +2212,12 @@ kbd {
   color: var(--muted);
   font-size: var(--text-xs);
 }
+
+.camera-toggle {
+  min-width: 130px;
+}
+@media (max-width: 480px) {
+  .camera-toggle {
+    min-width: 116px;
+  }
+}

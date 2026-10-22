@@ -12,6 +12,25 @@ const source=readFileSync(resolve(root,'scripts/report_client.js'),'utf8');
 const legacy=vm.createContext({recordedCache:new Map()});
 vm.runInContext(source.slice(source.indexOf('function recordedFrames'),source.indexOf('function drawFlight')),legacy);
 describe('tracking and projection migration',()=>{
+ it('fits every recorded player and both situation lines across all 92 cues',()=>{
+   const ratios: number[]=[];
+   for(const replay of replays){
+     const points=recordedFrames(replay).flatMap(f=>f.players), bounds=fieldBounds(replay,false);
+     for(const point of points){expect(point.x).toBeGreaterThan(bounds.x0);expect(point.x).toBeLessThan(bounds.x1);expect(point.y).toBeGreaterThan(bounds.y0);expect(point.y).toBeLessThan(bounds.y1);}
+     for(const x of [replay.line_of_scrimmage,replay.situation.line_to_gain]){expect(x).toBeGreaterThan(bounds.x0);expect(x).toBeLessThan(bounds.x1);}
+     const projection=projectionAt(replay,endTime(replay));
+     const oldPoints=[...points,...(projection?[...projection.sector,projection.projectedReceiver]:[]),{x:replay.line_of_scrimmage,y:0},{x:replay.situation.line_to_gain,y:160/3}];
+     const oldX=Math.max(...oldPoints.map(p=>p.x))-Math.min(...oldPoints.map(p=>p.x))+10;
+     const oldY=Math.max(...oldPoints.map(p=>p.y))-Math.min(...oldPoints.map(p=>p.y))+8;
+     for(const [w,h] of [[750,470],[366,330],[296,330]]){
+       const pad=w<500?36:70;
+       const before=Math.min((w-pad)/oldX,(h-56)/oldY),after=Math.min((w-pad)/(bounds.x1-bounds.x0),(h-56)/(bounds.y1-bounds.y0));
+       expect(after).toBeGreaterThanOrEqual(before-1e-9);ratios.push(after/before);
+     }
+   }
+   ratios.sort((a,b)=>a-b);console.log('Camera scale improvement across 92 cues × 3 sizes:',{minimum:ratios[0],median:ratios[Math.floor(ratios.length/2)],maximum:ratios.at(-1)});
+ });
+
  it('matches the established projection model for all 92 receiver cues',()=>{
    expect(replays).toHaveLength(92);
    for(const replay of replays){
@@ -43,7 +62,7 @@ describe('tracking and projection migration',()=>{
    expect(endTime(replay)).toBe(recordedFrames(replay).at(-1)!.t);
  });
  it('reserves camera bounds for the entire projection in advance',()=>{
-   for(const replay of replays){const bounds=fieldBounds(replay,false),p=projectionAt(replay,endTime(replay));if(!p)continue;
+   for(const replay of replays){const bounds=fieldBounds(replay,false,true),p=projectionAt(replay,endTime(replay));if(!p)continue;
      for(const point of [...p.sector,p.projectedReceiver]){expect(point.x).toBeGreaterThan(bounds.x0);expect(point.x).toBeLessThan(bounds.x1);expect(point.y).toBeGreaterThan(bounds.y0);expect(point.y).toBeLessThan(bounds.y1)}
    }
  });

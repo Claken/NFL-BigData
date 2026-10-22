@@ -41,11 +41,12 @@ export function projectionAt(replay: Replay, time: number) {
   sector.push(ball);
   return { ball, receiver, projectedBall, projectedReceiver, sector, gap: Math.hypot(projectedBall.x - projectedReceiver.x, projectedBall.y - projectedReceiver.y) };
 }
-export function fieldBounds(replay: Replay, full: boolean) {
+export function fieldBounds(replay: Replay, full: boolean, includeProjection = false) {
   const points: Point[] = recordedFrames(replay).flatMap(frame => frame.players);
-  const projection = projectionAt(replay, endTime(replay));
+  const projection = includeProjection ? projectionAt(replay, endTime(replay)) : null;
   if (projection) points.push(...projection.sector, projection.projectedReceiver);
-  points.push({x: replay.line_of_scrimmage, y: 0}, {x: replay.situation.line_to_gain, y: 160 / 3});
+  const centerY = (Math.min(...points.map(p => p.y)) + Math.max(...points.map(p => p.y))) / 2;
+  points.push({x: replay.line_of_scrimmage, y: centerY}, {x: replay.situation.line_to_gain, y: centerY});
   if (full) points.push({x: 0, y: 0}, {x: 120, y: 160 / 3});
   const x0 = Math.min(...points.map(p => p.x)) - 5, x1 = Math.max(...points.map(p => p.x)) + 5;
   const y0 = Math.min(...points.map(p => p.y)) - 4, y1 = Math.max(...points.map(p => p.y)) + 4;

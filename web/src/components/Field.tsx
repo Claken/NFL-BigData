@@ -7,12 +7,14 @@ export default function Field({
   time,
   full,
   trails,
+  projectionEnabled,
 }: {
   replay: Replay;
   frame: Frame;
   time: number;
   full: boolean;
   trails: boolean;
+  projectionEnabled: boolean;
 }) {
   const clipId = useId().replaceAll(":", "");
   const ref = useRef<SVGSVGElement>(null);
@@ -29,7 +31,10 @@ export default function Field({
     observer.observe(ref.current!);
     return () => observer.disconnect();
   }, []);
-  const bounds = useMemo(() => fieldBounds(replay, full), [replay, full]);
+  const bounds = useMemo(
+    () => fieldBounds(replay, full, projectionEnabled),
+    [replay, full, projectionEnabled],
+  );
   const frames = useMemo(() => recordedFrames(replay), [replay]);
   const projection = projectionAt(replay, time);
   const W = size.width,
@@ -118,14 +123,14 @@ export default function Field({
                 <text
                   className="yard-number"
                   x={xy({ x, y: 0 }).x}
-                  y={topLeft.y + 20}
+                  y={Math.max(30, topLeft.y + 20)}
                 >
                   {Math.min(x - 10, 110 - x)}
                 </text>
                 <text
                   className="yard-number"
                   x={xy({ x, y: 0 }).x}
-                  y={topLeft.y + (160 / 3) * scale - 12}
+                  y={Math.min(H - 12, topLeft.y + (160 / 3) * scale - 12)}
                 >
                   {Math.min(x - 10, 110 - x)}
                 </text>

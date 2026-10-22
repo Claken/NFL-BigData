@@ -106,11 +106,15 @@ test("playback, moments, camera and receiver selection work", async ({
   ).toBeVisible();
   await page.getByRole("button", { name: "Pause replay", exact: true }).click();
   await page
-    .getByRole("button", { name: "Show full field", exact: true })
+    .getByRole("switch", { name: "Full field view", exact: true })
     .click();
   await expect(
-    page.getByRole("button", { name: "Fit players in view", exact: true }),
-  ).toHaveAttribute("aria-pressed", "true");
+    page.getByRole("switch", { name: "Full field view", exact: true }),
+  ).toHaveAttribute("aria-checked", "true");
+  await page.getByRole("switch", { name: "Full field view" }).click();
+  await expect(
+    page.getByRole("switch", { name: "Full field view" }),
+  ).toHaveAttribute("aria-checked", "false");
   await page.getByRole("button", { name: "Show receiver trail" }).click();
   await expect(
     page.getByRole("button", { name: "Show receiver trail" }),

@@ -86,14 +86,14 @@ The all-downs spacing-history study has a different question and cohort: 3,598 /
 | **Early ball flight** | See the recorded 0.2–0.5 seconds after release, with solid ball and receiver paths |
 | **Motion projections** | Opt into dotted ball-position envelopes and a straight receiver continuation with **Illustrative projection** |
 | **Receiver separation** | Inspect recorded distance to the nearest defender; the chart ends with tracking and holds its last measured value during projection |
-| **Field views** | Switch between Fit view and Full field with equal yard scales |
+| **Field views** | Use the single **View: Fit / View: Full field** button to switch modes; its label shows the current view, with equal yard scales |
 | **Play-based queue** | Browse 50 sampled plays, switch between qualifying receivers, and filter by week or coverage |
 | **Copy play details** | Copy the selected play, receiver, timestamp, measured spacing and recorded result |
 | **Local use and exports** | Run the app locally and download research CSV/JSON files; the original standalone HTML remains available for offline use |
 
 ### After the throw
 
-Choose **Throw** above the replay slider to play the recorded start of ball flight. Playback stops at the last recorded frame by default. Enable **Illustrative projection** to explore conditional continuation on the same timeline; it does not show the actual catch or outcome. Solid gold and orange paths connect measured ball and selected-receiver samples; animation interpolates between samples. When projection is enabled and tracking ends, a full dotted cone grows from the last measured ball position while a dotted orange path continues the receiver's recent velocity. Other players remain at their last measured positions; the camera keeps the same scale throughout.
+Choose **Throw** above the replay slider to play the recorded start of ball flight. Playback stops at the last recorded frame by default. Enable **Illustrative projection** to explore conditional continuation on the same timeline; it does not show the actual catch or outcome. Solid gold and orange paths connect measured ball and selected-receiver samples; animation interpolates between samples. When projection is enabled and tracking ends, a full dotted cone grows from the last measured ball position while a dotted orange path continues the receiver's recent velocity. Other players remain at their last measured positions. Fit view reserves projection space only when projection is enabled; the camera stays fixed during playback within either mode.
 
 **This is an illustrative projection, not a predicted landing zone or catch probability.** With projection enabled, the timeline continues up to 2 seconds after release; that horizon is chosen for exploration, not estimated from the throw: ball height and vertical velocity are missing. Motion is fitted from the last three consecutive post-release samples; one of the 50 plays has only two samples, so its three receiver cues show recorded motion without a projection. Both central projected positions refer to the same time; the gap does not establish a usable pass, and the selected receiver may not be the target.
 
