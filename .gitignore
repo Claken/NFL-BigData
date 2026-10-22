@@ -225,3 +225,15 @@ data/processed/
 
 # Local Cloudflare CLI cache
 .cloudflare/
+
+# React application build and browser checks
+node_modules/
+dist/
+web/public/data/
+web/public/downloads/
+web/test-results/
+web/playwright-report/
+
+# Frontend source is not a Python build directory
+!web/src/lib/
+!web/src/lib/**

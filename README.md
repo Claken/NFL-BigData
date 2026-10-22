@@ -1,63 +1,46 @@
-<div align="center">
+# NFL Buddy
 
-<img src="assets/nfl-player-mascot.png" alt="NFL Buddy mascot: an 8-bit football player with a football and computer" width="240">
+A film-study workspace for failed NFL third downs. Browse 50 plays, replay recorded positions, compare 92 receiver cues, and copy a precise question for game-video review.
 
-# NFL Buddy 
+![React film room with play library, replay, and receiver analysis](assets/film-room-desktop.png)
 
-### Failed third downs, built for NFL film review.
+## Run the app
 
-**See the situation. Know the result. Take one earlier moment to film.**
-
-[![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=flat-square&logo=python&logoColor=white)](pyproject.toml)
-[![Plotly](https://img.shields.io/badge/Plotly-interactive_report-3F4F75?style=flat-square&logo=plotly&logoColor=white)](outputs/multigame/report.html)
-[![Data](https://img.shields.io/badge/NFL-2021_Weeks_1–8-013369?style=flat-square)](#data-and-scope)
-[![uv](https://img.shields.io/badge/uv-locked_dependencies-DE5FE9?style=flat-square)](uv.lock)
-[![Tests](https://img.shields.io/badge/tests-pytest-0A9EDC?style=flat-square&logo=pytest&logoColor=white)](#development)
-
-[Open live report](https://nflbuddy.nix.zone/) · [Questions it answers](#questions-it-answers) · [How it works](#how-it-works) · [Reproduce](#reproduce-the-analysis) · [Documentation](#documentation)
-
-**Tracking data → Spacing history → Film-review queue**
-
-</div>
-
-## TL;DR
-
-NFL Buddy helps coaches and analysts prepare a focused review of failed third-down passes: see the yards needed and actual result, inspect a specific receiver-spacing moment, and identify a question to check on game video.
-
-The report groups **50 distinct plays** with **92 receiver cues**. It shows quarter, clock, score, recorded play type and play-level hurry/hit context, then suggests whether to inspect pressure, thrower movement or receiver timing first.
-
-Copy the exact play, timestamp and measured observation to take into film review. It does not establish a missed pass or prescribe a coaching correction; the AI coaching-style review is not validation by a practicing coach.
-
-![Football field with earlier-space and throw snapshots, plus an exact film-review cue](outputs/multigame/report_ui_overview.png)
-
-## Explore the report
-
-**[Open NFL Buddy →](https://nflbuddy.nix.zone/)** — no installation needed. For an offline copy, follow the steps below.
-
-### 1. Get the project
+Use Node.js 22.12 or newer and pnpm. The committed analysis outputs contain the data needed to run the app; Python is only required to regenerate the analysis.
 
 ```bash
-git clone https://github.com/Claken/NFL-BigData.git
-cd NFL-BigData
+pnpm install --frozen-lockfile
+pnpm dev
 ```
 
-### 2. Open the report
+Open **http://localhost:5173**. For a production build:
 
-Open [`outputs/multigame/report.html`](outputs/multigame/report.html) in your browser from the cloned repository. GitHub's file viewer shows the HTML source; use the local file to interact with it.
+```bash
+pnpm build
+pnpm preview
+```
 
-**No Python installation or data download is needed to explore the committed report.** Its charts and replay data are embedded, so it works offline. Keep the output folder together to retain the companion CSV, findings and image links.
+The build writes `dist/`, including local fonts, the play index, 92 tracking files, and research downloads. `index.html` and `report.html` both load the React app. Serve the folder over HTTP; opening its HTML directly with a `file://` URL will not load the data.
 
-### 3. Review a route
+The [public site](https://nflbuddy.nix.zone/) reflects the last deployed release. See [deployment instructions](deploy/README.md) to publish a reviewed build.
 
-1. Read the sentences above the pitch: what the team needed to achieve and what actually happened. Quarter, clock and score give the game context.
-2. Inspect the **first sustained spacing** moment, then compare positions at the throw.
-3. Read **What to check first**: a recorded hurry/hit, thrower movement or receiver timing. Pressure flags apply to the whole play; their timing is unknown.
-4. Use **Copy play and timestamp** to take the selected moment into film review.
-5. Choose another play in the chronological queue, then switch between its qualifying receivers. Filter by receiver, recorded play type or coverage.
+## Use the film room
 
-The old Part 03, all-downs statistics and Scott Miller comparison have been removed from the interface. Their original research artifacts remain available through labeled downloads.
+- Search the library by team, player, or play ID. Filter by week and coverage.
+- Read the dedicated scoreboard for team scores, quarter, and game clock at the selected play.
+- Choose a play, then switch between its qualifying receivers above the field.
+- Compare **Earlier opening** with **At the throw** in the analysis panel. Use Play, the time slider, or frame-step buttons to inspect motion.
+- Click **Throw** above the timeline to play from release into the illustrative projection. Solid paths are recorded; dotted paths are assumed continuation.
+- Save a play to keep it in this browser. Copy the review cue to take its game ID, timestamp, and observation into film review. A green checkmark and tint confirm a successful copy.
+- Open **Play details** for the official record and **Study notes** for methods, limits, and downloads.
 
-![Plain-language play situation and recorded result above the pitch](outputs/multigame/report_ui_review.png)
+The selected receiver may not be the pass target. Spacing alone does not establish a safe throw or a missed opportunity.
+
+## Frontend
+
+The app uses [React](https://react.dev/) with TypeScript and [Vite](https://vite.dev/guide/). [Radix](https://www.radix-ui.com/primitives/docs/components/dialog) provides dialogs and tabs; [Lucide](https://lucide.dev/guide/react/) supplies icons. Components, SVG field rendering, and playback state live in `web/src/`. Styles use semantic OKLCH tokens, locally hosted Manrope and IBM Plex Mono, and responsive layouts. The original 8-bit football-and-computer mascot appears in the sidebar, mobile header, and browser tab.
+
+`pnpm prepare:data` reads `outputs/multigame/replay_data.json` and prepares the frontend data. Each receiver's tracking loads on demand. The Python analysis and its original standalone HTML export remain available independently under `scripts/` and `outputs/multigame/`.
 
 ## Questions it answers
 
@@ -72,7 +55,7 @@ It cannot determine a safe passing lane, intended progression, hypothetical catc
 
 ## How plays are selected
 
-From 923 eligible failed third-down pass plays (3,510 receiver routes), **299 plays / 588 routes** meet the spacing screen. The offline report includes a deliberately chosen Anthony Schwartz illustration plus **49 other plays sampled with seed 20261021**, retaining every qualifying receiver on each selected play. Cards are ordered by week/game/play, not coaching value. Multiple receivers on a play share one card.
+From 923 eligible failed third-down pass plays (3,510 receiver routes), **299 plays / 588 routes** meet the spacing screen. The sample includes a deliberately chosen Anthony Schwartz illustration plus **49 other plays sampled with seed 20261021**, retaining every qualifying receiver on each selected play. Cards are ordered by week/game/play, not coaching value. Multiple receivers on a play share one card.
 
 The screen requires a nearest-defender gap strictly above 2 yards for at least 0.5 seconds (six consecutive 10 Hz samples), while at/beyond the yards-to-go and at least 2 yards downfield. It runs from snap+1 second through release−0.3 seconds. The **first** qualifying interval supplies the timestamp; missing/ineligible/below-threshold samples break it. Receivers still separated at the throw are included. These are transparent screening choices, not validated safe-pass thresholds.
 
@@ -94,24 +77,22 @@ The all-downs spacing-history study has a different question and cohort: 3,598 /
 
 | Capability | What you can do |
 | --- | --- |
-| **Synchronized replay** | Follow all 22 players, with the named thrower in purple and selected receiver in green |
-| **Game situation** | See down-and-distance, a blue first-down or goal line, and the receiver's distance to it |
+| **Synchronized replay** | Follow all 22 players, with a gold ring around the thrower and an orange selected receiver |
+| **Game situation** | Read the dedicated team scoreboard and quarter/clock, plus down-and-distance and a yellow first-down line |
 | **Recorded outcome** | See incomplete, completed short or intercepted, independently of the pre-throw animation |
 | **Playback controls** | Play, pause and scrub through the last recorded post-release sample; then continue into the labeled projection on the same timeline; use At the throw to return to release |
 | **Early ball flight** | See the recorded 0.2–0.5 seconds after release, with solid ball and receiver paths |
 | **Motion projections** | Explore dotted ball-position envelopes and a straight receiver continuation as the shared replay timeline advances |
-| **Field views** | Switch between Zoom to players and Show whole field with equal yard scales |
-| **Play-based queue** | Browse 50 sampled plays, switch between qualifying receivers, and filter recorded play type |
+| **Field views** | Switch between Fit view and Full field with equal yard scales |
+| **Play-based queue** | Browse 50 sampled plays, switch between qualifying receivers, and filter by week or coverage |
 | **Copy play details** | Copy the selected play, receiver, timestamp, measured spacing and recorded result |
-| **Offline use and exports** | Explore embedded charts and replays, or use the companion CSV and PNG files |
+| **Local use and exports** | Run the app locally and download research CSV/JSON files; the original standalone HTML remains available for offline use |
 
 ### After the throw
 
-Choose **After the throw** to play the recorded start of ball flight and its conditional continuation on one timeline. Solid gold and green paths connect measured ball and selected-receiver samples; animation interpolates between samples. Once tracking ends, a full dotted cone grows from the last measured ball position while a dotted green path continues the receiver's recent velocity. Other players remain dimmed at their last measured positions; the camera keeps the same scale throughout.
+Choose **Throw** above the replay slider to play the recorded start of ball flight and its conditional continuation on one timeline. Solid gold and orange paths connect measured ball and selected-receiver samples; animation interpolates between samples. Once tracking ends, a full dotted cone grows from the last measured ball position while a dotted orange path continues the receiver's recent velocity. Other players remain at their last measured positions; the camera keeps the same scale throughout.
 
 **This is an illustrative projection, not a predicted landing zone or catch probability.** The timeline continues up to 2 seconds after release; that horizon is chosen for exploration, not estimated from the throw: ball height and vertical velocity are missing. Motion is fitted from the last three consecutive post-release samples; one of the 50 plays has only two samples, so its three receiver cues show recorded motion without a projection. Both central projected positions refer to the same time; the gap does not establish a usable pass, and the selected receiver may not be the target.
-
-![Recorded ball flight and dotted ball/receiver projections](outputs/multigame/report_ui_flight.png)
 
 ## Data and scope
 
@@ -157,6 +138,13 @@ See [REPRODUCE.md](REPRODUCE.md) for custom paths, caching, event policies, outp
 ## Development
 
 ```bash
+pnpm typecheck
+pnpm test
+pnpm exec playwright install chromium
+pnpm test:ui
+pnpm build
+
+# Analysis and original-export checks
 uv run --locked pytest -q
 uv run --locked ruff check scripts tests
 # Optional Node.js checks for the browser projection geometry:
@@ -169,7 +157,8 @@ The tests cover failed-third-down outcomes and exclusions, sustained beyond-line
 
 | Resource | What it contains |
 | --- | --- |
-| [Interactive report](outputs/multigame/report.html) | Main finding, route review, evidence, methods and downloads |
+| [React app](web/src/App.tsx) | Film-room shell, library, replay, analysis, and study notes |
+| [Original offline export](outputs/multigame/report.html) | Standalone analysis report |
 | [Detailed findings](outputs/multigame/findings.md) | Definitions, comparisons, uncertainty and limitations |
 | [Reproduction guide](REPRODUCE.md) | Locked build commands, provenance, exclusions and output inventory |
 | [Deployment guide](deploy/README.md) | Live hosting, updates and rollback on the VPS |

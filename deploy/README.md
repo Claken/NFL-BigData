@@ -11,23 +11,26 @@ Nginx on `oci-main` serves static files from `/var/www/nflbuddy/current`. The ex
 - Tunnel `main`: one ingress rule for `nflbuddy.nix.zone` → `http://127.0.0.1:8080`, before the catch-all. Preserve the other hosts when updating its configuration.
 - Use the authenticated `cf` CLI for Cloudflare changes and `ssh oci-main` for origin changes. Credentials and CLI caches are not committed.
 
-## Update the report
+## Build the React app
 
-Build and review the report first; see [`REPRODUCE.md`](../REPRODUCE.md). Commit the reviewed source and outputs, then stage only these public files from `outputs/multigame/`:
-
-```text
-report.html
-findings.md
-film_review_queue.csv
-third_down_review_queue.csv
-routes.csv
-matched_pair.png
-analysis.json
+```bash
+pnpm install --frozen-lockfile
+pnpm test
+pnpm test:ui
+pnpm build
 ```
+
+Review the production build with `pnpm preview`. The deployable site is the complete `dist/` directory. It contains `index.html`, the `report.html` entry used by the current Nginx configuration, hashed JS/CSS/font assets, the play index, per-receiver tracking JSON, and downloads.
+
+Deploy all files in `dist/` together. Do not deploy just `report.html`; it now needs the accompanying assets and data. No Nginx or Cloudflare change is required for this static build. The original Python HTML export remains under `outputs/multigame/` for offline analysis.
+
+## Update the site
+
+Commit the reviewed source, then stage `dist/` as the public release. Keep the existing rollback workflow below.
 
 Use a new release directory named after the source commit, for example `/var/www/nflbuddy/releases/1e40b1530d90/`. Keep source files, raw datasets, credentials and the Git checkout out of this directory.
 
-1. Create a local staging folder with the seven files above. Add `release.json` with the source commit, file sizes and SHA-256 hashes. Precompress text files to `.gz` beside the originals; Nginx serves these when supported. Generate `SHA256SUMS` for the staged files.
+1. Create a local staging folder containing the entire `dist/` tree. Add `release.json` with the source commit, file sizes and SHA-256 hashes. Precompress text files to `.gz` beside the originals; Nginx serves these when supported. Generate `SHA256SUMS` for the staged files.
 2. Create the release directory with `sudo install -d -m 0755`, then upload the staging folder:
 
    ```bash
@@ -45,7 +48,7 @@ Use a new release directory named after the source commit, for example `/var/www
    ```
 
 5. When changing Nginx configuration, install `nginx.conf`, run `sudo nginx -t`, and only reload after it passes: `sudo systemctl reload nginx`. A report-only update needs no reload or tunnel change.
-6. Verify HTTPS, HTTP redirection, the six companion downloads, failed-third-down review, playback, grouped-play filters, plain-language situation/outcome, copying play details, measured post-release motion, the full conditional cone and continuous shared timeline and the insufficient-sample fallback at the public URL. Compare downloaded companion files with the local SHA-256 hashes. `/release.json` identifies the deployed build.
+6. Verify HTTPS, HTTP redirection, the React app, tracking requests, research downloads, playback, library search and filters, saved plays, receiver switching, copying review cues, projection continuity, and error recovery at the public URL. Compare downloaded assets and data files with the local SHA-256 hashes. `/release.json` identifies the deployed build.
 
 Cloudflare may add script-loading and security scripts to public HTML. The origin report remains byte-identical to the reviewed file; use the repository copy for the fully self-contained offline artifact.
 

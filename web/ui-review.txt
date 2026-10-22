@@ -1,0 +1,59 @@
+UI review: Ship it for local review
+Date: 2026-10-22
+
+Scope: React + TypeScript frontend in web/src, Vite build, pnpm data preparation.
+The original Python analysis/export is independent of this app.
+
+| Before | After | Why |
+| --- | --- | --- |
+| Long generated report | Play browser, replay workspace, receiver inspector | Switch plays without losing the study context |
+| Monolithic DOM script | Typed React components and a pure replay module | Separate playback, rendering and navigation |
+| Embedded tracking for every play | Index plus per-cue JSON requests | Load only the tracking needed for the selected receiver |
+| Mobile controls overlapped by navigation | Library opens from the persistent header | Keep playback controls reachable |
+| Scaled-down chart labels | Responsive SVG coordinate space | Keep labels legible on narrow screens |
+| Comparison-card overflow | Constrained grid columns and wrapping labels | Keep both moments readable at 320px |
+
+Validation
+- pnpm build and TypeScript check pass.
+- 5 Vitest tests pass, including numerical projection parity for all 92 cues.
+- 20 Playwright tests pass against the production build at 1440, 1280, 390 and 320px.
+- After the final chart/card adjustments, the four affected layout/accessibility checks pass again.
+- 81 Python analysis tests pass.
+- All 92 cues render without browser errors or document overflow at 1440, 390 and 320px.
+- Recorded-to-projected geometry is unchanged for the field, scrubber, controls and chart.
+- Automated WCAG A/AA checks report no violations in the workspace and study dialog.
+- Browser tests cover playback progress, pause, release playback, camera, trails,
+  receiver switching, back navigation, bookmarks after reload, search/empty states,
+  copy feedback, dialog focus return, downloads and tracking-request retries.
+- Final desktop/mobile screenshots: assets/film-room-desktop.png and assets/film-room-mobile.png.
+
+Color audit: web/src/styles.css
+This is a new theme, so the declarations below have no previous value in this frontend.
+The navy surfaces, light workspace, orange selection and distinct player roles use
+semantic OKLCH tokens. Contrast was checked on the rendered surfaces. Font assets
+are Latin WOFF2 files served locally. The original report palette is unmodified.
+
+--ink: oklch(0.25 0.025 250);
+--muted: oklch(0.47 0.025 250);
+--subtle: oklch(0.53 0.022 250);
+--surface: oklch(1 0 0);
+--page: oklch(0.965 0.005 250);
+--soft: oklch(0.95 0.009 250);
+--line: oklch(0.25 0.025 250 / 0.12);
+--strong-line: oklch(0.75 0.02 250);
+--accent: oklch(0.55 0.15 40);
+--accent-light: oklch(0.76 0.13 40);
+--accent-wash: oklch(0.96 0.025 40);
+--nav: oklch(0.23 0.03 250);
+--nav-raised: oklch(0.29 0.03 250);
+--nav-text: oklch(0.94 0.012 250);
+--nav-muted: oklch(0.74 0.025 250);
+--nav-line: oklch(0.35 0.025 250);
+--pitch: oklch(0.265 0.023 220);
+--pitch-stripe: oklch(0.285 0.025 220);
+--pitch-line: oklch(0.46 0.025 220);
+--pitch-text: oklch(0.78 0.025 220);
+--receiver: oklch(0.77 0.14 40);
+--offense: oklch(0.95 0.01 250);
+--defense: oklch(0.79 0.075 220);
+--ball: oklch(0.85 0.13 85);
