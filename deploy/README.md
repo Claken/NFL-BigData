@@ -48,7 +48,7 @@ Use a new release directory named after the source commit, for example `/var/www
    ```
 
 5. When changing Nginx configuration, install `nginx.conf`, run `sudo nginx -t`, and only reload after it passes: `sudo systemctl reload nginx`. A report-only update needs no reload or tunnel change.
-6. Verify HTTPS, HTTP redirection, the React app, tracking requests, research downloads, playback, library search and filters, saved plays, receiver switching, copying review cues, projection continuity, and error recovery at the public URL. Compare downloaded assets and data files with the local SHA-256 hashes. `/release.json` identifies the deployed build.
+6. Verify HTTPS, HTTP redirection, the React app, tracking requests, research downloads, playback, library search and filters, saved plays, receiver switching, copying review cues, recorded-only playback by default, opt-in projection continuity, the recorded-only separation chart, the LINE TO GAIN label, and error recovery at the public URL. Compare downloaded assets and data files with the local SHA-256 hashes. `/release.json` identifies the deployed build.
 
 Cloudflare may add script-loading and security scripts to public HTML. The origin report remains byte-identical to the reviewed file; use the repository copy for the fully self-contained offline artifact.
 
