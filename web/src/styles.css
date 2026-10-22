@@ -1093,10 +1093,13 @@ summary {
   border-radius: 4px;
   background: linear-gradient(
     to right,
-    var(--accent) var(--progress),
-    var(--soft) var(--progress),
+    var(--accent) min(var(--progress), var(--recorded)),
+    var(--soft) min(var(--progress), var(--recorded)),
     var(--soft) var(--recorded),
-    var(--accent-wash) var(--recorded)
+    color-mix(in oklch, var(--accent) 50%, transparent) var(--recorded),
+    color-mix(in oklch, var(--accent) 50%, transparent)
+      max(var(--progress), var(--recorded)),
+    transparent max(var(--progress), var(--recorded))
   );
   pointer-events: none;
 }
@@ -1107,6 +1110,7 @@ summary {
   right: 0;
   height: 4px;
   border-block: 1px dashed var(--accent);
+  background: transparent;
   pointer-events: none;
 }
 .scrubber input {

@@ -30,7 +30,7 @@ The [public site](https://nflbuddy.nix.zone/) reflects the last deployed release
 - Read the dedicated scoreboard for team scores, quarter, and game clock at the selected play. Matchup headings use full team names on desktop and short names on mobile; scoreboard abbreviations stay the same.
 - Choose a play, then switch between its qualifying receivers above the field.
 - Compare **Earlier opening** with **At the throw** in the analysis panel. Use Play, the time slider, or frame-step buttons to inspect motion.
-- Click **Throw** above the timeline to play from release to the last recorded frame. Enable **Illustrative projection** to opt into assumed continuation. Solid paths are recorded; dotted paths are assumed continuation.
+- Click **Throw** above the timeline to play from release to the last recorded frame. Enable **Illustrative projection** to opt into assumed continuation. Solid paths are recorded; dotted paths are assumed continuation. The slider’s projection segment keeps its dashed outline: a 50%-opacity orange fill marks the played portion, while the upcoming portion remains transparent.
 - Save a play to keep it in this browser. Copy the review cue to take its game ID, timestamp, and observation into film review. A green checkmark and tint confirm a successful copy.
 - Open **Play details** for the official record and **Study notes** for methods, limits, and downloads.
 
