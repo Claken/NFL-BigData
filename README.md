@@ -30,7 +30,7 @@ The [public site](https://nflbuddy.nix.zone/) reflects the last deployed release
 - Read the dedicated scoreboard for team scores, quarter, and game clock at the selected play.
 - Choose a play, then switch between its qualifying receivers above the field.
 - Compare **Earlier opening** with **At the throw** in the analysis panel. Use Play, the time slider, or frame-step buttons to inspect motion.
-- Click **Throw** above the timeline to play from release into the illustrative projection. Solid paths are recorded; dotted paths are assumed continuation.
+- Click **Throw** above the timeline to play from release to the last recorded frame. Enable **Illustrative projection** to opt into assumed continuation. Solid paths are recorded; dotted paths are assumed continuation.
 - Save a play to keep it in this browser. Copy the review cue to take its game ID, timestamp, and observation into film review. A green checkmark and tint confirm a successful copy.
 - Open **Play details** for the official record and **Study notes** for methods, limits, and downloads.
 
@@ -82,7 +82,7 @@ The all-downs spacing-history study has a different question and cohort: 3,598 /
 | **Synchronized replay** | Follow all 22 players, with a gold ring around the thrower and an orange selected receiver |
 | **Game situation** | Read the dedicated team scoreboard and quarter/clock, plus down-and-distance and a yellow first-down line |
 | **Recorded outcome** | See incomplete, completed short or intercepted, independently of the pre-throw animation |
-| **Playback controls** | Play, pause and scrub through the last recorded post-release sample; then continue into the labeled projection on the same timeline; use At the throw to return to release |
+| **Playback controls** | Play, pause and scrub through the last recorded post-release sample; optionally enable the labeled projection on the same timeline; use At the throw to return to release |
 | **Early ball flight** | See the recorded 0.2–0.5 seconds after release, with solid ball and receiver paths |
 | **Motion projections** | Explore dotted ball-position envelopes and a straight receiver continuation as the shared replay timeline advances |
 | **Field views** | Switch between Fit view and Full field with equal yard scales |
@@ -92,7 +92,7 @@ The all-downs spacing-history study has a different question and cohort: 3,598 /
 
 ### After the throw
 
-Choose **Throw** above the replay slider to play the recorded start of ball flight and its conditional continuation on one timeline. Solid gold and orange paths connect measured ball and selected-receiver samples; animation interpolates between samples. Once tracking ends, a full dotted cone grows from the last measured ball position while a dotted orange path continues the receiver's recent velocity. Other players remain at their last measured positions; the camera keeps the same scale throughout.
+Choose **Throw** above the replay slider to play the recorded start of ball flight. Playback stops at the last recorded frame by default. Enable **Illustrative projection** to explore conditional continuation on the same timeline; it does not show the actual catch or outcome. Solid gold and orange paths connect measured ball and selected-receiver samples; animation interpolates between samples. Once tracking ends, a full dotted cone grows from the last measured ball position while a dotted orange path continues the receiver's recent velocity. Other players remain at their last measured positions; the camera keeps the same scale throughout.
 
 **This is an illustrative projection, not a predicted landing zone or catch probability.** The timeline continues up to 2 seconds after release; that horizon is chosen for exploration, not estimated from the throw: ball height and vertical velocity are missing. Motion is fitted from the last three consecutive post-release samples; one of the 50 plays has only two samples, so its three receiver cues show recorded motion without a projection. Both central projected positions refer to the same time; the gap does not establish a usable pass, and the selected receiver may not be the target.
 

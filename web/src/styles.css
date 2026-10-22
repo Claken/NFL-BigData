@@ -2191,3 +2191,24 @@ kbd {
     text-align: start;
   }
 }
+
+.projection-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  margin-bottom: 12px;
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+.projection-option input {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--accent);
+}
+.projection-option small {
+  display: block;
+  color: var(--muted);
+  font-size: var(--text-xs);
+}

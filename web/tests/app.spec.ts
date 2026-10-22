@@ -31,11 +31,28 @@ test("replay remains stable and accessible through projection", async ({
   await page.goto("/");
   await ready(page);
   const slider = page.getByRole("slider", { name: "Replay time", exact: true });
+  const projectionToggle = page.getByRole("checkbox", {
+    name: /Illustrative projection/,
+  });
+  await expect(projectionToggle).not.toBeChecked();
+  await slider.focus();
+  await slider.press("End");
+  await expect(slider).toHaveAttribute("aria-valuetext", /After the throw/);
+  const recordedEnd = await slider.inputValue();
+  const separationSlider = page.getByRole("slider", {
+    name: "Seek separation chart",
+  });
+  await expect(separationSlider).toHaveAttribute("max", recordedEnd);
+  await expect(page.locator(".gain-label")).toHaveText("LINE TO GAIN");
+  await projectionToggle.check();
   await slider.focus();
   await slider.press("Home");
   const before = await geometry(page);
   await slider.press("End");
   await expect(slider).toHaveAttribute("aria-valuetext", /Projection/);
+  await expect(separationSlider).toHaveAttribute("max", recordedEnd);
+  await expect(separationSlider).toHaveValue(recordedEnd);
+  await expect(page.locator(".current-gap")).toContainText("at tracking end");
   expect(await geometry(page)).toEqual(before);
   expect(
     await page.evaluate(
@@ -46,6 +63,9 @@ test("replay remains stable and accessible through projection", async ({
     .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
     .analyze();
   expect(axe.violations).toEqual([]);
+  await projectionToggle.uncheck();
+  await expect(slider).toHaveValue(recordedEnd);
+  await expect(slider).toHaveAttribute("max", recordedEnd);
   await slider.press("Home");
   await page.screenshot({
     path: info.outputPath("film-room.png"),
@@ -146,7 +166,12 @@ test("library search, selection, bookmarks and empty states", async ({
   await page.locator(".play-row:visible").click();
   await ready(page);
   await expect(
-    page.getByRole("heading", { name: "Bears vs Browns" }),
+    page.getByRole("heading", {
+      name:
+        (page.viewportSize()?.width ?? 1440) > 780
+          ? "Chicago Bears vs Cleveland Browns"
+          : "Bears vs Browns",
+    }),
   ).toBeVisible();
 });
 test("dialogs trap and return focus; details and downloads remain available", async ({

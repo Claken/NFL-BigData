@@ -57,10 +57,11 @@ export default function Workspace({
     [speed, setSpeed] = useState(1),
     [full, setFull] = useState(false),
     [trails, setTrails] = useState(true),
+    [projectionEnabled, setProjectionEnabled] = useState(false),
     [guide, setGuide] = useState(false);
   const frames = useMemo(() => recordedFrames(replay), [replay]);
-  const end = endTime(replay),
-    last = frames.at(-1)!.t,
+  const last = frames.at(-1)!.t,
+    end = projectionEnabled ? endTime(replay) : last,
     release = replay.route.observed_seconds;
   const frame = useMemo(
     () => frameAt(replay, time, frames),
@@ -249,6 +250,26 @@ export default function Workspace({
             </div>
           </div>
           <div className="transport">
+            <label className="projection-option">
+              <input
+                type="checkbox"
+                checked={projectionEnabled}
+                disabled={!canProject(replay)}
+                onChange={(event) => {
+                  setProjectionEnabled(event.target.checked);
+                  setPlaying(false);
+                  setTime((value) => Math.min(value, last));
+                }}
+              />
+              <span>
+                Illustrative projection{" "}
+                <small>
+                  {canProject(replay)
+                    ? "Assumed motion, not the actual outcome"
+                    : "Unavailable for this play"}
+                </small>
+              </span>
+            </label>
             <div className="scrubber-labels">
               <span>Snap</span>
               <button
@@ -261,7 +282,7 @@ export default function Workspace({
               >
                 Throw <b>{release.toFixed(1)}s</b>
               </button>
-              <span>{canProject(replay) ? "Projection" : "Tracking ends"}</span>
+              <span>{projectionEnabled ? "Projection" : "Tracking ends"}</span>
             </div>
             <div
               className="scrubber"
@@ -354,7 +375,9 @@ export default function Workspace({
               ? "Dotted motion is an assumed continuation, not a landing prediction."
               : time >= release
                 ? canProject(replay)
-                  ? "Brief recorded ball flight. Playback continues into an illustrative projection."
+                  ? projectionEnabled
+                    ? "Brief recorded ball flight. Playback continues into an illustrative projection."
+                    : "Playback stops at the last recorded frame. Enable projection to explore assumed motion."
                   : "Recorded tracking ends here. A motion projection is unavailable for this play."
                 : "Solid paths show recorded positions. Use the timeline to inspect the play."}
           </p>
@@ -370,10 +393,10 @@ export default function Workspace({
           </div>
           <Timeline replay={replay} time={time} onSeek={seek} />
           <div className="timeline-caption">
-            <span>Distance to the nearest defender · yards</span>
+            <span>Recorded distance to nearest defender · yards</span>
             <span className="current-gap">
               {projection
-                ? `${projection.gap.toFixed(1)} yd projected ball-to-receiver gap`
+                ? `${frames.at(-1)!.separation.toFixed(1)} yd at tracking end`
                 : `${frame.separation.toFixed(1)} yd at this moment`}
             </span>
           </div>
@@ -406,17 +429,18 @@ export default function Workspace({
             <h3>Solid means recorded</h3>
             <p>
               The field shows all 22 players and the ball. Orange highlights the
-              selected receiver; the yellow dashed line marks the first-down
-              target. The ball is gold and the thrower has a gold ring.
+              selected receiver; the yellow dashed line marks the line to gain
+              for a first down. The ball is gold and the thrower has a gold
+              ring.
             </p>
           </section>
           <section>
             <h3>Dotted means projected</h3>
             <p>
-              After {last.toFixed(1)} seconds of recorded tracking, playback{" "}
-              {canProject(replay) ? "continues" : "stops"}.{" "}
+              Playback stops after {last.toFixed(1)} seconds of recorded
+              tracking by default.{" "}
               {canProject(replay)
-                ? `The remaining ${Math.max(0, end - last).toFixed(1)} seconds assume straight ball and receiver motion. Other players stay at their last recorded positions.`
+                ? `Enable Illustrative projection to explore ${Math.max(0, endTime(replay) - last).toFixed(1)} more seconds of assumed straight ball and receiver motion. This does not show the actual catch or outcome. Other players stay at their last recorded positions.`
                 : replay.post_release.projection_unavailable}
             </p>
             <p>
@@ -432,8 +456,9 @@ export default function Workspace({
             <p>
               Focus the replay slider, then use <kbd>←</kbd> <kbd>→</kbd> to
               step one frame. <kbd>Home</kbd> returns to the snap;{" "}
-              <kbd>End</kbd> goes to the end of the projection. Choose an
-              analysis moment to jump to its timestamp.
+              <kbd>End</kbd> goes to the last recorded frame, or the end of the
+              projection when enabled. Choose an analysis moment to jump to its
+              timestamp.
             </p>
           </section>
         </div>

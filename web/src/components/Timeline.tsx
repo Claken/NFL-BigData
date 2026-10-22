@@ -1,6 +1,6 @@
 import { useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { Replay } from "../lib/types";
-import { endTime, recordedFrames } from "../lib/replay";
+import { recordedFrames } from "../lib/replay";
 export default function Timeline({
   replay,
   time,
@@ -21,7 +21,8 @@ export default function Timeline({
     return () => observer.disconnect();
   }, []);
   const frames = useMemo(() => recordedFrames(replay), [replay]);
-  const end = endTime(replay),
+  const end = frames.at(-1)!.t,
+    chartTime = Math.min(time, end),
     release = replay.route.observed_seconds;
   const W = width,
     H = 116,
@@ -42,7 +43,7 @@ export default function Timeline({
         ref={ref}
         viewBox={`0 0 ${W} ${H}`}
         role="img"
-        aria-label={`Separation history, zero to ${end.toFixed(1)} seconds. Highlighted bands meet the spacing screen.`}
+        aria-label={`Recorded separation history, zero to ${end.toFixed(1)} seconds. Highlighted bands meet the spacing screen.`}
       >
         <defs>
           <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
@@ -92,13 +93,18 @@ export default function Timeline({
           y1={top}
           y2={H - bottom}
         />
-        <text className="chart-axis" x={x(release) + 6} y={top + 8}>
+        <text
+          className="chart-axis"
+          x={x(release) - 6}
+          y={top + 8}
+          textAnchor="end"
+        >
           Throw
         </text>
         <line
           className="chart-cursor"
-          x1={x(time)}
-          x2={x(time)}
+          x1={x(chartTime)}
+          x2={x(chartTime)}
           y1={top}
           y2={H - bottom}
         />
@@ -124,7 +130,7 @@ export default function Timeline({
         min="0"
         max={end}
         step="0.1"
-        value={time}
+        value={chartTime}
         onChange={(e) => onSeek(Number(e.target.value))}
       />
     </div>

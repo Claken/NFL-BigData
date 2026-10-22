@@ -166,7 +166,7 @@ export default function Field({
           x={xy({ x: replay.situation.line_to_gain, y: 0 }).x}
           y={Math.max(16, topLeft.y - 10)}
         >
-          FIRST DOWN
+          LINE TO GAIN
         </text>
         {trails && <path className="receiver-trail" d={path(routePoints)} />}
         {nearest && !projection && (
