@@ -33,7 +33,7 @@
   --accent-light: oklch(0.76 0.13 40);
   --success: oklch(0.45 0.11 150);
   --success-wash: oklch(0.96 0.025 150);
-  --success-line: oklch(0.80 0.065 150);
+  --success-line: oklch(0.8 0.065 150);
   --accent-wash: oklch(0.96 0.025 40);
   --nav: oklch(0.23 0.03 250);
   --nav-raised: oklch(0.29 0.03 250);
@@ -479,11 +479,33 @@ summary {
   font-size: var(--text-ui);
   font-weight: 700;
 }
-.play-index {
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--nav-muted);
-  min-width: 19px;
+.team-logo {
+  display: block;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.play-matchup,
+.play-team,
+.scoreboard-identity {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.play-matchup {
+  gap: 4px;
+}
+.play-team .team-logo {
+  width: 20px;
+  height: 20px;
+  padding: 1px;
+  border-radius: 4px;
+  background: var(--surface);
+}
+.scoreboard-identity {
+  flex-direction: column;
+  gap: 4px;
 }
 .match-at {
   font-size: 12px;
@@ -500,7 +522,7 @@ summary {
 }
 .play-row-detail {
   display: block;
-  padding-inline-start: 27px;
+  padding-inline-start: 0;
   margin-top: 7px;
   color: var(--nav-muted);
   font-size: var(--text-xs);

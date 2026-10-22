@@ -1,3 +1,4 @@
+import TeamLogo from "./TeamLogo";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ArrowRight,
@@ -133,7 +134,10 @@ export default function Workspace({
           aria-label="Score and game clock at this play"
         >
           <div className="scoreboard-team">
-            <span>{c.away_team}</span>
+            <span className="scoreboard-identity">
+              <TeamLogo team={c.away_team} />
+              {c.away_team}
+            </span>
             <strong>{c.away_score}</strong>
           </div>
           <div className="scoreboard-clock">
@@ -141,7 +145,10 @@ export default function Workspace({
             <strong>{c.game_clock}</strong>
           </div>
           <div className="scoreboard-team scoreboard-team--home">
-            <span>{c.home_team}</span>
+            <span className="scoreboard-identity">
+              <TeamLogo team={c.home_team} />
+              {c.home_team}
+            </span>
             <strong>{c.home_score}</strong>
           </div>
         </section>

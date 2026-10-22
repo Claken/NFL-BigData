@@ -1,3 +1,4 @@
+import TeamLogo from "./TeamLogo";
 import { memo, useEffect, useId, useMemo, useRef, useState } from "react";
 import {
   Search,
@@ -144,7 +145,7 @@ export default memo(function PlayLibrary({
         )}
       </div>
       <div ref={listRef} className="play-list" aria-label="Available plays">
-        {filtered.map((play, i) => {
+        {filtered.map((play) => {
           const cue = play.primary,
             selected = selectedId.startsWith(play.id + ":");
           return (
@@ -167,12 +168,16 @@ export default memo(function PlayLibrary({
               }}
             >
               <span className="play-row-top">
-                <span className="play-index">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span>
-                  {cue.context.away_team} <span className="match-at">at</span>{" "}
-                  {cue.context.home_team}
+                <span className="play-matchup">
+                  <span className="play-team">
+                    <TeamLogo team={cue.context.away_team} />
+                    {cue.context.away_team}
+                  </span>
+                  <span className="match-at">at</span>
+                  <span className="play-team">
+                    <TeamLogo team={cue.context.home_team} />
+                    {cue.context.home_team}
+                  </span>
                 </span>
                 {saved.includes(play.id) ? (
                   <Bookmark size={14} fill="currentColor" />

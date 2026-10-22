@@ -42,6 +42,8 @@ The app uses [React](https://react.dev/) with TypeScript and [Vite](https://vite
 
 `pnpm prepare:data` reads `outputs/multigame/replay_data.json` and prepares the frontend data. Each receiver's tracking loads on demand. The Python analysis and its original standalone HTML export remain available independently under `scripts/` and `outputs/multigame/`.
 
+Team logos are downloaded and served locally from `web/public/teams/`. The [nflverse logo catalog](https://github.com/nflverse/nflverse-pbp/blob/master/teams_colors_logos.csv) supplies ESPN image URLs; source URLs and hashes are recorded in `web/public/teams/sources.json`. These are current team identities rather than a historical 2021 logo set.
+
 ## Questions it answers
 
 | Question | What the report provides |
