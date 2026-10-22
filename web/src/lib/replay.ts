@@ -48,7 +48,8 @@ export function fieldBounds(replay: Replay, full: boolean, includeProjection = f
   const centerY = (Math.min(...points.map(p => p.y)) + Math.max(...points.map(p => p.y))) / 2;
   points.push({x: replay.line_of_scrimmage, y: centerY}, {x: replay.situation.line_to_gain, y: centerY});
   if (full) points.push({x: 0, y: 0}, {x: 120, y: 160 / 3});
-  const x0 = Math.min(...points.map(p => p.x)) - 5, x1 = Math.max(...points.map(p => p.x)) + 5;
-  const y0 = Math.min(...points.map(p => p.y)) - 4, y1 = Math.max(...points.map(p => p.y)) + 4;
+  const padX = full ? 5 : 3, padY = full ? 4 : 3;
+  const x0 = Math.min(...points.map(p => p.x)) - padX, x1 = Math.max(...points.map(p => p.x)) + padX;
+  const y0 = Math.min(...points.map(p => p.y)) - padY, y1 = Math.max(...points.map(p => p.y)) + padY;
   return {x0, x1, y0, y1};
 }

@@ -60,6 +60,15 @@ export default function Field({
       .join(" ");
   const topLeft = xy({ x: 0, y: 160 / 3 });
   const receiver = frame.players.find((p) => p.id === replay.route.nflId)!;
+  const thrower = frame.players.find((p) => p.id === replay.thrower.id)!;
+  const throwerXY = xy(thrower);
+  const throwerText = `${replay.thrower.name.split(" ").at(-1)} #${thrower.label}`;
+  const throwerLabelWidth = Math.max(100, throwerText.length * 7.5 + 18);
+  const throwerLabelX = Math.max(
+    6,
+    Math.min(W - throwerLabelWidth - 6, throwerXY.x - throwerLabelWidth - 22),
+  );
+  const throwerLabelY = Math.max(40, Math.min(H - 18, throwerXY.y - 32));
   const nearest = frame.players.find((p) => p.id === frame.nearest);
   const routePoints = frames
     .filter((f) => f.t <= Math.min(time, frames.at(-1)!.t))
@@ -221,8 +230,11 @@ export default function Field({
           className="player player--receiver"
           transform={`translate(${receiverXY.x},${receiverXY.y})`}
         >
-          <circle className="receiver-radius" r={2 * scale} />
-          <circle className="receiver-ring" r="17" />
+          <circle className="receiver-radius" r={2 * scale}>
+            <title>
+              2-yard radius: separation screening threshold, not a catch radius
+            </title>
+          </circle>
           <circle r="12" />
           <text y=".35em">{receiver.label}</text>
         </g>
@@ -246,6 +258,27 @@ export default function Field({
               );
             },
           )}
+        <g className="thrower-label">
+          <title>
+            {replay.thrower.name} · Thrower #{thrower.label}
+          </title>
+          <line
+            x1={throwerLabelX + throwerLabelWidth}
+            y1={throwerLabelY}
+            x2={throwerXY.x - 15}
+            y2={throwerXY.y - 8}
+          />
+          <rect
+            x={throwerLabelX}
+            y={throwerLabelY - 15}
+            width={throwerLabelWidth}
+            height="28"
+            rx="4"
+          />
+          <text x={throwerLabelX + 9} y={throwerLabelY + 3}>
+            {throwerText}
+          </text>
+        </g>
         {!projection && (
           <g
             className="receiver-label"

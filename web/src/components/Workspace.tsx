@@ -238,6 +238,9 @@ export default function Workspace({
                   Receiver
                 </span>
                 <span>
+                  <i className="legend-radius" />2 yd radius
+                </span>
+                <span>
                   <i className="legend-offense" />
                   Offense
                 </span>
@@ -436,6 +439,15 @@ export default function Workspace({
               selected receiver; the yellow dashed line marks the line to gain
               for a first down. The ball is gold and the thrower has a gold
               ring.
+            </p>
+          </section>
+          <section>
+            <h3>Receiver and distance ring</h3>
+            <p>
+              The filled orange marker identifies the selected receiver. The
+              thin orange circle marks a 2-yard radius around that receiver,
+              matching the distance threshold used to screen review moments. It
+              is not a catch radius or a guarantee that the receiver is open.
             </p>
           </section>
           <section>

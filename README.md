@@ -36,6 +36,8 @@ The [public site](https://nflbuddy.nix.zone/) reflects the last deployed release
 
 The selected receiver may not be the pass target. Spacing alone does not establish a safe throw or a missed opportunity.
 
+The filled orange marker identifies the selected receiver. Its thin **2 yd radius** ring shows the separation-screening distance; it is not a catch radius or a guarantee of an open pass. **Replay guide** explains the field symbols.
+
 ## Frontend
 
 The app uses [React](https://react.dev/) with TypeScript and [Vite](https://vite.dev/guide/). [Radix](https://www.radix-ui.com/primitives/docs/components/dialog) provides dialogs and tabs; [Lucide](https://lucide.dev/guide/react/) supplies icons. Components, SVG field rendering, and playback state live in `web/src/`. Styles use semantic OKLCH tokens, locally hosted Manrope and IBM Plex Mono, and responsive layouts. The original 8-bit football-and-computer mascot appears in the sidebar, mobile header, and browser tab.
@@ -79,7 +81,7 @@ The all-downs spacing-history study has a different question and cohort: 3,598 /
 
 | Capability | What you can do |
 | --- | --- |
-| **Synchronized replay** | Follow all 22 players, with a gold ring around the thrower and an orange selected receiver |
+| **Synchronized replay** | Follow all 22 players, with a gold ring and name label for the thrower and an orange selected receiver |
 | **Game situation** | Read the dedicated team scoreboard and quarter/clock, plus down-and-distance and the yellow **LINE TO GAIN** marking the distance needed for a first down |
 | **Recorded outcome** | See incomplete, completed short or intercepted, independently of the pre-throw animation |
 | **Playback controls** | Play, pause and scrub through the last recorded post-release sample; optionally enable the labeled projection on the same timeline; use At the throw to return to release |

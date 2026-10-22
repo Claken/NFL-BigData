@@ -986,16 +986,10 @@ summary {
 .player--receiver > circle {
   fill: var(--receiver);
 }
-.player--receiver .receiver-ring {
+.player--receiver .receiver-radius {
   fill: none;
   stroke: var(--receiver);
-  stroke-width: 1;
-}
-.player--receiver .receiver-radius {
-  fill: var(--receiver);
-  fill-opacity: 0.08;
-  stroke: var(--receiver);
-  stroke-opacity: 0.25;
+  stroke-opacity: 0.65;
   stroke-width: 1;
 }
 .player--receiver text {
@@ -1053,6 +1047,12 @@ summary {
 }
 .field-legend .legend-receiver {
   background: var(--receiver);
+}
+.field-legend .legend-radius {
+  width: 12px;
+  height: 12px;
+  background: transparent;
+  border: 1px solid var(--receiver);
 }
 .field-legend .legend-defense {
   background: transparent;
@@ -2220,4 +2220,18 @@ kbd {
   .camera-toggle {
     min-width: 116px;
   }
+}
+
+.thrower-label rect {
+  fill: var(--ball);
+}
+.thrower-label text {
+  fill: var(--pitch);
+  font-size: 12px;
+  font-weight: 700;
+}
+.thrower-label line {
+  stroke: var(--ball);
+  stroke-width: 1;
+  opacity: 0.7;
 }
