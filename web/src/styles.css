@@ -673,6 +673,9 @@ summary {
   color: var(--strong-line);
   margin-inline: 10px;
 }
+.team-name-short {
+  display: none;
+}
 .versus {
   font-weight: 400;
   color: var(--subtle);
@@ -1878,6 +1881,12 @@ kbd {
   }
 }
 @media (max-width: 780px) {
+  .team-name-full {
+    display: none;
+  }
+  .team-name-short {
+    display: inline;
+  }
   .study-view {
     grid-template-columns: 1fr;
   }

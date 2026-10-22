@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import type { Play, Replay } from "../lib/types";
 import { teamNames } from "../lib/data";
+import { fullTeamNames } from "../lib/teamNames";
 import {
   canProject,
   endTime,
@@ -112,9 +113,19 @@ export default function Workspace({
               <span className="separator">/</span> PLAY {cue.playId}
             </div>
             <h1>
-              {teamNames[c.away_team] || c.away_team}
+              <span className="team-name-full">
+                {fullTeamNames[c.away_team] || c.away_team}
+              </span>
+              <span className="team-name-short">
+                {teamNames[c.away_team] || c.away_team}
+              </span>
               <span className="versus">{" vs "}</span>
-              {teamNames[c.home_team] || c.home_team}
+              <span className="team-name-full">
+                {fullTeamNames[c.home_team] || c.home_team}
+              </span>
+              <span className="team-name-short">
+                {teamNames[c.home_team] || c.home_team}
+              </span>
             </h1>
             <span className="result-tag">{cue.outcome.label}</span>
           </div>
